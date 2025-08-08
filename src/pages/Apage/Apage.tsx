@@ -1,5 +1,6 @@
-// src/pages/Apage/Apage.tsx
+import { TempSection } from "./APage.styled";
+
 function Apage() {
-  return <div>Apage입니다</div>;
+  return <TempSection>Apage입니다</TempSection>;
 }
 export default Apage;
