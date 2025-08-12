@@ -1,13 +1,18 @@
+import "./index.css";
+
+import { Global, ThemeProvider } from "@emotion/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
+
 import AppRouter from "./routes/Router";
-import "./index.css";
-import { Global } from "@emotion/react";
 import { globalStyles } from "./styles/global";
+import { theme, type ThemeType } from "./styles/theme";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Global styles={globalStyles} />
-    <AppRouter />
+    <ThemeProvider theme={theme}>
+      <Global styles={(theme) => globalStyles(theme as ThemeType)} />
+      <AppRouter />
+    </ThemeProvider>
   </React.StrictMode>
 );
