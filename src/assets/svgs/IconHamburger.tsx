@@ -9,7 +9,13 @@ const SvgIconHamburger = (props: SVGProps<SVGSVGElement>) => (
     viewBox="0 0 32 32"
     {...props}
   >
-    <path d="M5 8h22M5 16h22M5 24h22" />
+    <path
+      stroke="#E46198"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M5 8h22M5 16h22M5 24h22"
+    />
   </svg>
 );
 export default SvgIconHamburger;
