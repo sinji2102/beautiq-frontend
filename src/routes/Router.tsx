@@ -1,8 +1,7 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-
-import Apage from '../pages/Apage/Apage'
-import BPage from '../pages/BPage/BPage'
-import TestPage from '../pages/test'
+import Apage from "@pages/Apage/Apage";
+import BPage from "@pages/BPage/BPage";
+import TestPage from '@pages/test';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 const AppRouter = () => {
   return (
@@ -13,7 +12,7 @@ const AppRouter = () => {
         <Route path="/t" element={<TestPage />} />
       </Routes>
     </Router>
-  )
-}
+  );
+};
 
-export default AppRouter
+export default AppRouter;
