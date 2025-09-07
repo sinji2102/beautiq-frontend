@@ -12,6 +12,13 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
+/**
+ * @param {() => void} onClick - 버튼 클릭 시 실행되는 핸들러
+ * @param {ButtonSizeTypes} size - 버튼 크기 (xlarge | large | medium | small | xsmall)
+ * @param {boolean} disabled- 버튼 비활성화 여부 (기본이 false)
+ * @param {ButtonVariantTypes} variant - 버튼 스타일 종류 (primary - 기본| line)
+ * @param {React.ReactNode} children - 버튼 내부에 표시될 콘텐츠 (텍스트/아이콘 등)
+ */
 const Button = ({
   onClick,
   size,
