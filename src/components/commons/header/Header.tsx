@@ -1,18 +1,17 @@
 import * as S from "../header/Header.styled";
 
 interface HeaderProps {
-  back ?: boolean;
+  left ?: "beautiq" | "back";
   text?:string;
   right?: "hambuger" | "close";
 }
 
-const Header = ({back = false, text, right} : HeaderProps) => {
+const Header = ({left, text, right} : HeaderProps) => {
   return(
     <S.HeaderWrapper>
-      {/* back이 true인 경우 back버튼을 만들고 false면 안만든다. => svg로 대체 해야 한다*/}
-      {back ? <S.BackIcon/> : <div/> }
+      {left === "beautiq" ? <S.BeautiqIcon/> : left === "back" ? <S.BackIcon/> : <S.PlaceholderIcon/>}
       {text && <div>{text}</div>}
-      {right === "hambuger" ? <S.HamburgerIcon/> : right === "close" ? <S.CloseIcon/> : <div/>}
+      {right === "hambuger" ? <S.HamburgerIcon/> : right === "close" ? <S.CloseIcon/> : <S.PlaceholderIcon/>}
     </S.HeaderWrapper>
   );
 }
