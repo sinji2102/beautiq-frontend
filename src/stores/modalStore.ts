@@ -21,6 +21,7 @@ export const useModalStore = create<ModalStoreState>((set) => ({
   okCallback: undefined,
   noText: "",
   noCallback: undefined,
+  closeOutside: false,
 
   openModal: (props) =>
     set({
@@ -38,5 +39,6 @@ export const useModalStore = create<ModalStoreState>((set) => ({
       okCallback: undefined,
       noText: "",
       noCallback: undefined,
+      closeOutside: false,
     }),
 }));

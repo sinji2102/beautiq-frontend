@@ -9,4 +9,5 @@ export interface ModalState {
   okCallback?: () => void;
   noText?: string;
   noCallback?: () => void;
+  closeOutside?: boolean;
 }

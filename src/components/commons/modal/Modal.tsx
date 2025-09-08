@@ -1,5 +1,6 @@
 import Button from "@components/commons/button/Button";
 import { useModalStore } from "@stores/modalStore";
+import { useRef } from "react";
 
 import * as S from "./Modal.styled";
 
@@ -16,7 +17,10 @@ const Modal = () => {
     noText,
     noCallback,
     closeModal,
+    closeOutside,
   } = useModalStore();
+
+  const containerRef = useRef<HTMLDivElement>(null);
 
   if (!isOpen) return null;
 
@@ -28,6 +32,12 @@ const Modal = () => {
   const handleCancel = () => {
     noCallback?.();
     closeModal();
+  };
+
+  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      closeModal();
+    }
   };
 
   const renderContent = () => {
@@ -87,8 +97,8 @@ const Modal = () => {
   };
 
   return (
-    <S.ModalWrapper>
-      <S.ModalContainer>{renderContent()}</S.ModalContainer>
+    <S.ModalWrapper onClick={closeOutside ? handleClickOutside : undefined}>
+      <S.ModalContainer ref={containerRef}>{renderContent()}</S.ModalContainer>
     </S.ModalWrapper>
   );
 };
