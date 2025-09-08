@@ -11,6 +11,7 @@ const ModalTestPage = () => {
       type: "alert",
       title: "알림",
       comment: "모달 테스트입니다.",
+      closeOutside: true,
     });
   };
 
