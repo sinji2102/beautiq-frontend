@@ -1,6 +1,6 @@
 export interface ModalState {
   isOpen: boolean;
-  variant: "primary" | "line";
+  variant?: "primary" | "line";
   type: "alert" | "confirm" | "custom";
   title: string;
   comment?: string;
