@@ -68,25 +68,22 @@ const Modal = () => {
               {comment && <S.Comment>{comment}</S.Comment>}
             </S.ContentBox>
             <S.ButtonBox>
-              {variant === "line" ? (
-                <>
-                  <Button size="small" variant={variant} onClick={handleCancel}>
-                    {noText || "취소"}
-                  </Button>
-                  <Button size="small" variant="modal" onClick={handleConfirm}>
-                    {okText || "확인"}
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button size="small" variant={variant} isInactive onClick={handleCancel}>
-                    {noText || "취소"}
-                  </Button>
-                  <Button size="small" variant={variant} onClick={handleConfirm}>
-                    {okText || "확인"}
-                  </Button>
-                </>
-              )}
+              <Button
+                size="small"
+                variant={variant}
+                isInactive={variant !== "line"}
+                onClick={handleCancel}
+              >
+                {noText || "취소"}
+              </Button>
+
+              <Button
+                size="small"
+                variant={variant === "line" ? "modal" : variant}
+                onClick={handleConfirm}
+              >
+                {okText || "확인"}
+              </Button>
             </S.ButtonBox>
           </>
         );
