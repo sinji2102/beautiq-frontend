@@ -6,7 +6,6 @@ interface HeaderProps {
   left?: "beautiq" | "back";
   text?: string;
   right?: "hambuger" | "close";
-  // onClick ?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 /**
