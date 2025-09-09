@@ -1,5 +1,5 @@
-import { useCounterStore } from '../../stores/exampleStore';
-import * as S from './BPage.styled';
+import { useCounterStore } from "../../stores/exampleStore";
+import * as S from "./BPage.styled";
 
 const BPage = () => {
   const { count, increment, decrement, reset } = useCounterStore();

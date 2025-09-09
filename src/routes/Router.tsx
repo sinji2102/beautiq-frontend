@@ -1,6 +1,7 @@
 import Apage from "@pages/Apage/Apage";
 import ButtonTestPage from "@pages/Apage/ButtonTest";
 import BPage from "@pages/BPage/BPage";
+import HeaderPage from '@pages/HeaderPage';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 const AppRouter = () => {
@@ -9,6 +10,7 @@ const AppRouter = () => {
       <Routes>
         <Route path="/" element={<Apage />} />
         <Route path="/b" element={<BPage />} />
+        <Route path="/t" element={<HeaderPage />} />
         <Route path="/button" element={<ButtonTestPage />} />
       </Routes>
     </Router>
