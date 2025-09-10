@@ -1,4 +1,7 @@
-import styled, { css } from "styled-components";
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+
+import { getTypography } from "../../../styles/typography";
 
 /* 검정 오버레이 */
 export const SidebarOverlay = styled.div<{ isOpen: boolean }>`
@@ -26,11 +29,11 @@ export const SidebarContainer = styled.aside<{ isOpen: boolean }>`
   right: -28rem; /* ✅ 오른쪽 고정 */
   width: 28rem;
   height: 100vh;
-  background: #ffe6ef; /* 연분홍 패널 */
+  background-color: ${({ theme }) => theme.colors.neutral[100]};
   display: flex;
   flex-direction: column;
-  padding: 12px 0 20px;
-  box-shadow: -6px 0 24px rgba(0, 0, 0, 0.08);
+  padding: 2.4rem 1rem;
+  box-shadow: -0.6rem 0 2.4rem rgba(0, 0, 0, 0.08);
   transform: translateX(${(p) => (p.isOpen ? "0" : "100%")}); /* ✅ 오른쪽→왼쪽 슬라이드 */
   transition: transform 0.28s ease-in-out;
   z-index: 100;
@@ -47,102 +50,101 @@ export const SidebarContainer = styled.aside<{ isOpen: boolean }>`
 /* 헤더 */
 export const BeautiqHeader = styled.div`
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 6px 16px 10px;
+  padding: 1.2rem 0.8rem;
+
   .brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 1rem;
   }
+
   .square {
-    width: 24px;
-    height: 24px;
-    border-radius: 6px;
-    background: #d8d8d8;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 0.8rem;
+    background: ${({ theme }) => theme.colors.gray[200]};
   }
+
   .logo {
-    font-weight: 800;
-    font-size: 18px;
-    color: #e45c9c;
+    ${getTypography("heading1")}
+    color: ${({ theme }) => theme.colors.primary[500]};
     letter-spacing: 0.2px;
   }
 `;
 
 export const CloseButton = styled.button`
   background: transparent;
-  color: #e28db3;
-  font-size: 26px;
+  color: ${({ theme }) => theme.colors.primary[500]};
+  font-size: 4rem;
   line-height: 1;
+  border: none;
+  padding: 0 0.4rem 0 0;
+  display: flex;
+  justify-content: right;
 `;
 
 export const SectionRule = styled.div`
   height: 1px;
   background: #f6cfe0;
-  margin: 4px 16px 6px;
+  margin: 0.4rem 1.6rem 0.6rem;
 `;
 
 export const NavList = styled.ul`
   list-style: none;
-  padding: 0 8px;
+  padding: 0 0.8rem;
   margin: 0;
   flex: 1;
 `;
+
 export const NavItem = styled.li`
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 10px;
+  gap: 0.8rem;
+  padding: 1.6rem 0.8rem;
+  border-radius: 0.8rem;
   position: relative;
-  & + &::before {
-    content: "";
-    position: absolute;
-    top: -4px;
-    left: 12px;
-    right: 12px;
-    height: 1px;
-    background: #f1c7da; /* 항목 사이 얇은 라인 */
-  }
-  span {
-    font-size: 14px;
-    color: #6f5d67;
-  }
+
+    ${getTypography("body1NormalMedi")}
+    color: ${({ theme }) => theme.colors.primary[500]};
 `;
+
 export const Dot = styled.div`
-  width: 16px;
-  height: 16px;
-  border-radius: 4px;
-  background: #e9dbe3;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 0.8rem;
+  background-color: ${({ theme }) => theme.colors.gray[200]};
 `;
 
 export const DividerSpace = styled.div`
-  height: 8px;
+  height: 0.1rem;
+  background-color: ${({ theme }) => theme.colors.primary[200]};
 `;
 
 export const UserArea = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px 16px 20px;
+  gap: 1.2rem;
+  padding: 0.8rem 1.6rem 2rem;
   margin-top: auto;
 `;
+
 export const UserBadge = styled.div`
-  width: 28px;
-  height: 28px;
+  width: 4.4rem;
+  height: 4.4rem;
   border-radius: 50%;
   background: #f08ab4;
 `;
+
 export const UserButton = styled.button`
+  all: unset;
+  ${getTypography("body1NormalMedi")}
   flex: 1;
-  padding: 10px 14px;
-  border-radius: 20px;
-  font-weight: 700;
-  text-align: center;
-  color: #fff;
-  background: #e91e63; /* 로그인하기 버튼 */
+  padding: 1rem 1.4rem;
+  border-radius: 2rem;
+  text-align: left;
+  color: ${({ theme }) => theme.colors.primary[500]};
   &.loggedIn {
-    background: #e6b2d1;
-    color: #6f5d67;
+    color: ${({ theme }) => theme.colors.primary[300]};
   } /* 로그인 상태 */
 `;

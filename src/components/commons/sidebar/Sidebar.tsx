@@ -36,14 +36,15 @@ const Sidebar: React.FC<SidebarProps> = ({
     <>
       <SidebarOverlay isOpen={isOpen} onClick={onClose} aria-hidden={!isOpen} />
       <SidebarContainer isOpen={isOpen} role="dialog" aria-modal="true" aria-label="메뉴">
+        <CloseButton aria-label="닫기" onClick={onClose}>
+            ×
+          </CloseButton>
         <BeautiqHeader>
           <div className="brand">
             <div className="square" />
             <span className="logo">Beautiq</span>
           </div>
-          <CloseButton aria-label="닫기" onClick={onClose}>
-            ×
-          </CloseButton>
+          
         </BeautiqHeader>
 
         <SectionRule />

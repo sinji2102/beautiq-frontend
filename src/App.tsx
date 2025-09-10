@@ -1,5 +1,5 @@
+import styled from "@emotion/styled";
 import React, { useCallback, useEffect, useState } from "react";
-import styled from "styled-components";
 
 import Sidebar from "./components/commons/sidebar/Sidebar";
 import { SidebarOverlay } from "./components/commons/sidebar/Sidebar.styled";
