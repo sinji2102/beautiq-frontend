@@ -1,20 +1,14 @@
-import Apage from "@pages/Apage/Apage";
-import ButtonTestPage from "@pages/Apage/ButtonTest";
-import BPage from "@pages/BPage/BPage";
-import HeaderPage from '@pages/HeaderPage';
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Layout from "@components/commons/layout/Layout";
+import HomePage from "@pages/home/HomePage";
+import { createBrowserRouter } from "react-router-dom";
 
-const AppRouter = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Apage />} />
-        <Route path="/b" element={<BPage />} />
-        <Route path="/t" element={<HeaderPage />} />
-        <Route path="/button" element={<ButtonTestPage />} />
-      </Routes>
-    </Router>
-  );
-};
+const router = createBrowserRouter([
+  {
+    path: "/",
 
-export default AppRouter;
+    element: <Layout />,
+    children: [{ path: "/home", element: <HomePage /> }],
+  },
+]);
+
+export default router;
