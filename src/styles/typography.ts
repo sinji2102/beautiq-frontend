@@ -1,6 +1,5 @@
 import { css } from "@emotion/react";
-
-import type { ThemeType } from "./theme";
+import type { ThemeType } from "@styles/theme";
 
 type TypographyVariant = keyof ThemeType["typography"];
 

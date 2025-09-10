@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 
+import { IconHamburger } from "../../assets/svgs";
 import { getTypography } from "../../styles/typography";
 
 export const TempHeader = styled.h1`
@@ -21,4 +22,10 @@ export const TempCaption = styled.h1`
   width: "20rem";
   height: "20rem";
   ${getTypography("caption1Medi")}
+`;
+
+export const HamburgerIcon = styled(IconHamburger)`
+  width: 32px;
+  height: 32px;
+  stroke: ${({ theme }) => theme.colors.primary[500]};
 `;

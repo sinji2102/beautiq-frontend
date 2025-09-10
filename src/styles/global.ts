@@ -1,6 +1,5 @@
 import { css } from "@emotion/react";
-
-import type { ThemeType } from "./theme";
+import type { ThemeType } from "@styles/theme";
 
 export const globalStyles = (theme: ThemeType) => css`
   html {
@@ -11,6 +10,7 @@ export const globalStyles = (theme: ThemeType) => css`
 
   /* 모바일뷰 세팅 */
   body {
+    display: flex;
     width: 375px;
     min-height: 100%;
     margin: 0 auto;
@@ -18,7 +18,12 @@ export const globalStyles = (theme: ThemeType) => css`
     position: relative;
 
     /* TODO : 배경색 임시 설정 */
-    background-color: ${theme.colors.neutral[200]};
+    background-color: ${theme.colors.neutral[900]};
+  }
+
+  /* body태그 안에 id가 root인 div태그 기본 세팅 */
+  #root {
+    width: 100%;
   }
 
   /* 폰트 세팅 */
