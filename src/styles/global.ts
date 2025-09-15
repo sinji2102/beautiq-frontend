@@ -15,6 +15,7 @@ export const globalStyles = (theme: ThemeType) => css`
     min-height: 100%;
     margin: 0 auto;
     overflow-x: hidden;
+    position: relative;
 
     /* TODO : 배경색 임시 설정 */
     background-color: ${theme.colors.neutral[900]};
