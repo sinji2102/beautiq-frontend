@@ -23,9 +23,11 @@ const Sidebar = ({
     <Fragment>
       <S.SidebarOverlay isOpen={isOpen} onClick={onClose} aria-hidden={!isOpen} />
       <S.SidebarContainer isOpen={isOpen} role="dialog" aria-modal="true" aria-label="메뉴">
-        <S.CloseButton aria-label="닫기" onClick={onClose}>
-          x
-        </S.CloseButton>
+        <S.CloseWrapper>
+          <S.CloseButton aria-label="닫기" onClick={onClose}>
+            <S.CloseIcon />
+          </S.CloseButton>
+        </S.CloseWrapper>
 
         <S.BeautiqHeader>
           <div className="brand">
@@ -34,7 +36,7 @@ const Sidebar = ({
           </div>
         </S.BeautiqHeader>
 
-        <S.SectionRule />
+        <S.DividerSpace />
 
         <S.NavList>
           <S.NavButton>

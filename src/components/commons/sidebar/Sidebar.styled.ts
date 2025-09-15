@@ -1,3 +1,4 @@
+import { IconClose } from "@assets/svgs";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
@@ -68,6 +69,12 @@ export const BeautiqHeader = styled.div`
   }
 `;
 
+export const CloseWrapper = styled.div`
+  all: unset;
+  display: flex;
+  justify-content: right;
+`;
+
 export const CloseButton = styled.button`
   all: unset;
   font-size: 4rem;
@@ -78,10 +85,12 @@ export const CloseButton = styled.button`
   color: ${({ theme }) => theme.colors.primary[500]};
 `;
 
-export const SectionRule = styled.div`
-  height: 1px;
-  background: ${({ theme }) => theme.colors.neutral[200]};
-  margin: 0.4rem 1.6rem 0.6rem;
+// 닫기 아이콘 -> 다른 아이콘과 크기 맞추기 위해 패딩 추가
+export const CloseIcon = styled(IconClose)`
+  width: 2.4rem; /* 24px */
+  height: 2.4rem; /* 24px */
+  padding: 0.4rem; /* 4px */
+  fill: ${({ theme }) => theme.colors.primary[100]};
 `;
 
 export const NavList = styled.ul`
