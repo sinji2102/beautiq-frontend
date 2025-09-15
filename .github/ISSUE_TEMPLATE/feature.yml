@@ -16,7 +16,7 @@ body:
       required: true
   - type: textarea
     id: feat-list
-    attributes: 
+    attributes:
       label: 📝 To-do
       description: 작업에 필요한 목록을 작성해주세요.
       placeholder: 목록을 작성해주세요.
