@@ -1,7 +1,10 @@
 #root {
   --dvh: 100%;
   max-width: 1280px;
+  min-height: 812px;
   margin: 0 auto;
 
   text-align: center;
+
+  background-color: white;
 }
