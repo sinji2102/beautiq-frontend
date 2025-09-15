@@ -3,13 +3,10 @@ import styled from "@emotion/styled";
 
 import { getTypography } from "../../../styles/typography";
 
-/* 검정 오버레이 */
 export const SidebarOverlay = styled.div<{ isOpen: boolean }>`
   position: fixed;
-  top: 0;
-  left: 0;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45); /* ✅ 검정 반투명 */
+  background: rgba(0, 0, 0, 0.45);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
@@ -22,7 +19,6 @@ export const SidebarOverlay = styled.div<{ isOpen: boolean }>`
     `}
 `;
 
-/* 오른쪽 사이드바 패널 */
 export const SidebarContainer = styled.aside<{ isOpen: boolean }>`
   position: absolute;
   top: 0;
@@ -47,7 +43,6 @@ export const SidebarContainer = styled.aside<{ isOpen: boolean }>`
     `}
 `;
 
-/* 헤더 */
 export const BeautiqHeader = styled.div`
   display: flex;
   justify-content: space-between;
@@ -74,19 +69,18 @@ export const BeautiqHeader = styled.div`
 `;
 
 export const CloseButton = styled.button`
-  background: transparent;
-  color: ${({ theme }) => theme.colors.primary[500]};
+  all: unset;
   font-size: 4rem;
   line-height: 1;
-  border: none;
   padding: 0 0.4rem 0 0;
   display: flex;
   justify-content: right;
+  color: ${({ theme }) => theme.colors.primary[500]};
 `;
 
 export const SectionRule = styled.div`
   height: 1px;
-  background: #f6cfe0;
+  background: ${({ theme }) => theme.colors.neutral[200]};
   margin: 0.4rem 1.6rem 0.6rem;
 `;
 
@@ -97,7 +91,9 @@ export const NavList = styled.ul`
   flex: 1;
 `;
 
-export const NavItem = styled.li`
+export const NavButton = styled.button`
+  all: unset;
+
   display: flex;
   align-items: center;
   gap: 0.8rem;
@@ -105,8 +101,8 @@ export const NavItem = styled.li`
   border-radius: 0.8rem;
   position: relative;
 
-    ${getTypography("body1NormalMedi")}
-    color: ${({ theme }) => theme.colors.primary[500]};
+  ${getTypography("body1NormalMedi")}
+  color: ${({ theme }) => theme.colors.primary[500]};
 `;
 
 export const Dot = styled.div`
@@ -133,7 +129,7 @@ export const UserBadge = styled.div`
   width: 4.4rem;
   height: 4.4rem;
   border-radius: 50%;
-  background: #f08ab4;
+  background: ${({ theme }) => theme.colors.primary[300]};
 `;
 
 export const UserButton = styled.button`
@@ -146,5 +142,5 @@ export const UserButton = styled.button`
   color: ${({ theme }) => theme.colors.primary[500]};
   &.loggedIn {
     color: ${({ theme }) => theme.colors.primary[300]};
-  } /* 로그인 상태 */
+  }
 `;
