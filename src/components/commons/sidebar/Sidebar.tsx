@@ -24,7 +24,7 @@ const Sidebar = ({
       <S.SidebarOverlay isOpen={isOpen} onClick={onClose} aria-hidden={!isOpen} />
       <S.SidebarContainer isOpen={isOpen} role="dialog" aria-modal="true" aria-label="메뉴">
         <S.CloseButton aria-label="닫기" onClick={onClose}>
-          X
+          x
         </S.CloseButton>
 
         <S.BeautiqHeader>
