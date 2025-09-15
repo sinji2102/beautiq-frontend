@@ -12,7 +12,6 @@ export const HeaderWrapper = styled.div`
   width: 100%;
   height: 5.6rem; /* 56px */
   padding: 1.2rem; /* 12px */
-  margin-bottom: 1.6rem; /* 16px */
 
   position: sticky;
   top: 0;
