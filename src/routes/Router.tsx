@@ -1,9 +1,8 @@
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-
-import Apage from "../pages/Apage/Apage";
-import BPage from "../pages/BPage/BPage";
-import HomeGuest from "../pages/HomeGuest/HomeGuest"; // ✅ 추가
-import HomeUser from "../pages/HomeUser/HomeUser";
+import Apage from "@pages/Apage/Apage";
+import BPage from "@pages/BPage/BPage";
+import ButtonTestPage from "@pages/test/ButtonTest";
+import ModalTestPage from "@pages/test/ModalTest";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 const AppRouter = () => {
   return (
@@ -11,8 +10,8 @@ const AppRouter = () => {
       <Routes>
         <Route path="/" element={<Apage />} />
         <Route path="/b" element={<BPage />} />
-        <Route path="/c" element={<HomeGuest />} />
-        <Route path="/d" element={<HomeUser />} />
+        <Route path="/button" element={<ButtonTestPage />} />
+        <Route path="/modal" element={<ModalTestPage />} />
       </Routes>
     </Router>
   );

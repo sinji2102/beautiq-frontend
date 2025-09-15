@@ -1,5 +1,6 @@
 import "./index.css";
 
+import Modal from "@components/commons/modal/Modal";
 import { Global, ThemeProvider } from "@emotion/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -12,6 +13,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <Global styles={(theme) => globalStyles(theme as ThemeType)} />
+      <Modal />
       <AppRouter />
     </ThemeProvider>
   </React.StrictMode>

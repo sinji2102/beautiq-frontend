@@ -69,6 +69,10 @@ export const ButtonWrapper = styled.button<DefaultBtnPropTypes>`
               background-color: ${theme.colors.white};
               border: 1px solid ${theme.colors.primary[500]};
             `;
+      case "modal":
+        return `
+               color: ${theme.colors.white};
+              background-color: ${theme.colors.primary[200]};`;
     }
   }}
 `;
