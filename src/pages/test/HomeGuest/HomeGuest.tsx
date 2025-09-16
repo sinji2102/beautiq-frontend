@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import React, { useCallback, useEffect, useState } from "react";
 
-import Sidebar from "../../components/commons/sidebar/Sidebar";
-import { SidebarOverlay } from "../../components/commons/sidebar/Sidebar.styled";
+import Sidebar from "../../../components/commons/sidebar/Sidebar";
+import { SidebarOverlay } from "../../../components/commons/sidebar/Sidebar.styled";
 
 const Screen = styled.div`
   min-height: 100vh;

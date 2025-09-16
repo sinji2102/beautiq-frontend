@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
-import Sidebar from "../../components/commons/sidebar/Sidebar";
-import { SidebarOverlay } from "../../components/commons/sidebar/Sidebar.styled";
+import Sidebar from "../../../components/commons/sidebar/Sidebar";
+import { SidebarOverlay } from "../../../components/commons/sidebar/Sidebar.styled";
 import * as S from "./BPage.styled";
 
 const BPage = () => {
