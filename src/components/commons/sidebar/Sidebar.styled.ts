@@ -35,7 +35,7 @@ export const SidebarContainer = styled.aside<{ isOpen: boolean }>`
   /* TODO : 화면 양옆으로 늘어나는 거 수정 */
 
   width: 25.6rem;
-  height: 100vh;
+  height: 100dvh;
   padding: 2.4rem 1rem;
 
   background-color: ${({ theme }) => theme.colors.neutral[100]};
@@ -142,7 +142,7 @@ export const UserArea = styled.div`
   display: flex;
   gap: 1.2rem;
   align-items: center;
-  margin-top: auto;
+  margin-bottom: 2.4rem;
   padding: 0.8rem 1.6rem 2rem;
 `;
 
