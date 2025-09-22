@@ -1,7 +1,8 @@
 import Header from "@components/commons/header/Header";
 
 import CardContainer from "./components/CardContainer/CardContainer";
-import * as S from "./HomaPage.styled";
+import RecentAnalysisCard from "./components/RecentAnalysisCard/RecentAnalysisCard";
+import * as S from "./HomePage.styled";
 
 const HomePage = () => {
   return (
@@ -10,6 +11,7 @@ const HomePage = () => {
       <S.HomePageWrapper>
         <S.HomeImage />
         <CardContainer />
+        <RecentAnalysisCard />
       </S.HomePageWrapper>
     </>
   );
