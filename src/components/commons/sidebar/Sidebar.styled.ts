@@ -1,8 +1,7 @@
 import { IconClose } from "@assets/svgs";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-
-import { getTypography } from "../../../styles/typography";
+import { getTypography } from "@styles/typography";
 
 export const SidebarOverlay = styled.div<{ isOpen: boolean }>`
   position: fixed;
