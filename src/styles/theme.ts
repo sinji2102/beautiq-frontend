@@ -1,3 +1,5 @@
+import { createTheme } from "@mui/material/styles";
+
 export const theme = {
   // 색상
   colors: {
@@ -136,3 +138,38 @@ export const theme = {
 } as const;
 
 export type ThemeType = typeof theme;
+
+// MUI의 createTheme와 병합
+export const muiTheme = createTheme({
+  palette: {
+    primary: {
+      main: theme.colors.primary[500],
+      ...theme.colors.primary,
+    },
+    secondary: {
+      main: theme.colors.neutral[500],
+      ...theme.colors.neutral,
+    },
+    grey: theme.colors.gray,
+  },
+  typography: {
+    // MUI Typography 전체 폰트 설정
+    fontFamily: theme.fonts.main,
+
+    // 년, 월 헤더 부분
+    body1: {
+      fontSize: theme.typography.body2NormalMedi.size,
+      fontWeight: theme.typography.body2NormalMedi.weight,
+      lineHeight: theme.typography.body2NormalMedi.lineHeight,
+      letterSpacing: theme.typography.body2NormalMedi.letterSpacing,
+    },
+
+    // 요일 부분
+    caption: {
+      fontSize: theme.typography.body1Long.size,
+      fontWeight: theme.typography.body1Long.weight,
+      lineHeight: theme.typography.body1Long.lineHeight,
+      letterSpacing: theme.typography.body1Long.letterSpacing,
+    },
+  },
+});
