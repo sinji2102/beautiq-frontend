@@ -12,6 +12,7 @@ import { StyledStaticDatePicker } from "./Calendar.styled";
 // TODO : skinStatus enum 생성하기
 const tempData = {
   MonthlySkinStatus: [
+    { skinStatus: "CAUTION", createAt: "2025-09-10" },
     { skinStatus: "GOOD", createAt: "2025-09-25" },
     { skinStatus: "CAUTION", createAt: "2025-09-26" },
     { skinStatus: "DANGER", createAt: "2025-09-27" },
@@ -45,12 +46,17 @@ const DangerDay = MUIstyled(PickersDay)(({ theme }) => ({
   },
 }));
 
-// const ExceptDay = MUIstyled(PickersDay)(({ theme }) => ({
-//   "&.MuiPickersDay-root.Mui-selected": {
-//     backgroundColor: theme.palette.common.black,
-//     // font: theme.palette.common.black,
-//   },
-// }));
+const DisabledDay = MUIstyled(PickersDay)(() => ({
+  backgroundColor: "white !important",
+  color: "black !important",
+  pointerEvents: "none", // 클릭 불가
+  "&:hover": {
+    backgroundColor: "white !important", // hover 효과 제거
+  },
+  "&.MuiPickersDay-today": {
+    border: "none", // 여기서도 제거
+  },
+}));
 
 const Calendar = () => {
   // const [highlightedDays] = useState(["2025-09-01", "2025-09-09", "2025-09-21"]);
@@ -60,8 +66,6 @@ const Calendar = () => {
   //higlight the dates in highlightedDays array
   const ServerDay = (props: CustomPickersDayProps) => {
     const { MonthlySkinStatus = [], day, outsideCurrentMonth, ...other } = props;
-    // const isSelected =
-    //   !props.outsideCurrentMonth && MonthlySkinStatus.includes(day.format("YYYY-MM-DD"));
 
     const dateStr = day.format("YYYY-MM-DD");
     const dayData = MonthlySkinStatus.find((d) => d.createAt == dateStr);
@@ -99,7 +103,7 @@ const Calendar = () => {
       }
     }
 
-    return <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />;
+    return <DisabledDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} disabled />;
   };
 
   return (
