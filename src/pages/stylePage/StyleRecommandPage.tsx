@@ -18,7 +18,7 @@ const normalize = (s: string) => s.trim();
 
 const StyleRecommandPage: React.FC = () => {
   const [image, setImage] = useState<string | null>(null);
-  const [all, setAll] = useState<string[]>(ALL_KEYWORDS); // ✅ 전체 키워드도 상태로 관리
+  const [all] = useState<string[]>(ALL_KEYWORDS); // ✅ 전체 키워드도 상태로 관리
   const [selected, setSelected] = useState<string[]>([]);
   const [customStyle, setCustomStyle] = useState("");
 

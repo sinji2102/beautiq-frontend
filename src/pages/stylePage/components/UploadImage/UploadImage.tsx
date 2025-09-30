@@ -5,9 +5,12 @@ import React, { useEffect, useRef, useState } from "react";
 import * as S from "./UploadImage.styled";
 
 type UploadImageProps = {
-  contents: ContentsProps[];
-  setContents: React.Dispatch<React.SetStateAction<ContentsProps[]>>;
-  itemNumber: number;
+  image: string | null;
+  onRemove: () => void;
+  contents?: ContentsProps[];
+  onPickFile: (file: File) => void;
+  setContents?: React.Dispatch<React.SetStateAction<ContentsProps[]>>;
+  itemNumber?: number;
   /** (선택) 기존 사진 사용하기 동작이 필요하면 전달하세요. 없으면 버튼은 disabled 처리됩니다. */
   onUseExisting?: () => void;
   canUseExisting?: boolean;
@@ -26,7 +29,7 @@ const UploadImage: React.FC<UploadImageProps> = ({
 
   const handleFile = (file: File) => {
     // contents 상태에 파일만 반영 (타입 유지)
-    setContents((prev) =>
+    setContents?.((prev) =>
       prev.map((c) => (c.itemId === itemNumber ? { ...c, itemImage: file } : c))
     );
     // 이전 URL 정리 후 새 미리보기 URL 생성
@@ -37,7 +40,7 @@ const UploadImage: React.FC<UploadImageProps> = ({
   };
 
   const removeFile = () => {
-    setContents((prev) =>
+    setContents?.((prev) =>
       prev.map((c) => (c.itemId === itemNumber ? { ...c, itemImage: undefined } : c))
     );
     setPreviewUrl((prev) => {
