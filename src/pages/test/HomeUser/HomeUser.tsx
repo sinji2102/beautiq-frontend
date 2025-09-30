@@ -1,8 +1,7 @@
+import Sidebar from "@components/commons/sidebar/Sidebar";
+import { SidebarOverlay } from "@components/commons/sidebar/Sidebar.styled";
 import styled from "@emotion/styled";
 import React, { useCallback, useEffect, useState } from "react";
-
-import Sidebar from "../../components/commons/sidebar/Sidebar";
-import { SidebarOverlay } from "../../components/commons/sidebar/Sidebar.styled";
 
 const Screen = styled.div`
   min-height: 100vh;
@@ -74,18 +73,7 @@ const HomeUser: React.FC = () => {
       <SidebarOverlay isOpen={open} onClick={close} />
 
       {/* ⭐ 로그인 사이드바 (항목 4개 + 하단 사용자명) */}
-      <Sidebar
-        isOpen={open}
-        isLoggedIn={true}
-        userName="윤신지"
-        onClose={close}
-        onLoginClick={() => {}}
-        onLogoutClick={() => {
-          // 필요하면 여기서 라우팅으로 비로그인 페이지 이동
-          // e.g. navigate('/home-guest')
-          close();
-        }}
-      />
+      <Sidebar isOpen={open} userName="윤신지" onClose={close} />
     </Screen>
   );
 };

@@ -75,16 +75,7 @@ const HomeGuest: React.FC = () => {
       <SidebarOverlay isOpen={open} onClick={close} />
 
       {/* ⭐ 비로그인 사이드바 (항목 2개 + 하단 "로그인하기") */}
-      <Sidebar
-        isOpen={open}
-        isLoggedIn={false}
-        onClose={close}
-        onLoginClick={() => {
-          // 필요하면 여기서 라우팅으로 로그인 후 페이지로 이동
-          // e.g. navigate('/home-user')
-          close();
-        }}
-      />
+      <Sidebar isOpen={open} onClose={close} />
     </Screen>
   );
 };
