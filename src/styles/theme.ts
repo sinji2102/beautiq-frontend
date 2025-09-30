@@ -143,11 +143,15 @@ export type ThemeType = typeof theme;
 export const muiTheme = createTheme({
   palette: {
     primary: {
-      main: theme.colors.primary[500],
+      light: theme.colors.neutral[300],
+      main: theme.colors.neutral[500],
+      dark: theme.colors.neutral[800],
       ...theme.colors.primary,
     },
     secondary: {
+      light: theme.colors.neutral[300],
       main: theme.colors.neutral[500],
+      dark: theme.colors.neutral[800],
       ...theme.colors.neutral,
     },
     grey: theme.colors.gray,
