@@ -28,24 +28,28 @@ interface CustomPickersDayProps extends PickersDayProps {
   MonthlySkinStatus?: MonthlySkinStatusType[];
 }
 
+// skinStatus == 양호시 스타일
 const GoodDay = MUIstyled(PickersDay)(({ theme }) => ({
   "&.MuiPickersDay-root.Mui-selected": {
     backgroundColor: theme.palette.primary.light,
   },
 }));
 
+// skinStatus == 주의시 스타일
 const CautionDay = MUIstyled(PickersDay)(({ theme }) => ({
   "&.MuiPickersDay-root.Mui-selected": {
     backgroundColor: theme.palette.primary.main,
   },
 }));
 
+// skinStatus == 위험시 스타일
 const DangerDay = MUIstyled(PickersDay)(({ theme }) => ({
   "&.MuiPickersDay-root.Mui-selected": {
     backgroundColor: theme.palette.primary.dark,
   },
 }));
 
+// 해당 하는 날짜가 아닐시 비활성화 스타일
 const DisabledDay = MUIstyled(PickersDay)(() => ({
   backgroundColor: "white !important",
   color: "black !important",
@@ -54,23 +58,29 @@ const DisabledDay = MUIstyled(PickersDay)(() => ({
     backgroundColor: "white !important", // hover 효과 제거
   },
   "&.MuiPickersDay-today": {
-    border: "none", // 여기서도 제거
+    border: "none", // 외각선 비활성화
   },
 }));
 
 const Calendar = () => {
-  // const [highlightedDays] = useState(["2025-09-01", "2025-09-09", "2025-09-21"]);
-
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
 
-  //higlight the dates in highlightedDays array
   const ServerDay = (props: CustomPickersDayProps) => {
     const { MonthlySkinStatus = [], day, outsideCurrentMonth, ...other } = props;
 
+    // MonthlySkinStatus에 들어있지않은 날짜는 isSelected 비부여
     const dateStr = day.format("YYYY-MM-DD");
     const dayData = MonthlySkinStatus.find((d) => d.createAt == dateStr);
     const isSelected = !props.outsideCurrentMonth && !!dayData;
 
+    // 활성화된 날짜 클릭시 호출되는 이벤트 리스너
+    const handleClick = () => {
+      if (dayData) {
+        console.log("클릭한 날짜:", day.format("YYYY-MM-DD"), "상태:", dayData.skinStatus);
+      }
+    };
+
+    // skinStatus에 따라서 배경색 변경
     if (dayData) {
       switch (dayData.skinStatus) {
         case "GOOD":
@@ -80,6 +90,7 @@ const Calendar = () => {
               outsideCurrentMonth={outsideCurrentMonth}
               day={day}
               selected={isSelected}
+              onClick={handleClick}
             />
           );
         case "CAUTION":
@@ -89,6 +100,7 @@ const Calendar = () => {
               outsideCurrentMonth={outsideCurrentMonth}
               day={day}
               selected={isSelected}
+              onClick={handleClick}
             />
           );
         case "DANGER":
@@ -98,11 +110,11 @@ const Calendar = () => {
               outsideCurrentMonth={outsideCurrentMonth}
               day={day}
               selected={isSelected}
+              onClick={handleClick}
             />
           );
       }
     }
-
     return <DisabledDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} disabled />;
   };
 
