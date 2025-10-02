@@ -1,24 +1,43 @@
+import { useCallback, useEffect, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 
 import * as S from "./Sidebar.styled";
 
 export interface SidebarProps {
   isOpen: boolean;
-  isLoggedIn: boolean;
   userName?: string;
   onClose: () => void;
-  onLoginClick: () => void;
-  onLogoutClick?: () => void;
 }
 
-const Sidebar = ({
-  isOpen,
-  isLoggedIn,
-  userName,
-  onClose,
-  onLoginClick,
-  onLogoutClick,
-}: SidebarProps) => {
+const Sidebar = ({ isOpen, userName, onClose }: SidebarProps) => {
+  const [open, setOpen] = useState(isOpen);
+  const close = useCallback(() => setOpen(false), []);
+
+  // TODO : 로그인 연결하고 수정 필요
+  const isLogin = false;
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
+    if (open) {
+      document.addEventListener("keydown", onKey);
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [open, close]);
+
+  const handleLoginClick = () => {
+    // TODO : 로그인 버튼 연결
+  };
+
+  const handleLogoutClick = () => {
+    // TODO : 로그인 버튼 연결
+  };
+
   return (
     <Fragment>
       <S.SidebarOverlay isOpen={isOpen} onClick={onClose} aria-hidden={!isOpen} />
@@ -48,7 +67,7 @@ const Sidebar = ({
             <span>메이크업 추천</span>
           </S.NavButton>
 
-          {isLoggedIn && (
+          {isLogin && (
             <Fragment>
               <S.DividerSpace />
               <S.NavButton>
@@ -65,12 +84,12 @@ const Sidebar = ({
 
         <S.UserArea>
           <S.UserBadge />
-          {isLoggedIn ? (
-            <S.UserButton className="loggedIn" onClick={onLogoutClick}>
+          {isLogin ? (
+            <S.UserButton className="loggedIn" onClick={handleLogoutClick}>
               {userName || "사용자"}
             </S.UserButton>
           ) : (
-            <S.UserButton onClick={onLoginClick}>로그인하기</S.UserButton>
+            <S.UserButton onClick={handleLoginClick}>로그인하기</S.UserButton>
           )}
         </S.UserArea>
       </S.SidebarContainer>
