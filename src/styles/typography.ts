@@ -9,9 +9,9 @@ export const createTypography = (theme: ThemeType) => {
   return variants.reduce(
     (acc, variant) => {
       acc[variant] = css`
-        font-family: ${theme.fonts.main};
-        font-size: ${theme.typography[variant].size};
         font-weight: ${theme.typography[variant].weight};
+        font-size: ${theme.typography[variant].size};
+        font-family: ${theme.fonts.main};
         line-height: ${theme.typography[variant].lineHeight};
         letter-spacing: ${theme.typography[variant].letterSpacing};
       `;
