@@ -11,10 +11,10 @@ export const StyledStaticDatePicker = styled(StaticDatePicker)`
 
   /* 캘린더 헤더 (e.g., "September 2024") 스타일 */
   .MuiPickersCalendarHeader-label {
-    ${({ theme }) => getTypography("body1Long")({ theme })};
+    ${({ theme }) => getTypography("body1Long")({ theme })}; 
   }
 
-  /* 요일 라벨 (S, M, T, W, T, F, S) 스타일 */
+   /* 요일 라벨 (S, M, T, W, T, F, S) 스타일 */ 
   .MuiDayCalendar-weekDayLabel {
     ${({ theme }) => getTypography("body1Long")({ theme })};
     color: ${({ theme }) => theme.colors.black};
@@ -35,11 +35,11 @@ export const StyledStaticDatePicker = styled(StaticDatePicker)`
   .MuiPickersDay-root.Mui-selected {
     background-color: ${({ theme }) => theme.colors.primary[500]};
     color: ${({ theme }) => theme.colors.white};
+    font-weight : 400
   }
 
   /* 오늘 날짜 스타일 */
   .MuiPickersDay-root.Mui-today {
-    backgound-color: ${({ theme }) => theme.colors.primary[500]};
     border: 1px solid ${({ theme }) => theme.colors.primary[500]};
   }
 

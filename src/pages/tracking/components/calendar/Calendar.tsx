@@ -12,10 +12,10 @@ import { StyledStaticDatePicker } from "./Calendar.styled";
 // TODO : skinStatus enum 생성하기
 const tempData = {
   MonthlySkinStatus: [
-    { skinStatus: "CAUTION", createAt: "2025-09-10" },
-    { skinStatus: "GOOD", createAt: "2025-09-25" },
-    { skinStatus: "CAUTION", createAt: "2025-09-26" },
-    { skinStatus: "DANGER", createAt: "2025-09-27" },
+    { skinStatus: "CAUTION", createAt: "2025-10-10" },
+    { skinStatus: "GOOD", createAt: "2025-10-25" },
+    { skinStatus: "CAUTION", createAt: "2025-10-26" },
+    { skinStatus: "DANGER", createAt: "2025-10-27" },
   ],
 };
 
@@ -28,28 +28,18 @@ interface CustomPickersDayProps extends PickersDayProps {
   MonthlySkinStatus?: MonthlySkinStatusType[];
 }
 
-// skinStatus == 양호시 스타일
-const GoodDay = MUIstyled(PickersDay)(({ theme }) => ({
-  "&.MuiPickersDay-root.Mui-selected": {
-    backgroundColor: theme.palette.primary.light,
-  },
-}));
+const CustomDay = MUIstyled(PickersDay, { shouldForwardProp: (prop) => prop !== "skinStatus", })<{ skinStatus?: SkinStatusType }>(({ theme, skinStatus }) => {
+  return {
+    "&.MuiPickersDay-root.Mui-selected": {
+      backgroundColor: skinStatus === "GOOD"
+        ? theme.palette.primary.light
+        : skinStatus === "CAUTION"
+        ? theme.palette.primary.main
+        : theme.palette.primary.dark,
+    },
+  };
+});
 
-// skinStatus == 주의시 스타일
-const CautionDay = MUIstyled(PickersDay)(({ theme }) => ({
-  "&.MuiPickersDay-root.Mui-selected": {
-    backgroundColor: theme.palette.primary.main,
-  },
-}));
-
-// skinStatus == 위험시 스타일
-const DangerDay = MUIstyled(PickersDay)(({ theme }) => ({
-  "&.MuiPickersDay-root.Mui-selected": {
-    backgroundColor: theme.palette.primary.dark,
-  },
-}));
-
-// 해당 하는 날짜가 아닐시 비활성화 스타일
 const DisabledDay = MUIstyled(PickersDay)(() => ({
   backgroundColor: "white !important",
   color: "black !important",
@@ -80,41 +70,19 @@ const Calendar = () => {
       }
     };
 
-    // skinStatus에 따라서 배경색 변경
-    if (dayData) {
-      switch (dayData.skinStatus) {
-        case "GOOD":
-          return (
-            <GoodDay
-              {...other}
-              outsideCurrentMonth={outsideCurrentMonth}
-              day={day}
-              selected={isSelected}
-              onClick={handleClick}
-            />
-          );
-        case "CAUTION":
-          return (
-            <CautionDay
-              {...other}
-              outsideCurrentMonth={outsideCurrentMonth}
-              day={day}
-              selected={isSelected}
-              onClick={handleClick}
-            />
-          );
-        case "DANGER":
-          return (
-            <DangerDay
-              {...other}
-              outsideCurrentMonth={outsideCurrentMonth}
-              day={day}
-              selected={isSelected}
-              onClick={handleClick}
-            />
-          );
-      }
+    if (dayData){
+      return(
+        <CustomDay
+          {...other}
+          outsideCurrentMonth={outsideCurrentMonth}
+          day={day}
+          selected={isSelected}
+          onClick={handleClick}
+          skinStatus={dayData.skinStatus} 
+        />
+      ) 
     }
+
     return <DisabledDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} disabled />;
   };
 
