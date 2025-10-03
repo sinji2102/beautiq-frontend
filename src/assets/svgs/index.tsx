@@ -1,3 +1,4 @@
+export { default as IconArrow } from "./IconArrow";
 export { default as IconBack } from "./IconBack";
 export { default as IconBeautiq } from "./IconBeautiq";
 export { default as IconBubbles } from "./IconBubbles";
