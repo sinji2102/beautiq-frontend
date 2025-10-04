@@ -1,3 +1,4 @@
+// src/pages/stylePage/components/UploadImage/UploadImage.tsx
 import Button from "@components/commons/button/Button";
 import type { ContentsProps } from "@pages/stylePage/types";
 import React, { useEffect, useRef, useState } from "react";
@@ -5,15 +6,14 @@ import React, { useEffect, useRef, useState } from "react";
 import * as S from "./UploadImage.styled";
 
 type UploadImageProps = {
-  image: string | null;
-  onRemove: () => void;
-  contents?: ContentsProps[];
-  onPickFile: (file: File) => void;
-  setContents?: React.Dispatch<React.SetStateAction<ContentsProps[]>>;
-  itemNumber?: number;
-  /** (선택) 기존 사진 사용하기 동작이 필요하면 전달하세요. 없으면 버튼은 disabled 처리됩니다. */
-  onUseExisting?: () => void;
-  canUseExisting?: boolean;
+  /** 전체 컨텐츠 리스트 */
+  contents: ContentsProps[];
+  /** contents 갱신 setter */
+  setContents: React.Dispatch<React.SetStateAction<ContentsProps[]>>;
+  /** 현재 아이템 번호(또는 id에 매핑할 index) */
+  itemNumber: number;
+  /** 기존 사진 사용하기 동작 */
+  onUseExisting: () => void;
 };
 
 const UploadImage: React.FC<UploadImageProps> = ({
@@ -28,11 +28,12 @@ const UploadImage: React.FC<UploadImageProps> = ({
   const openFile = () => inputRef.current?.click();
 
   const handleFile = (file: File) => {
-    // contents 상태에 파일만 반영 (타입 유지)
-    setContents?.((prev) =>
+    // contents 상태에 파일 반영
+    setContents((prev) =>
       prev.map((c) => (c.itemId === itemNumber ? { ...c, itemImage: file } : c))
     );
-    // 이전 URL 정리 후 새 미리보기 URL 생성
+
+    // 이전 미리보기 URL 정리 후 새 URL 생성
     setPreviewUrl((prev) => {
       if (prev) URL.revokeObjectURL(prev);
       return URL.createObjectURL(file);
@@ -40,7 +41,7 @@ const UploadImage: React.FC<UploadImageProps> = ({
   };
 
   const removeFile = () => {
-    setContents?.((prev) =>
+    setContents((prev) =>
       prev.map((c) => (c.itemId === itemNumber ? { ...c, itemImage: undefined } : c))
     );
     setPreviewUrl((prev) => {
@@ -57,45 +58,62 @@ const UploadImage: React.FC<UploadImageProps> = ({
     };
   }, [previewUrl]);
 
-  const targetItem = contents?.find((c) => c.itemId === itemNumber);
-  const itemImage = targetItem?.itemImage as unknown;
-  const itemImageUrl = typeof itemImage === "string" ? (itemImage as string) : null;
+  // 현재 아이템 가져오기
+  const targetItem = contents.find((c) => c.itemId === itemNumber);
 
-  const hasImage = !!previewUrl || !!itemImageUrl;
+  // 서버/상태에서 온 itemImage가 string(URL)일 수도, File일 수도 있다고 가정
+const itemImage = targetItem?.itemImage as File | string | undefined | null;
+const itemImageUrl = typeof itemImage === "string" ? itemImage : null;
+
+
+  // 미리보기 우선 → 없으면 기존 URL
+  const hasImage = Boolean(previewUrl || itemImageUrl);
 
   return (
     <S.Wrap>
       {hasImage ? (
         <S.Preview>
-          {previewUrl ? (
-            <img src={previewUrl} alt="이미지 미리보기" />
-          ) : itemImageUrl ? (
-            <img src={itemImageUrl} alt="이미지 미리보기" />
-          ) : (
-            <div style={{ width: "100%", height: "100%", display: "grid", placeItems: "center" }}>
-              이미지 등록됨
-            </div>
-          )}
-          <button className="remove" onClick={removeFile} aria-label="이미지 삭제">
-            ×
+          <img src={previewUrl ?? itemImageUrl ?? ""} alt="이미지 미리보기" />
+          <button
+            className="remove"
+            onClick={removeFile}
+            aria-label="이미지 삭제"
+            type="button"
+          >
+          <img
+            src="/svgs/icon-close.svg"
+            alt=""
+            aria-hidden
+            width={20}
+            height={20}
+            />
           </button>
         </S.Preview>
       ) : (
         <S.Placeholder>
-          <span className="cam">📷</span>
+          <img
+            src="/svgs/icon-cam.svg"
+            alt=""
+            aria-hidden
+            className="cam"
+            width={62}
+            height={56}
+          />
         </S.Placeholder>
+
       )}
 
-      <S.Hint>*얼굴이 정면으로 나오는 사진을 사용해 주세요.</S.Hint>
+      <S.Hint>* 얼굴이 정면으로 나온 사진을 사용해 주세요.</S.Hint>
 
-      {/* 버튼 2개: 동일 너비로 정렬 (UploadImage.styled.ts의 BtnRow와 매칭) */}
+      {/* 액션 영역 */}
       <S.BtnRow>
-        <Button size="small" onClick={onUseExisting}>기존 사진 사용하기</Button>
-        <label htmlFor={`upload-input-${itemNumber}`}>
-          <Button size="small" onClick={openFile} >
-            새 사진 사용하기
-          </Button>
-        </label>
+        <Button size="small" variant="line" onClick={onUseExisting}>
+          기존 사진 사용하기
+        </Button>
+
+        <Button size="small" variant="primary" onClick={openFile}>
+          새 사진 사용하기
+        </Button>
 
         <input
           id={`upload-input-${itemNumber}`}

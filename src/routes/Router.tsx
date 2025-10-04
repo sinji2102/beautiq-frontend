@@ -9,7 +9,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      { index: true, element: <Navigate to="style/recommend" replace /> },
+      { index: true, element: <Navigate to="home" replace /> },
       { path: "home", element: <HomePage /> },
       { path: "style/recommend", element: <StyleRecommandPage /> },
     ],

@@ -61,6 +61,24 @@ export const Card = styled.section`
   margin: 0;
 `;
 
+export const CustomInput = styled.input`
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid ${({ theme }) => theme.colors.neutral[300]};
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.neutral[500]};
+  }
+
+  &:focus {
+    border-color: ${({ theme }) => theme.colors.primary[500]};
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary[100]};
+  }
+`;
+
 /* 밑줄형 인풋: 피그마 '끝이 둥근 캡'을 배경 레이어로 정확 재현 */
 export const InputBlock = styled.div`
   margin: 1.2rem 0 2.4rem;        /* 12px 0 24px */

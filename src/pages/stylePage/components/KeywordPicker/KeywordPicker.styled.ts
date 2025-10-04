@@ -74,7 +74,7 @@ export const Selected = styled.div`
   margin-top: 1.2rem;                           /* 12px */
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;                                    /* 10px */
+  gap: 0.4rem;                                    /* 10px */
   justify-content: center;
 `;
 
