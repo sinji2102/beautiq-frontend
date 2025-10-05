@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 import React, { useCallback, useEffect, useState } from "react";
 
-import Sidebar from "../../components/commons/sidebar/Sidebar";
-import { SidebarOverlay } from "../../components/commons/sidebar/Sidebar.styled";
+import Sidebar from "../../../components/commons/sidebar/Sidebar";
+import { SidebarOverlay } from "../../../components/commons/sidebar/Sidebar.styled";
 
 const Screen = styled.div`
   min-height: 100vh;
-  background: #ffe6ef;
+  background: #ffe6ef; /* 앱같은 핑크 배경 */
 `;
 
 const Header = styled.header`
@@ -39,10 +39,11 @@ const Main = styled.main`
   color: #213547;
 `;
 
-const HomeUser: React.FC = () => {
+const HomeGuest: React.FC = () => {
   const [open, setOpen] = useState(false);
   const close = useCallback(() => setOpen(false), []);
 
+  // ESC로 닫기 + 스크롤 잠금
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
     if (open) {
@@ -66,28 +67,17 @@ const HomeUser: React.FC = () => {
 
       <Main>
         <h1>ABOUT BEAUTIQ</h1>
-        <p>로그인한 사용자용 영역...</p>
-        {/* 로그인 사용자 전용 위젯/리스트 등 */}
+        <p>추후 이미지 수정...</p>
+        {/* 여기에 카드/섹션 등 메인 컨텐츠 */}
       </Main>
 
       {/* 검정 오버레이 */}
       <SidebarOverlay isOpen={open} onClick={close} />
 
-      {/* ⭐ 로그인 사이드바 (항목 4개 + 하단 사용자명) */}
-      <Sidebar
-        isOpen={open}
-        isLoggedIn={true}
-        userName="윤신지"
-        onClose={close}
-        onLoginClick={() => {}}
-        onLogoutClick={() => {
-          // 필요하면 여기서 라우팅으로 비로그인 페이지 이동
-          // e.g. navigate('/home-guest')
-          close();
-        }}
-      />
+      {/* ⭐ 비로그인 사이드바 (항목 2개 + 하단 "로그인하기") */}
+      <Sidebar isOpen={open} onClose={close} />
     </Screen>
   );
 };
 
-export default HomeUser;
+export default HomeGuest;
