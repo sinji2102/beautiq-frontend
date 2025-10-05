@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 
-import Sidebar from "../../components/commons/sidebar/Sidebar";
-import { SidebarOverlay } from "../../components/commons/sidebar/Sidebar.styled";
+import Sidebar from "../../../components/commons/sidebar/Sidebar";
+import { SidebarOverlay } from "../../../components/commons/sidebar/Sidebar.styled";
 import * as S from "./BPage.styled";
 
 const BPage = () => {
   const [open, setOpen] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(true); // true면 로그인 후, false면 로그인 전
 
   const close = useCallback(() => setOpen(false), []);
 
@@ -38,14 +37,7 @@ const BPage = () => {
       <SidebarOverlay isOpen={open} onClick={close} />
 
       {/* 사이드바 */}
-      <Sidebar
-        isOpen={open}
-        isLoggedIn={loggedIn}
-        userName="윤신지"
-        onClose={close}
-        onLoginClick={() => setLoggedIn(true)}
-        onLogoutClick={() => setLoggedIn(false)}
-      />
+      <Sidebar isOpen={open} userName="윤신지" onClose={close} />
     </S.Container>
   );
 };
