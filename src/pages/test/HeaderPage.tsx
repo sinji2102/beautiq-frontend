@@ -1,6 +1,6 @@
 import { Fragment } from "react/jsx-runtime";
 
-import Header from "../components/commons/header/Header";
+import Header from "../../components/commons/header/Header";
 
 function Headerpage() {
   return (
