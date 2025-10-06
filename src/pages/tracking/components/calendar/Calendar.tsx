@@ -6,6 +6,7 @@ import { PickersDay, type PickersDayProps } from "@mui/x-date-pickers/PickersDay
 import { muiTheme } from "@styles/theme";
 import dayjs, { type Dayjs } from "dayjs";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 import { StyledStaticDatePicker } from "./Calendar.styled";
 
@@ -54,6 +55,7 @@ const DisabledDay = MUIstyled(PickersDay)(() => ({
 
 const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
+  const navigate = useNavigate();
 
   const ServerDay = (props: CustomPickersDayProps) => {
     const { MonthlySkinStatus = [], day, outsideCurrentMonth, ...other } = props;
@@ -66,7 +68,11 @@ const Calendar = () => {
     // 활성화된 날짜 클릭시 호출되는 이벤트 리스너
     const handleClick = () => {
       if (dayData) {
-        console.log("클릭한 날짜:", day.format("YYYY-MM-DD"), "상태:", dayData.skinStatus);
+        navigate('/detailPage',{
+          state: {
+            dateStr: dateStr
+          },
+        });
       }
     };
 
