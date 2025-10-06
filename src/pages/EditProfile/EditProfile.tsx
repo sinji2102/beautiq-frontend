@@ -2,7 +2,8 @@ import Header from "@components/commons/header/Header";
 import Sidebar from "@components/commons/sidebar/Sidebar";
 import { useState } from "react";
 
-import UserProfile from "./components/UserProfile";
+import AccountActions from "./components/AccountActions/AccountActions";
+import UserProfile from "./components/UserProfile/UserProfile";
 import * as S from "./EditProfile.styled";
 
 const EditProfile = () => {
@@ -13,13 +14,14 @@ const EditProfile = () => {
   };
 
   return (
-    <>
+    <S.EditPageWrapper>
       <Header left="beautiq" right="hambuger" handleClickHamburger={handleClickSidebar} />
-      <S.EditPageWrapper>
+      <S.EditContiner>
         <UserProfile />
-      </S.EditPageWrapper>
+        <AccountActions />
+      </S.EditContiner>
       <Sidebar isOpen={sidebar} onClose={handleClickSidebar} />
-    </>
+    </S.EditPageWrapper>
   );
 };
 
