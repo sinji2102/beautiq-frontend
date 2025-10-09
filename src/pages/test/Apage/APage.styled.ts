@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
-import { IconHamburger } from "../../assets/svgs";
-import { getTypography } from "../../styles/typography";
+import { IconHamburger } from "../../../assets/svgs";
+import { getTypography } from "../../../styles/typography";
 
 export const TempHeader = styled.h1`
   background-color: ${({ theme }) => theme.colors.primary[100]};

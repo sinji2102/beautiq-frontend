@@ -13,6 +13,7 @@
   ],
 
   "rules": {
+    "no-invalid-position-declaration": null,
     "declaration-empty-line-before": [
       "never",
       {
