@@ -5,7 +5,7 @@ import * as S from "./UserProfile.styled";
 const tempData = {
   email: "user@example.com",
   username: "민우",
-  provider: "kakao",
+  provider: "kakao", // "kakao" | "google" (서버에서 요청 어떻게 오는지 확인 필요)
 };
 
 const UserProfile = () => {
@@ -82,7 +82,16 @@ const UserProfile = () => {
         </S.UserInfo>
         <S.UserInfo>
           <S.InfoText>소셜 로그인 정보</S.InfoText>
-          {tempData.provider === "kakao" ? "카카오 로그인" : "구글 로그인"}
+
+          {tempData.provider === "kakao" ? (
+            <S.LoginInfo>
+              카카오 로그인 <S.KakaoIcon />
+            </S.LoginInfo>
+          ) : (
+            <S.LoginInfo>
+              구글 로그인 <S.GoogleIcon />
+            </S.LoginInfo>
+          )}
         </S.UserInfo>
       </S.ProfileImageContainer>
       <S.SaveButton onClick={handleSubmit}>저장하기</S.SaveButton>

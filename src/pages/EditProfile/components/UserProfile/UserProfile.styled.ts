@@ -1,3 +1,4 @@
+import { IconGoogleRound, IconKakaoRound } from "@assets/svgs";
 import styled from "@emotion/styled";
 import { getTypography } from "@styles/typography";
 
@@ -92,4 +93,20 @@ export const SaveButton = styled.button`
   color: ${({ theme }) => theme.colors.primary[700]};
 
   ${getTypography("body2Long")};
+`;
+
+export const LoginInfo = styled.div`
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+`;
+
+export const KakaoIcon = styled(IconKakaoRound)`
+  width: 2rem;
+  height: 2rem;
+`;
+
+export const GoogleIcon = styled(IconGoogleRound)`
+  width: 1.6rem;
+  height: 1.6rem;
 `;
