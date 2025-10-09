@@ -9,6 +9,7 @@ const tempData = {
 };
 
 const UserProfile = () => {
+  const [username, setUsername] = useState(tempData.username);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -37,6 +38,7 @@ const UserProfile = () => {
 
   const handleSubmit = async () => {
     if (!imageFile) {
+      // TODO : 현재 임시 처리 -> 이미지 없을 때 처리 필요
       alert("변경할 이미지를 선택해주세요.");
       return;
     }
@@ -48,6 +50,8 @@ const UserProfile = () => {
     for (const [key, value] of formData.entries()) {
       console.log(`${key}:`, value);
     }
+
+    // TODO : username API 연결 필요
 
     alert("저장 완료");
   };
@@ -70,7 +74,7 @@ const UserProfile = () => {
         <S.InfoTitle>기본 정보</S.InfoTitle>
         <S.UserInfo>
           <S.InfoText>사용자명</S.InfoText>
-          {tempData.username}
+          <S.InfoInput value={username} onChange={(e) => setUsername(e.target.value)} />
         </S.UserInfo>
         <S.UserInfo>
           <S.InfoText>이메일</S.InfoText>

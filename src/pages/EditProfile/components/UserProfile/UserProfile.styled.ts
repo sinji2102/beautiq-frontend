@@ -66,6 +66,22 @@ export const UserInfo = styled.div`
   ${getTypography("body2Long")};
 `;
 
+export const InfoInput = styled.input`
+  all: unset;
+  display: flex;
+
+  color: ${({ theme }) => theme.colors.black};
+  text-align: right;
+
+  ${getTypography("body2Long")};
+
+  :focus {
+    width: 30%;
+
+    border-bottom: 1px solid ${({ theme }) => theme.colors.gray[200]};
+  }
+`;
+
 // TODO : 디자인 확정 후 수정 필요
 export const SaveButton = styled.button`
   all: unset;
