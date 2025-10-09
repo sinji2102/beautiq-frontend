@@ -1,14 +1,6 @@
-import * as React from "react";
 import type { SVGProps } from "react";
 const SvgIconBubbles = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="1em"
-    height="1em"
-    fill="none"
-    viewBox="0 0 24 24"
-    {...props}
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" {...props}>
     <path
       fill="#E0AEF8"
       d="M16.125 13.5a5.625 5.625 0 1 0 0-11.25 5.625 5.625 0 0 0 0 11.25m-8.062-2.719a3.094 3.094 0 1 1-6.188 0 3.094 3.094 0 0 1 6.188 0m6.636 7.594a3.825 3.825 0 1 1-7.649 0 3.825 3.825 0 0 1 7.65 0"
