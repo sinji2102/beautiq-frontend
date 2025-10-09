@@ -13,7 +13,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <Global styles={(theme) => globalStyles(theme as ThemeType)} />
         <Modal />
-        <RouterProvider router={router} />
+        <RouterProvider router={router}></RouterProvider>
       </ThemeProvider>
     </>
   );

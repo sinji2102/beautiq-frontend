@@ -9,6 +9,7 @@ import dayjs, { type Dayjs } from "dayjs";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import CalendarCustomModal from "../calendarCustomModal/CalendarCustomModal";
 import { StyledStaticDatePicker } from "./Calendar.styled";
 
 // 분석 결과 월별 조회 API type
@@ -18,7 +19,7 @@ interface MonthlySkinStatusType {
 }
 
 // 분석 결과 일별 조회 API type
-interface DailyDate {
+export interface DailyDate {
   id: string;
   date: string; // ISO 형식 날짜 문자열 (예: "2024-08-18T09:12")
 }
@@ -38,14 +39,6 @@ const tempData = {
     { skinStatus: "CAUTION", createAt: "2025-10-26" },
     { skinStatus: "DANGER", createAt: "2025-10-27" },
     { skinStatus: "CAUTION", createAt: "2025-10-27" },
-  ],
-};
-
-// 분석 결과 일변 조회 임시 데이터
-const tempDayData = {
-  DailyDates: [
-    { id: "a", date: "2025-10-27T09:12" },
-    { id: "b", date: "2025-10-27T10:12" },
   ],
 };
 
@@ -95,6 +88,15 @@ const Calendar = () => {
     // 활성화된 날짜 클릭시 호출되는 이벤트 리스너
     const handleClickCalendar = () => {
       // TODO : 날짜별로 데이터 받아오는 API 연결 => 날짜 별로 받아와서 tempDayData에 저장해야 한다.
+
+      // 분석 결과 일변 조회 임시 데이터
+      const tempDayData = {
+        DailyDates: [
+          { id: "a", date: "2025-10-27T09:12" },
+          { id: "b", date: "2025-10-27T10:12" },
+        ],
+      };
+
       if (tempDayData.DailyDates.length === 1) {
         navigate("/detailPage", {
           state: {
@@ -108,7 +110,13 @@ const Calendar = () => {
           title: "알림",
           comment: "모달 테스트입니다.",
           closeOutside: true,
-          children: <div>테스트</div>,
+          children: (
+            <CalendarCustomModal
+              dateStr={dateStr}
+              DailyDates={tempDayData.DailyDates}
+              navigate={navigate}
+            />
+          ),
         });
       }
     };
