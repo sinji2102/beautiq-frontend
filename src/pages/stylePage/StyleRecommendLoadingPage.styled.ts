@@ -56,8 +56,8 @@ export const Body = styled.main`
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* ✅ 세로 중앙 */
-  align-items: center;     /* ✅ 가로 중앙 */
+  justify-content: center; 
+  align-items: center;     
   text-align: center;
   padding: 2.4rem 1.6rem;
   gap: 1.6rem;
@@ -65,8 +65,8 @@ export const Body = styled.main`
 `;
 
 export const PreviewBox = styled.div`
-  width: 28rem;  /* ✅ 280px */
-  height: 28rem; /* ✅ 280px */
+  width: 28rem;  
+  height: 28rem; 
   background: ${({ theme }) => theme.colors.primary[300]};
   border-radius: 0.8rem;
 `;

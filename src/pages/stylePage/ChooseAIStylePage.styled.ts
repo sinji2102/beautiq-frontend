@@ -83,7 +83,7 @@ const Square = styled.div`
   height: 13.1rem;
   border-radius: 1.6rem;
   overflow: hidden;
-  background: #f3f3f3;
+  background: ${({ theme }) => theme.colors.white};
 `;
 
 /** URL 타일 (선택 시 외곽선 표시) */
