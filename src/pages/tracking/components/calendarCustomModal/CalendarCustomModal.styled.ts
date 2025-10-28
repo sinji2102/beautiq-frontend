@@ -17,4 +17,11 @@ export const CalendarCustomSubTitler = styled.div`
   ${getTypography("caption1Medi")};
   color: ${({ theme }) => theme.colors.gray[400]};
   display: flex;
+  margin-bottom:1rem;
+`;
+
+export const CalendarButtonWrapper = styled.div`
+  display:flex; 
+  flex-direction:column;
+  gap:1.2rem;
 `;

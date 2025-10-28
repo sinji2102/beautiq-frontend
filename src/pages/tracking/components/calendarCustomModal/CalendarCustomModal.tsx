@@ -31,11 +31,14 @@ const CalendarCustomModal = ({ dateStr, DailyDates, navigate }: CustomModalProps
       <S.CalendarCustomSubTitler>
         {dateStr}에 다수의 피부 히스토리가 있습니다.
       </S.CalendarCustomSubTitler>
-      {DailyDates.map((item) => (
-        <Button size="large" variant="line" onClick={CustomModalClick}>
-          ({item.date})
-        </Button>
-      ))}
+
+      <S.CalendarButtonWrapper>
+        {DailyDates.map((item) => (
+          <Button size="large" variant="line" onClick={CustomModalClick}>
+            ({item.date})
+          </Button>
+        ))}
+      </S.CalendarButtonWrapper>
     </S.CalendarCustomModalWrapper>
   );
 };

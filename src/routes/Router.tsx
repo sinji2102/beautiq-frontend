@@ -17,7 +17,6 @@ const router = createBrowserRouter([
       { path: "my", element: <MyPage /> },
       { path: "my/edit", element: <EditProfile /> },
       { path: "style/recommend", element: <StyleRecommandPage /> },
-      { path: "/tracking", element: <TrackingPage /> },
       { path: "/detailPage", element: <DetailPage /> },
       { path: "tracking", element: <TrackingPage /> },
     ],
