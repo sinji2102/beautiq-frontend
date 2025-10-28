@@ -29,34 +29,6 @@ const tempData = [
     keywords: ["청량", "파스텔톤"],
     createdAt: "2025-02-03",
   },
-  {
-    makeUpId: 3,
-    imageName: "테스트1",
-    imageUrl: "https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9791158364656.jpg",
-    keywords: ["청량", "파스텔톤"],
-    createdAt: "2025-02-03",
-  },
-  {
-    makeUpId: 3,
-    imageName: "테스트1",
-    imageUrl: "https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9791158364656.jpg",
-    keywords: ["청량", "파스텔톤"],
-    createdAt: "2025-02-03",
-  },
-  {
-    makeUpId: 3,
-    imageName: "테스트1",
-    imageUrl: "https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9791158364656.jpg",
-    keywords: ["청량", "파스텔톤"],
-    createdAt: "2025-02-03",
-  },
-  {
-    makeUpId: 3,
-    imageName: "테스트1",
-    imageUrl: "https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9791158364656.jpg",
-    keywords: ["청량", "파스텔톤"],
-    createdAt: "2025-02-03",
-  },
 ];
 
 const RecommendStylePage = () => {

@@ -37,7 +37,7 @@ export const Card = styled.div`
 
 export const ImageBox = styled.div`
   width: 100%;
-  aspect-ratio: 3 / 4;
+  height: 16.4rem;
 
   background-color: ${({ theme }) => theme.colors.neutral[100]};
 
@@ -80,5 +80,3 @@ export const Title = styled.div`
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
-
-export const PaginationStyle = styled.div``;
