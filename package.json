@@ -11,7 +11,7 @@
     "postinstall": "husky install",
     "prepack": "pinst --disable",
     "postpack": "pinst --enable",
-    "svgr": "svgr --typescript --icon --replace-attr-values '#000=currentColor' public/svgs --out-dir src/assets/svgs --ext tsx"
+    "svgr": "svgr --typescript --icon --replace-attr-values '#000=currentColor' --no-dimensions --jsx-runtime automatic public/svgs --out-dir src/assets/svgs --ext tsx"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

@@ -1,13 +1,6 @@
 import type { SVGProps } from "react";
 const SvgIconLotionBottle = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="1em"
-    height="1em"
-    fill="none"
-    viewBox="0 0 44 44"
-    {...props}
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 44 44" {...props}>
     <path
       fill="#F8312F"
       d="M19.25 8.938V5.5h5.5v3.438c.004.687.693.88.693.88L22 11.688 18.556 9.82s.695-.195.694-.883"
