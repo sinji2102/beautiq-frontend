@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import * as S from "./MakeupList.styled";
 
 interface MakeupListItemProps {
@@ -10,8 +12,15 @@ interface MakeupListItemProps {
 }
 
 const MakeupListItem = ({ item }: MakeupListItemProps) => {
+  const navigate = useNavigate();
+
+  const handleClickCard = (makeUpId: number) => {
+    // TODO : 페이지 생성 시 연결
+    navigate(`/my/recommend-style/${makeUpId}`);
+  };
+
   return (
-    <S.ItemCard>
+    <S.ItemCard onClick={() => handleClickCard(item.makeUpId)}>
       <S.ImageName title={item.imageName}>{item.imageName}</S.ImageName>
       <S.KeywordContainer>
         {item.keywords.map((k, idx) => (

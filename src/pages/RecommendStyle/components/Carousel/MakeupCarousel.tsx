@@ -1,6 +1,7 @@
 import "swiper/css";
 import "swiper/css/pagination";
 
+import { useNavigate } from "react-router-dom";
 import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -19,6 +20,13 @@ interface MakeupCarouselProps {
 }
 
 const MakeUpCarousel = ({ makeUps }: MakeupCarouselProps) => {
+  const navigate = useNavigate();
+
+  const handleClickCard = (makeUpId: number) => {
+    // TODO : 페이지 생성 시 연결
+    navigate(`/my/recommend-style/${makeUpId}`);
+  };
+
   return (
     <S.CarouselWrapper>
       <Swiper
@@ -31,7 +39,7 @@ const MakeUpCarousel = ({ makeUps }: MakeupCarouselProps) => {
       >
         {makeUps.map((makeUp) => (
           <SwiperSlide key={makeUp.makeUpId}>
-            <S.Card>
+            <S.Card onClick={() => handleClickCard(makeUp.makeUpId)}>
               <S.ImageBox>
                 <img src={makeUp.imageUrl} alt={makeUp.imageName} />
               </S.ImageBox>
