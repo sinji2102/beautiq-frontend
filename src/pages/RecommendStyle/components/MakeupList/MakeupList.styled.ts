@@ -10,7 +10,9 @@ export const ListWrapper = styled.div`
   padding: 1rem 2.4rem;
 `;
 
-export const ItemCard = styled.div`
+export const ItemCard = styled.button`
+  all: unset;
+
   display: flex;
   align-items: center;
   justify-content: space-between;

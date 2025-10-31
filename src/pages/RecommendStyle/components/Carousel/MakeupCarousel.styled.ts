@@ -25,7 +25,10 @@ export const CarouselWrapper = styled.div`
   }
 `;
 
+// TODO : 버튼 unset 왜 안 먹는지 확인하기
 export const Card = styled.div`
+  all: unset;
+
   display: flex;
   flex-direction: column;
   overflow: hidden;
