@@ -5,7 +5,7 @@ export const FaceButtonWrapper = styled.div`
   display: grid;
   padding: 1.2rem 2.4rem;
   grid-template-columns: repeat(4, 1fr); /* 4열 */
-  grid-template-rows: repeat(2, auto);   /* 2행 */
+  grid-template-rows: repeat(2, auto); /* 2행 */
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -17,8 +17,8 @@ export const FaceButtonContainer = styled.div`
   display: flex;
   align-items: flex-start;
   align-self: stretch;
-  
-  gap: 1.0rem;
+
+  gap: 1rem;
 
   background-color: ${({ theme }) => theme.colors.white};
 `;
@@ -36,13 +36,12 @@ export const FaceButton = styled.button<{ $isActive: boolean }>`
 
   border-radius: 0.8rem;
   border: 0.1rem solid;
-  border-color:${({ theme }) => theme.colors.primary[400]};
+  border-color: ${({ theme }) => theme.colors.primary[400]};
   background-color: ${({ $isActive, theme }) =>
     $isActive ? theme.colors.primary[400] : theme.colors.white};
-  color: ${({ $isActive, theme }) =>
-    $isActive ? theme.colors.white : theme.colors.gray[800]};
-  
-  box-shadow: 0.1rem 0.2rem 0.1rem 0 rgba(0, 0, 0, 0.25);; 
+  color: ${({ $isActive, theme }) => ($isActive ? theme.colors.white : theme.colors.gray[800])};
+
+  box-shadow: 0.1rem 0.2rem 0.1rem 0 rgba(0, 0, 0, 0.25);
 `;
 
 export const FaceTitle = styled.div`
@@ -55,7 +54,7 @@ export const FaceTitle = styled.div`
   line-height: 20px; /* 142.857% */
   letter-spacing: -0.07px;
 
-  color: ${({theme}) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 export const ScoreBoardWrapper = styled.div`
@@ -76,15 +75,14 @@ export const ScoreBoardContainer = styled.div`
   padding: 1rem 1.6rem;
   justify-content: space-between;
 
-  color:${({ theme }) => theme.colors.primary[500]};
+  color: ${({ theme }) => theme.colors.primary[500]};
   border-radius: 16px;
-  background-color:${({ theme }) => theme.colors.neutral[100]};
+  background-color: ${({ theme }) => theme.colors.neutral[100]};
 `;
 
 export const ScoreBoardLeft = styled.div`
-  display:flex;
+  display: flex;
   align-items: center;
-  background-color:${({ theme }) => theme.colors.neutral[100]};
 `;
 
 export const ScoreBoardRight = styled.div`
@@ -92,7 +90,6 @@ export const ScoreBoardRight = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-end;
-  background-color:${({ theme }) => theme.colors.neutral[100]};
 `;
 
 export const ScoreBoardRightTop = styled.div`
@@ -102,9 +99,7 @@ export const ScoreBoardRightTop = styled.div`
   gap: 10px;
 
   border-radius: 40px;
-  background:${({ theme }) => theme.colors.primary[100]};
+  background: ${({ theme }) => theme.colors.primary[100]};
 `;
 
-export const ScoreBoardRightBottom = styled.div`
-  background-color:${({ theme }) => theme.colors.neutral[100]};
-`;
+export const ScoreBoardRightBottom = styled.div``;
