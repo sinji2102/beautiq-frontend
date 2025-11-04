@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
+import { useNavigate } from "react-router-dom";
 
 import * as S from "./Sidebar.styled";
 
@@ -10,6 +11,8 @@ export interface SidebarProps {
 }
 
 const Sidebar = ({ isOpen, userName, onClose }: SidebarProps) => {
+  const navigate = useNavigate();
+
   const [open, setOpen] = useState(isOpen);
   const close = useCallback(() => setOpen(false), []);
 
@@ -60,11 +63,11 @@ const Sidebar = ({ isOpen, userName, onClose }: SidebarProps) => {
         <S.NavList>
           <S.NavButton>
             <S.Dot />
-            <span>피부 분석</span>
+            <span onClick={() => navigate("/skin")}>피부 분석</span>
           </S.NavButton>
           <S.NavButton>
             <S.Dot />
-            <span>메이크업 추천</span>
+            <span onClick={() => navigate("/style")}>메이크업 추천</span>
           </S.NavButton>
 
           {isLogin && (
@@ -72,11 +75,11 @@ const Sidebar = ({ isOpen, userName, onClose }: SidebarProps) => {
               <S.DividerSpace />
               <S.NavButton>
                 <S.Dot />
-                <span>히스토리</span>
+                <span onClick={() => navigate("/tracking")}>히스토리</span>
               </S.NavButton>
               <S.NavButton>
                 <S.Dot />
-                <span>마이 페이지</span>
+                <span onClick={() => navigate("/my")}>마이 페이지</span>
               </S.NavButton>
             </Fragment>
           )}

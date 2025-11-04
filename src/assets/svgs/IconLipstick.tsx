@@ -1,13 +1,6 @@
 import type { SVGProps } from "react";
 const SvgIconLipstick = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="1em"
-    height="1em"
-    fill="none"
-    viewBox="0 0 44 44"
-    {...props}
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 44 44" {...props}>
     <path
       fill="#F70A8D"
       d="M30.456 28.028H15.318L15.29 5.987c0-2.2 1.402-3.383 2.984-3.383 5.843 0 12.182 8.319 12.182 12.98z"

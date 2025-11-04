@@ -1,13 +1,6 @@
 import type { SVGProps } from "react";
 const SvgIconGrowingHeart = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="1em"
-    height="1em"
-    fill="none"
-    viewBox="0 0 24 24"
-    {...props}
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" {...props}>
     <path
       fill="#FFB2FF"
       d="M15.76 3.12C13.63 3.497 12 6.013 12 6.013S10.37 3.497 8.24 3.12C2.985 2.194.815 6.819 1.686 10.26c1.238 4.857 6.998 9.708 9.33 11.507a1.6 1.6 0 0 0 1.967 0c2.33-1.799 8.086-6.644 9.33-11.507.87-3.442-1.3-8.067-6.554-7.141"
