@@ -1,4 +1,6 @@
+import AILoading from "@assets/lottie/ai-loading.json";
 import Header from "@components/commons/header/Header";
+import Lottie from "lottie-react";
 import React from "react";
 
 import * as S from "./StyleRecommendLoadingPage.styled";
@@ -13,7 +15,7 @@ const StyleRecommendLoadingPage: React.FC<Props> = ({ userName = "사용자" }) 
       <Header left="back" text="스타일 추천"  />
 
       <S.Body>
-        <S.PreviewBox aria-label="생성 미리보기" />
+        <Lottie animationData={AILoading} loop={true} style={{ width: 150, height: 150 }} />
         <S.MainText>스타일 생성 중</S.MainText>
         <S.SubText>
           {userName}님에게 맞는 스타일을 생성 중이에요
