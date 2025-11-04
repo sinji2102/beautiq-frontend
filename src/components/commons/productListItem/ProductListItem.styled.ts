@@ -4,6 +4,7 @@ import { getTypography } from "@styles/typography";
 
 export const RecommendProductWrapper = styled.div`
   display: flex;
+  gap: 1rem;
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -25,10 +26,28 @@ export const ProductInfo = styled.div`
   flex-direction: column;
   gap: 0.2rem;
   align-items: start;
+  width: 100%;
   ${getTypography("caption2Medi")};
 `;
 
 export const ProductText = styled.h3`
+  align-content: start;
+  width: 20rem;
+
+  &.title {
+    display: -webkit-box;
+    min-height: calc(1.6rem * 2);
+    overflow: hidden;
+
+    line-height: 1.6rem;
+    white-space: normal;
+    text-overflow: ellipsis;
+    word-break: keep-all;
+
+    /* 최대 2줄 */
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
   all: unset;
 `;
 
