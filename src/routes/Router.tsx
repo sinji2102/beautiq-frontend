@@ -3,6 +3,7 @@ import DetailPage from "@pages/detailPage/DetailPage";
 import EditProfile from "@pages/EditProfile/EditProfile";
 import HomePage from "@pages/home/HomePage";
 import MyPage from "@pages/my/MyPage";
+import RecommendProductPage from "@pages/recommendProduct/RecommendProduct";
 import RecommendStylePage from "@pages/RecommendStyle/RecommendStylePage";
 import ChooseAIStylePage from "@pages/stylePage/ChooseAIStylePage";
 import StyleRecommandPage from "@pages/stylePage/StyleRecommandPage";
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
       { path: "tracking", element: <TrackingPage /> },
       { path: "style/ai", element: <ChooseAIStylePage /> },
       { path: "style/loading", element: <StyleRecommendLoadingPage /> },
+      { path: "detail/recommend-product/:analysisId", element: <RecommendProductPage /> },
     ],
   },
   { path: "*", element: <Navigate to="/home" replace /> },
