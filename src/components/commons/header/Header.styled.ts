@@ -6,21 +6,21 @@ import { getTypography } from "../../../styles/typography";
 // 헤더 전체 래퍼
 export const HeaderWrapper = styled.div`
   ${getTypography("heading3")};
-  background-color: ${({ theme }) => theme.colors.neutral[100]};
-
-  color: ${({ theme }) => theme.colors.primary[500]};
-
-  width: 100%;
-  height: 5.6rem; /* 56px */
-  padding: 1.2rem; /* 12px */
 
   position: sticky;
   top: 0;
   z-index: 10;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   box-sizing: border-box;
+  width: 100%;
+  height: 5.6rem; /* 56px */
+  padding: 1.2rem; /* 12px */
+
+  color: ${({ theme }) => theme.colors.primary[500]};
+
+  background-color: ${({ theme }) => theme.colors.neutral[100]};
 `;
 
 export const IconButton = styled.button`
@@ -38,6 +38,9 @@ export const IconButton = styled.button`
 
 // 뒤로가기 아이콘
 export const BackIcon = styled(IconBack)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 3.2rem; /* 32px */
   height: 3.2rem; /* 32px */
 
