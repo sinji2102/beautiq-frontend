@@ -10,6 +10,9 @@ const TrackingPage = () => {
       <Header left="back" text="피부 히스토리" />
       <S.TrackingPageWrapper>
         <Calendar />
+        <S.CalenderBottomBarIconWrapper>
+          <S.CalenderBottomBarIcon />
+        </S.CalenderBottomBarIconWrapper>
         <DayGraph />
       </S.TrackingPageWrapper>
     </>

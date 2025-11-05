@@ -1,3 +1,4 @@
+import { IconFaceGraph } from "@assets/svgs";
 import styled from "@emotion/styled";
 import { getTypography } from "@styles/typography";
 
@@ -12,6 +13,14 @@ export const LineChartWrapper = styled.div`
 
   border-radius: 1.6rem;
   border: 1px solid ${({ theme }) => theme.colors.neutral[200]};
+`;
+
+export const LineChartTitleWrapper = styled.div`
+  display: flex;
+  padding: 0.2rem 0;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
 `;
 
 export const LineChartTitle = styled.div`
@@ -52,4 +61,43 @@ export const AvgRightContent = styled.div`
   border-radius: 4rem;
   background: ${({ theme }) => theme.colors.primary[100]};
   color: ${({ theme }) => theme.colors.white};
+`;
+
+export const FaceGraphIcon = styled(IconFaceGraph)`
+  width: 2.4rem;
+  height: 2.4rem;
+`;
+
+export const FeedBackWrapper = styled.div`
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.4rem;
+  align-self: stretch;
+
+  border-radius: 0.8rem;
+  background: ${({ theme }) => theme.colors.neutral[100]};
+  color: ${({ theme }) => theme.colors.neutral[700]};
+`;
+
+export const FeedBackTitle = styled.div`
+  ${getTypography("caption2Semi")};
+'`;
+
+export const FeedBackText = styled.div`
+  ${getTypography("caption2Medi")};
+`;
+
+export const LineChartInformation = styled.div`
+  ${getTypography("caption1Medi")};
+  color: ${({ theme }) => theme.colors.gray[500]};
+  padding: 2rem 0;
+  line-height: 18px;
+  letter-spacing: -0.3px;
+  white-space: pre-line;
+  text-align: center;
+
+  width: 100%;
 `;
