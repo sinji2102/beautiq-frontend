@@ -2,8 +2,6 @@ import { useTheme } from "@emotion/react";
 import * as S from "@pages/tracking/components/daygraph/DayGraph.styled";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
-// #region Sample data
-
 const data = {
   within60Days: [
     {
@@ -31,6 +29,8 @@ const data = {
   currentMonth: {
     monthDate: "2D025-09",
     point: 80,
+    // point: 60,
+    // point: 40,
   },
 };
 
@@ -60,19 +60,30 @@ const data1 = {
   ],
   feedback: "지난 달에 비해 점수가 크게 향상되었습니다. 잘하고 있어요!",
 };
-// #endregion
 
 const DayGraph = () => {
   const theme = useTheme();
 
+  // 이번달 평균 점수에 따른 텍스트를 계산하는 함수 
+  const getScoreStatusText = (score: number) => {
+    if (score >= 80){
+      return "양호";
+    }
+    if (score >= 60){
+      return "주의";
+    }
+    return "위험";
+  };
+
+  // 날짜별, 년도 제거 
   const formattedData = data.within60Days.map((item) => ({
     ...item,
     dayDate: item.dayDate.substring(5), // "09-06"
   }));
 
+  // 월별, "월" 문자열 추가
   const formattedData1 = data1.yearlyHistory.map((item) => ({
     ...item,
-    // 'monthDate'를 사용하고 "월"을 붙입니다.
     dayDate: item.monthDate.substring(5) + "월", // "05월"
   }));
 
@@ -139,7 +150,9 @@ const DayGraph = () => {
               <S.AvgLeft>이번달 평균</S.AvgLeft>
               <S.AvgRightWrapper>
                 <S.AvgRightText>{data.currentMonth.point}점</S.AvgRightText>
-                <S.AvgRightContent>양호</S.AvgRightContent>
+                <S.AvgRightContent score={data.currentMonth.point}>
+                  {getScoreStatusText(data.currentMonth.point)}
+                </S.AvgRightContent>
               </S.AvgRightWrapper>
             </S.LineCharAvgtWrapper>
           </>

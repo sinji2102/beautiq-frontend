@@ -53,13 +53,19 @@ export const AvgRightText = styled.div`
   ${getTypography("caption2Medi")};
 `;
 
-export const AvgRightContent = styled.div`
+export const AvgRightContent = styled.div<{score: number}>`
   display: flex;
   padding: 0.2rem 1.6rem;
   align-items: flex-start;
   gap: 1rem;
   border-radius: 4rem;
-  background: ${({ theme }) => theme.colors.primary[100]};
+
+  background: ${({theme, score})=>
+    score >= 80? theme.colors.neutral[300]
+    : score >= 60
+      ? theme.colors.neutral[500]
+      :theme.colors.neutral[800] 
+  };
   color: ${({ theme }) => theme.colors.white};
 `;
 

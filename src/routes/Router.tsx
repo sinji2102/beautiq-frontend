@@ -1,10 +1,10 @@
 import Layout from "@components/commons/layout/Layout";
+import DetailPage from "@pages/detailPage/DetailPage";
 import EditProfile from "@pages/EditProfile/EditProfile";
 import HomePage from "@pages/home/HomePage";
-import DetailPage from "@pages/tracking/components/detailPage/DetailPage";
-import TrackingPage from "@pages/tracking/TrackingPage";
 import MyPage from "@pages/my/MyPage";
 import StyleRecommandPage from "@pages/stylePage/StyleRecommandPage";
+import TrackingPage from "@pages/tracking/TrackingPage";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 const router = createBrowserRouter([
