@@ -13,3 +13,4 @@ export { default as IconHeart } from "./IconHeart";
 export { default as IconKakaoRound } from "./IconKakaoRound";
 export { default as IconLipstick } from "./IconLipstick";
 export { default as IconLotionBottle } from "./IconLotionBottle";
+export { default as IconWand } from "./IconWand";

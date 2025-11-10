@@ -3,4 +3,5 @@ import { getTypography } from "@styles/typography";
 
 export const RecommendProductWrapper = styled.div`
   display: flex;
+  flex-direction: column;
 `;
