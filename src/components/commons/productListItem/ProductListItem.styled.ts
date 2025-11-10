@@ -4,7 +4,6 @@ import { getTypography } from "@styles/typography";
 
 export const RecommendProductWrapper = styled.div`
   display: flex;
-<<<<<<< HEAD
   flex-direction: column;
   gap: 1rem;
   align-items: center;
@@ -14,8 +13,6 @@ export const RecommendProductWrapper = styled.div`
 
 export const RecommendProductContainer = styled.div`
   display: flex;
-=======
->>>>>>> f65c274 (Design: 리스트 아이템 디자인 수정)
   gap: 1rem;
   align-items: center;
   justify-content: space-between;
