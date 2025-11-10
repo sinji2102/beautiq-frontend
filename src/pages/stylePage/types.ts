@@ -7,5 +7,5 @@ export interface ItemProps {
 export interface ContentsProps {
   itemId: number;
   itemInfo: ItemProps;
-  itemImage: File | undefined;
+  itemImage: File | string | undefined;
 }
