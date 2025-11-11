@@ -5,7 +5,7 @@ import { IconClose as RawCloseIcon } from "../../assets/svgs";
 
 export const Screen = styled.div`
   min-height: 100vh;
-  background: #ffffff;
+  background: ${({ theme }) => theme.colors.white};
 `;
 
 export const HeaderBar = styled.header`
@@ -46,8 +46,8 @@ export const HeaderBar = styled.header`
 `;
 
 export const CloseIcon = styled(RawCloseIcon)`
-  width: 2.4rem;   /* 24px */
-  height: 2.4rem;  /* 24px */
+  width: 2.4rem; /* 24px */
+  height: 2.4rem; /* 24px */
 
   /* 필요 시 색상 제어
   path, line, circle, rect {
@@ -82,7 +82,7 @@ export const CustomInput = styled.input`
   font-color: ${({ theme }) => theme.colors.gray[300]};
   ${getTypography("body2NormalSemi")}
 
-  border-bottom: 0.1rem solid ${({theme}) => theme.colors.primary[500]};
+  border-bottom: 0.1rem solid ${({ theme }) => theme.colors.primary[500]};
   border-radius: 0.6rem;      
 
 
