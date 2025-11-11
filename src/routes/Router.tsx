@@ -5,6 +5,8 @@ import HomePage from "@pages/home/HomePage";
 import MyPage from "@pages/my/MyPage";
 import RecommendProductPage from "@pages/recommendProduct/RecommendProduct";
 import RecommendStylePage from "@pages/RecommendStyle/RecommendStylePage";
+import SkinAnalysisLoadingPage from "@pages/skinAnalysis/SkinAnalysisLoadingPage";
+import SkinAnalysisPage from "@pages/skinAnalysis/SkinAnalysisPage";
 import ChooseAIStylePage from "@pages/stylePage/ChooseAIStylePage";
 import StyleRecommandPage from "@pages/stylePage/StyleRecommandPage";
 import StyleRecommendLoadingPage from "@pages/stylePage/StyleRecommendLoadingPage";
@@ -29,6 +31,8 @@ const router = createBrowserRouter([
       { path: "style/ai", element: <ChooseAIStylePage /> },
       { path: "style/loading", element: <StyleRecommendLoadingPage /> },
       { path: "detail/recommend-product/:analysisId", element: <RecommendProductPage /> },
+      { path: "skinAnalysis", element: <SkinAnalysisPage /> },
+      { path: "skinAnalysis/loading", element: <SkinAnalysisLoadingPage /> },
     ],
   },
   { path: "*", element: <Navigate to="/home" replace /> },

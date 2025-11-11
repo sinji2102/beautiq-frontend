@@ -1,4 +1,5 @@
 import Button from "@components/commons/button/Button";
+import Header from "@components/commons/header/Header";
 import type { ContentsProps } from "@pages/stylePage/types";
 import React, { useMemo, useState } from "react";
 
@@ -7,10 +8,19 @@ import UploadImage from "./components/UploadImage/UploadImage";
 import * as S from "./StyleRecommandPage.styled";
 
 const ALL_KEYWORDS = [
-  "차분", "청량", "모던", "러블리",
-  "청순", "톤온톤", "세련된", "내추럴",
-  "꾸안꾸", "트렌디", "파스텔톤",
-  "비비드", "모노톤",
+  "차분",
+  "청량",
+  "모던",
+  "러블리",
+  "청순",
+  "톤온톤",
+  "세련된",
+  "내추럴",
+  "꾸안꾸",
+  "트렌디",
+  "파스텔톤",
+  "비비드",
+  "모노톤",
 ] as const;
 
 const MAX = 5;
@@ -28,8 +38,7 @@ const StyleRecommandPage: React.FC = () => {
   const toggleKeyword = (kw: string) => {
     const k = normalize(kw);
     setSelected((prev) =>
-      prev.includes(k) ? prev.filter((v) => v !== k)
-        : prev.length >= MAX ? prev : [...prev, k]
+      prev.includes(k) ? prev.filter((v) => v !== k) : prev.length >= MAX ? prev : [...prev, k]
     );
   };
 
@@ -48,10 +57,7 @@ const StyleRecommandPage: React.FC = () => {
     }
   };
 
-  const hasAnyImage = useMemo(
-    () => contents.some((c) => Boolean(c.itemImage)),
-    [contents]
-  );
+  const hasAnyImage = useMemo(() => contents.some((c) => Boolean(c.itemImage)), [contents]);
 
   const canNext = useMemo(
     () => hasAnyImage || selected.length > 0 || styleValue.trim().length > 0,
@@ -60,13 +66,7 @@ const StyleRecommandPage: React.FC = () => {
 
   return (
     <S.Screen>
-      <S.HeaderBar>
-        <span className="title">스타일 추천</span>
-        <button className="close" type="button" aria-label="닫기">
-          {/* ✅ SVG 컴포넌트 사용 */}
-          <S.CloseIcon aria-hidden />
-        </button>
-      </S.HeaderBar>
+      <Header text="스타일 추천" right="close" />
 
       <S.Body>
         <S.Card>
@@ -81,12 +81,7 @@ const StyleRecommandPage: React.FC = () => {
         </S.Card>
 
         <S.Card>
-          <KeywordPicker
-            all={all}
-            selected={selected}
-            max={MAX}
-            onToggle={toggleKeyword}
-          />
+          <KeywordPicker all={all} selected={selected} max={MAX} onToggle={toggleKeyword} />
         </S.Card>
 
         <S.InputBlock>
