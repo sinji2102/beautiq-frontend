@@ -1,4 +1,4 @@
-import { getSkinAnalysisResult } from "@apis/domain/skin-analyses/api";
+import { getSkinAnalysisResult } from "@apis/domain/skin-analysis/api";
 import { useQuery } from "@tanstack/react-query";
 
 export const SKIN_ANALYSIS_QUERY_KEY = {

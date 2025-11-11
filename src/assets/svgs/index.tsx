@@ -9,6 +9,8 @@ export { default as IconFaceGraph } from "./IconFaceGraph";
 export { default as IconGoogleRound } from "./IconGoogleRound";
 export { default as IconGrowingHeart } from "./IconGrowingHeart";
 export { default as IconHamburger } from "./IconHamburger";
+export { default as IconHeart } from "./IconHeart";
 export { default as IconKakaoRound } from "./IconKakaoRound";
 export { default as IconLipstick } from "./IconLipstick";
 export { default as IconLotionBottle } from "./IconLotionBottle";
+export { default as IconWand } from "./IconWand";
