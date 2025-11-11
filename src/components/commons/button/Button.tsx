@@ -2,7 +2,7 @@ import React, { type ReactNode } from "react";
 
 import * as S from "./Button.styled";
 
-export type ButtonSizeTypes = "xlarge" | "large" | "medium" | "small" | "xsmall";
+export type  ButtonSizeTypes = "xlarge" | "large" | "medium" | "small" | "xsmall";
 export type ButtonVariantTypes = "primary" | "line" | "modal";
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

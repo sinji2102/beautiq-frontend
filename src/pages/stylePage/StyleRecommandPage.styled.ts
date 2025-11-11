@@ -5,7 +5,7 @@ import { IconClose as RawCloseIcon } from "../../assets/svgs";
 
 export const Screen = styled.div`
   min-height: 100vh;
-  background: #ffffff;
+  background: ${({ theme }) => theme.colors.white};
 `;
 
 export const HeaderBar = styled.header`
