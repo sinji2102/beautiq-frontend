@@ -119,7 +119,7 @@ const DetailPage = () => {
           <S.CompositeScoreTitle>종합 점수</S.CompositeScoreTitle>
           <S.CompositeScoreContentWrapper>
             <S.CompositeScoreContent>
-              <S.CompositeScoreLeft>69</S.CompositeScoreLeft>
+              <S.CompositeScoreLeft>{data.averageScore}</S.CompositeScoreLeft>
               <S.CompositeScoreRight>/100</S.CompositeScoreRight>
             </S.CompositeScoreContent>
             <S.ScoreBoardRightTop score={data.averageScore}>
