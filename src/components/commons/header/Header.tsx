@@ -19,14 +19,10 @@ interface HeaderProps {
 const Header = ({ left, text, right, handleClickHamburger }: HeaderProps) => {
   const navigate = useNavigate();
 
+  // Back -> 이전 페이지 클릭시 이동하는 함수
   const handleClickBack = () => {
     navigate(-1);
   };
-
-  // // sidebar 열리는 함수
-  // const handleClickHamburger = () => {
-  //   alert("사이드로 연결되는 함수입니다.");
-  // };
 
   // 메인 페이지로 연결되는 함수 (임시)
   const handleClickClose = () => {

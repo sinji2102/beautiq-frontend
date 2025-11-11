@@ -1,4 +1,5 @@
 import Layout from "@components/commons/layout/Layout";
+import DetailPage from "@pages/detailPage/DetailPage";
 import EditProfile from "@pages/EditProfile/EditProfile";
 import HomePage from "@pages/home/HomePage";
 import MyPage from "@pages/my/MyPage";
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
       { path: "my/edit", element: <EditProfile /> },
       { path: "my/recommend-style", element: <RecommendStylePage /> },
       { path: "style/recommend", element: <StyleRecommandPage /> },
+      { path: "/detailPage", element: <DetailPage /> },
       { path: "tracking", element: <TrackingPage /> },
       { path: "style/ai", element: <ChooseAIStylePage /> },
       { path: "style/loading", element: <StyleRecommendLoadingPage /> },
