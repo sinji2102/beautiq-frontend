@@ -21,7 +21,10 @@
     "@tanstack/react-query": "^5.90.7",
     "axios": "^1.13.2",
     "dayjs": "^1.11.18",
+<<<<<<< HEAD
     "lottie-react": "^2.4.1",
+=======
+>>>>>>> 28a0a9a (Feat: API 타입 세팅 및 예제 API 세팅)
     "openapi-typescript": "^7.10.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

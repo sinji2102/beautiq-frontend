@@ -701,6 +701,7 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.8.tgz#6b79032e760a0899cd4204710beede972a3a185f"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
+<<<<<<< HEAD
 "@reduxjs/toolkit@1.x.x || 2.x.x":
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-2.10.0.tgz#de8f805a2e03a648eff5115206d2a19568ac2002"
@@ -712,6 +713,8 @@
     redux "^5.0.1"
     redux-thunk "^3.1.0"
     reselect "^5.1.0"
+=======
+>>>>>>> 28a0a9a (Feat: API 타입 세팅 및 예제 API 세팅)
 "@redocly/ajv@^8.11.2":
   version "8.11.4"
   resolved "https://registry.yarnpkg.com/@redocly/ajv/-/ajv-8.11.4.tgz#57130189b77a4a6f7ce0c5a9fa03aa0b9c7f4fdf"
@@ -742,6 +745,7 @@
     pluralize "^8.0.0"
     yaml-ast-parser "0.0.43"
 
+<<<<<<< HEAD
 "@reduxjs/toolkit@1.x.x || 2.x.x":
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-2.10.0.tgz#de8f805a2e03a648eff5115206d2a19568ac2002"
@@ -754,6 +758,8 @@
     redux-thunk "^3.1.0"
     reselect "^5.1.0"
 
+=======
+>>>>>>> 28a0a9a (Feat: API 타입 세팅 및 예제 API 세팅)
 "@rolldown/pluginutils@1.0.0-beta.27":
   version "1.0.0-beta.27"
   resolved "https://registry.yarnpkg.com/@rolldown/pluginutils/-/pluginutils-1.0.0-beta.27.tgz#47d2bf4cef6d470b22f5831b420f8964e0bf755f"
