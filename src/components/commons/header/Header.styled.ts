@@ -51,7 +51,6 @@ export const BackIcon = styled(IconBack)`
 export const BeautiqIcon = styled(IconBeautiq)`
   width: 8.2rem; /* 82px */
   height: 3.2rem; /* 32px */
-
   fill: ${({ theme }) => theme.colors.primary[100]};
 `;
 
@@ -59,7 +58,6 @@ export const BeautiqIcon = styled(IconBeautiq)`
 export const HamburgerIcon = styled(IconHamburger)`
   width: 3.2rem; /* 32px */
   height: 3.2rem; /* 32px */
-
   fill: ${({ theme }) => theme.colors.primary[100]};
 `;
 
@@ -68,7 +66,6 @@ export const CloseIcon = styled(IconClose)`
   width: 2.4rem; /* 24px */
   height: 2.4rem; /* 24px */
   padding: 0.4rem; /* 4px */
-
   fill: ${({ theme }) => theme.colors.primary[100]};
 `;
 

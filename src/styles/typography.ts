@@ -29,3 +29,4 @@ export const getTypography =
   };
 
 export type { TypographyVariant };
+
