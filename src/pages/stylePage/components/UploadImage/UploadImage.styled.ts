@@ -13,9 +13,9 @@ export const Wrap = styled.section`
 `;
 
 export const Placeholder = styled.div`
-  width: 16rem;            
-  height: 16rem;           
-  border-radius: 1.6rem;  
+  width: 16rem;
+  height: 16rem;
+  border-radius: 1.6rem;
   background: ${({ theme }) => theme.colors.primary[100]};
   display: grid;
   place-items: center;
@@ -33,9 +33,9 @@ export const CamIcon = styled(RawCamIcon)`
 `;
 
 export const Preview = styled.div`
-  width: 16rem;            /* 160px */
-  height: 16rem;           /* 160px */
-  border-radius: 1.6rem;   /* 16px */
+  width: 16rem; /* 160px */
+  height: 16rem; /* 160px */
+  border-radius: 1.6rem; /* 16px */
   position: relative;
   overflow: hidden;
 
@@ -47,10 +47,10 @@ export const Preview = styled.div`
 
   .remove {
     position: absolute;
-    top: 0.8rem;           /* 8px */
-    right: 0.8rem;         /* 8px */
-    width: 2.6rem;         /* 26px */
-    height: 2.6rem;        /* 26px */
+    top: 0.8rem; /* 8px */
+    right: 0.8rem; /* 8px */
+    width: 2.6rem; /* 26px */
+    height: 2.6rem; /* 26px */
     border-radius: 50%;
     border: none;
     background: #ffffffcc;
@@ -88,13 +88,14 @@ export const Hint = styled.p`
 export const BtnRow = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;                           /* ✅ grid로 동일 너비 두 버튼 */
+  justify-content: center; /* ✅ grid로 동일 너비 두 버튼 */
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
   padding: 0 1rem;
   justify-items: center;
 
-  @media (max-width: 36rem) {              /* 360px */
+  @media (max-width: 36rem) {
+    /* 360px */
     grid-template-columns: 1fr;
   }
 `;

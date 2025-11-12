@@ -46,7 +46,7 @@ const RecentAnalysisCard = () => {
         </S.BadgeContainer>
       </S.ResultBox>
       {/* TODO : 이동 url 확인해서 수정 */}
-      <S.FullHistoryButton onClick={() => navigate("/mypage")}>
+      <S.FullHistoryButton onClick={() => navigate("/tracking")}>
         전체 히스토리 보기
       </S.FullHistoryButton>
     </S.CardContainer>
