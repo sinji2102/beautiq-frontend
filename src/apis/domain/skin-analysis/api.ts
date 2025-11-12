@@ -5,7 +5,7 @@ import type { AxiosResponse } from "axios";
 
 export type SkinAnalysisResponse = components["schemas"]["SkinAnalysisResponse"];
 
-// 피부 분석 결과 조회
+// 피부 분석 결과 조회 (POST)
 export const postPerformance = async (imageFile: File): Promise<SkinAnalysisResponse | null> => {
   try {
     const formData = new FormData();
@@ -24,7 +24,7 @@ export const postPerformance = async (imageFile: File): Promise<SkinAnalysisResp
   }
 };
 
-// 피부 분석 결과 조회
+// 피부 분석 결과 조회 (GET)
 export const getSkinAnalysisResult = async (
   analysisId: string
 ): Promise<SkinAnalysisResponse | null> => {
