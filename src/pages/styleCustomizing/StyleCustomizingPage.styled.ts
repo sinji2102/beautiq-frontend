@@ -123,8 +123,8 @@ export const CategoryBtn = styled.button<{ active?: boolean }>`
 
 /** ✅ 버튼 안에 들어갈 카테고리 아이콘 (currentColor 사용) */
 export const IconCategory = styled(RawCategoryIcon)`
-  width: 20px;
-  height: 20px;
+  width: 2rem;
+  height: 2rem;
   display: block;
 `;
 
