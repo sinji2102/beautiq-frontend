@@ -1,6 +1,7 @@
 export { default as IconArrow } from "./IconArrow";
 export { default as IconBack } from "./IconBack";
 export { default as IconBeautiq } from "./IconBeautiq";
+export { default as IconBefore } from "./IconBefore";
 export { default as IconBubbles } from "./IconBubbles";
 export { default as IconCalenderBottomBar } from "./IconCalenderBottomBar";
 export { default as IconCam } from "./IconCam";

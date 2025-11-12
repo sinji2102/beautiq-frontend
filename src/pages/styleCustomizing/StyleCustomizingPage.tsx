@@ -75,7 +75,6 @@ const StyleCustomizingPage: React.FC = () => {
 
     setValues((prev) => {
       if (prev[selected] !== v) {
-        // 값이 실제로 바뀐 경우에만 dirty
         setDirty(true);
       }
       return { ...prev, [selected]: v };
@@ -102,8 +101,6 @@ const StyleCustomizingPage: React.FC = () => {
   return (
     <S.Screen>
       <Header text="커스터마이징" right="close" left="back" />
-
-      <MuiThemeProvider theme={muiTheme}>
 
         <S.Body>
           {/* 프리뷰 */}
@@ -146,7 +143,8 @@ const StyleCustomizingPage: React.FC = () => {
                   aria-pressed={selected === part}
                   aria-label={PART_LABEL[part]}
                 >
-                  {PART_LABEL[part].slice(0, 1)}
+                  {/* ✅ 아이콘 삽입 (버튼의 currentColor를 그대로 사용) */}
+                  <S.IconCategory aria-hidden />
                 </S.CategoryBtn>
                 <S.CategoryLabel>{PART_LABEL[part]}</S.CategoryLabel>
               </div>
@@ -156,6 +154,8 @@ const StyleCustomizingPage: React.FC = () => {
           {/* 슬라이더 (선택 시 노출) */}
           {selected && (
             <S.ControlWrap>
+              
+      <MuiThemeProvider theme={muiTheme}>
               <Slider
                 value={values[selected]}
                 onChange={onChangeSlider}
@@ -175,10 +175,11 @@ const StyleCustomizingPage: React.FC = () => {
                   color: primary500,
                 }}
               />
+              </MuiThemeProvider>
             </S.ControlWrap>
           )}
 
-          {/* 하단 버튼 (중앙 컬럼에 고정) */}
+          {/* 하단 버튼 */}
           <S.Footer>
             <Button
               size="xlarge"
@@ -187,10 +188,8 @@ const StyleCustomizingPage: React.FC = () => {
             >
               적용하기
             </Button>
-            {/* ✅ 슬라이더 조작 전엔 비활성 */}
           </S.Footer>
         </S.Body>
-      </MuiThemeProvider>
     </S.Screen>
   );
 };
