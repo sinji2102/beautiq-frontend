@@ -39,3 +39,97 @@ export const getSkinAnalysisResult = async (
     return null;
   }
 };
+
+export type YearlyDaySkinPointsResponse = components["schemas"]["YearlyDaySkinPointsResponse"];
+
+// 연간 피부 트렌드 조회 (GET)
+export const getSkinAnalysisTrendsYearly = async (
+  year?: number // optional로 해도 괜찮습니다. 명세서에 required: false
+): Promise<YearlyDaySkinPointsResponse | null> => {
+  try {
+    const response: AxiosResponse<ApiResponseType<YearlyDaySkinPointsResponse>> = await get(
+      "/skin-analyses/trends/yearly",
+      {
+        params: {
+          year,
+        },
+      }
+    );
+
+    return response.data.data;
+  } catch (error) {
+    console.error("error", error);
+    return null;
+  }
+};
+
+export type SixtyDaySkinPointsResponse = components["schemas"]["SixtyDaySkinPointsResponse"];
+
+// 60일 피부 트렌드 조회 (GET)
+export const getSkinAnalysisTrends60Days = async (
+  date: string
+): Promise<SixtyDaySkinPointsResponse | null> => {
+  try {
+    const response: AxiosResponse<ApiResponseType<SixtyDaySkinPointsResponse>> = await get(
+      "/skin-analyses/trends/60days",
+      {
+        params: {
+          date,
+        },
+      }
+    );
+
+    return response.data.data;
+  } catch (error) {
+    console.error("error", error);
+    return null;
+  }
+};
+
+export type MonthlySkinStatusResponse = components["schemas"]["MonthlySkinStatusResponse"];
+
+// 월별 피부 상태 조회 (GET)
+export const getSkinAnalysisMonthly = async (
+  year: number,
+  month: number
+): Promise<MonthlySkinStatusResponse | null> => {
+  try {
+    const response: AxiosResponse<ApiResponseType<MonthlySkinStatusResponse>> = await get(
+      "/skin-analyses/monthly",
+      {
+        params: {
+          year,
+          month,
+        },
+      }
+    );
+
+    return response.data.data;
+  } catch (error) {
+    console.error("error", error);
+    return null;
+  }
+};
+
+export type DailySkinDatesResponse = components["schemas"]["DailySkinDatesResponse"];
+
+// 특정 일자의 분석 타임스탬프 조회 (GET)
+export const getSkinAnalysisDaily = async (
+  date: string
+): Promise<DailySkinDatesResponse | null> => {
+  try {
+    const response: AxiosResponse<ApiResponseType<DailySkinDatesResponse>> = await get(
+      "/skin-analyses/daily",
+      {
+        params: {
+          date,
+        },
+      }
+    );
+
+    return response.data.data;
+  } catch (error) {
+    console.error("error", error);
+    return null;
+  }
+};
