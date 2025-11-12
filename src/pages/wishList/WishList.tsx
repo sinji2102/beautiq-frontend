@@ -1,12 +1,12 @@
 import Header from "@components/commons/header/Header";
 import ProductListItem from "@components/commons/productListItem/ProductListItem";
-import { useParams } from "react-router-dom";
 
+// import { useParams } from "react-router-dom";
 import { ProductList } from "../../mockData";
 import * as S from "./WishList.styled";
 
 const WishListPage = () => {
-  const params = useParams(); // api 요청용 params -> params.analysisId 사용
+  // const params = useParams(); // api 요청용 params -> params.analysisId 사용
 
   return (
     <>
