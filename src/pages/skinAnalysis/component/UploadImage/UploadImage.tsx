@@ -1,3 +1,4 @@
+import { postPerformance } from "@apis/domain/skin-analysis/api";
 import Button from "@components/commons/button/Button";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +9,7 @@ const UploadImage: React.FC = () => {
   const navigate = useNavigate();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [selctImg, setSelectImg] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   // ✅ 사진 영역 클릭 시 파일 선택창을 엽니다.
@@ -19,6 +21,7 @@ const UploadImage: React.FC = () => {
       if (prev) URL.revokeObjectURL(prev); // 이전 URL 해제 (메모리 누수 방지)
       return URL.createObjectURL(file);
     });
+    setSelectImg(file);
   };
 
   // ✅ 업로드된 이미지를 제거하고 입력창과 미리보기를 초기화합니다.
@@ -42,6 +45,12 @@ const UploadImage: React.FC = () => {
 
   // 피부 분석 버튼이 눌렸을때, 오출되는 함수
   const TestOnClick = () => {
+    if (!selctImg) {
+      console.error("이미지를 먼저 선택해 주세요.");
+      return;
+    }
+
+    postPerformance(selctImg);
     navigate("/skinAnalysis/loading");
   };
 
