@@ -1,4 +1,4 @@
-import { get, post } from "@apis/index";
+import { get, patch, post } from "@apis/index";
 import type { components } from "@custom-types/api/schema";
 import type { ApiResponseType } from "@custom-types/commonType";
 import type { AxiosResponse } from "axios";
@@ -17,13 +17,33 @@ export const postRecommendProducts = async (
   try {
     const response: AxiosResponse<ApiResponseType<RecommendProductResponse>> = await post(
       `/skin-analyses/${analysisId}/recommend-products`,
-      data,
-      { headers: { "Content-Type": "application/json" } }
+      data
     );
 
     return response.data.data;
   } catch (error) {
     console.error(" postRecommendProducts error:", error);
+    return null;
+  }
+};
+
+export type WishlistToggleResponse = components["schemas"]["WishlistToggleResponse"];
+
+/**
+ * 위시리스트 토글 (추가/삭제 통합)
+ * PATH /products/{productId}/wishlists
+ * @param productId - 제품 ID
+ */
+export const patchWishlistToggle = async (
+  productId: string
+): Promise<WishlistToggleResponse | null> => {
+  try {
+    const res: AxiosResponse<ApiResponseType<WishlistToggleResponse>> = await patch(
+      `/products/${productId}/wishlists`
+    );
+    return res.data.data;
+  } catch (e) {
+    console.error("patchWishlistToggle error:", e);
     return null;
   }
 };
@@ -60,6 +80,11 @@ export const getWishlistProducts = async (
 
 export type WishlistProductDetailResponse = components["schemas"]["WishProductResponse"];
 
+/**
+ * 사용자의 위시리스트에 담긴 특정 제품 조회
+ * GET /users/me/wishlists/products/{productId}
+ * @param productId - 제품 ID
+ */
 export const getWishlistProductDetail = async (
   productId: string
 ): Promise<WishlistProductDetailResponse | null> => {

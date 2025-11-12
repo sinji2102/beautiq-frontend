@@ -1,4 +1,4 @@
-import { get, post } from "@apis/index";
+import { del, get, post } from "@apis/index";
 import type { components } from "@custom-types/api/schema";
 import type { ApiResponseType } from "@custom-types/commonType";
 import type { AxiosResponse } from "axios";
@@ -36,6 +36,20 @@ export const getSkinAnalysisResult = async (
     return response.data.data;
   } catch (error) {
     console.error("error", error);
+    return null;
+  }
+};
+
+// 피부 분석 결과 삭제 (DELETE)
+export const deleteSkinAnalysis = async (analysisId: number): Promise<void | null> => {
+  try {
+    const response: AxiosResponse<ApiResponseType<void>> = await del(
+      `/skin-analyses/${analysisId}`
+    );
+
+    return response.data.data;
+  } catch (error) {
+    console.error("deleteSkinAnalysis error", error);
     return null;
   }
 };
@@ -103,6 +117,19 @@ export const getSkinAnalysisMonthly = async (
         },
       }
     );
+
+    return response.data.data;
+  } catch (error) {
+    console.error("error", error);
+    return null;
+  }
+};
+
+// 최신 피부 분석 결과 조회 (GET)
+export const getSkinAnalysisLatest = async (): Promise<SkinAnalysisResponse | null> => {
+  try {
+    const response: AxiosResponse<ApiResponseType<SkinAnalysisResponse>> =
+      await get("/skin-analyses/latest");
 
     return response.data.data;
   } catch (error) {
