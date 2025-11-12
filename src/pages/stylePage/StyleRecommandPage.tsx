@@ -1,4 +1,4 @@
-import { type MakeupRecommendationRequset, postMakeupRecommendation } from "@apis/domain/makeup/api";
+import { type MakeupRecommendationRequest, postMakeupRecommendation } from "@apis/domain/makeup/api";
 import Button from "@components/commons/button/Button";
 import Header from "@components/commons/header/Header";
 import type { ContentsProps } from "@pages/stylePage/types";
@@ -11,19 +11,22 @@ import UploadImage from "./components/UploadImage/UploadImage";
 import * as S from "./StyleRecommandPage.styled";
 
 const ALL_KEYWORDS = [
-  "차분",
-  "청량",
-  "모던",
-  "러블리",
+  "사랑스러운",
   "청순",
-  "톤온톤",
-  "세련된",
-  "내추럴",
-  "꾸안꾸",
-  "트렌디",
-  "파스텔톤",
-  "비비드",
-  "모노톤",
+  "핑크블러셔",
+  "피치블러셔",
+  "오렌지블러셔",
+  "매트립(광택없는)",
+  "핑크립",
+  "오렌지립",
+  "웜톤",
+  "쿨톤",
+  "투명피부",
+  "매트피부",
+  "물광피부",
+  "진한눈썹",
+  "세미스모키",
+  "자연스러운눈썹"
 ] as const;
 
 const MAX = 5;
@@ -84,9 +87,9 @@ const StyleRecommandPage: React.FC = () => {
       return;
     }
 
-    const params: MakeupRecommendationRequset = {
+    const params: MakeupRecommendationRequest = {
       keywords: selected,
-    } as unknown as MakeupRecommendationRequset;
+    } as unknown as MakeupRecommendationRequest;
 
     try {
       setLoading(true);
