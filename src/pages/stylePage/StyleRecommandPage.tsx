@@ -6,6 +6,7 @@ import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import KeywordPicker from "./components/KeywordPicker/KeywordPicker";
+import Loading from "./components/Loading/Loading";
 import UploadImage from "./components/UploadImage/UploadImage";
 import * as S from "./StyleRecommandPage.styled";
 
@@ -34,7 +35,7 @@ const StyleRecommandPage: React.FC = () => {
   const [contents, setContents] = useState<ContentsProps[]>([
     { itemId: 0 } as unknown as ContentsProps,
   ]);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const [all] = useState<string[]>([...ALL_KEYWORDS]);
   const [selected, setSelected] = useState<string[]>([]);
@@ -70,8 +71,8 @@ const StyleRecommandPage: React.FC = () => {
   );
 
   const extractFirstFile = (): File | undefined => {
-    const first = contents.find((c) => (c as any).itemImage);
-    const img: unknown = first && (first as any).itemImage;
+    const first = contents.find((c) => c.itemImage);
+    const img: unknown = first && first.itemImage;
     if (img instanceof File) return img;         // File이면 그대로 사용
     return undefined;
   };
@@ -113,7 +114,7 @@ const StyleRecommandPage: React.FC = () => {
   };
 
   return (
-    <S.Screen>
+    isLoading ? <Loading />: <S.Screen>
       <Header text="스타일 추천" right="close" />
 
       <S.Body>
