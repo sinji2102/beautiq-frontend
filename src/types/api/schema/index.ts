@@ -67,7 +67,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/skin-analyses": {
+    "/skin-analysis": {
         parameters: {
             query?: never;
             header?: never;
@@ -98,7 +98,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/skin-analyses/{analysisId}/recommend-products": {
+    "/skin-analysis/{analysisId}/recommend-products": {
         parameters: {
             query?: never;
             header?: never;
@@ -151,6 +151,11 @@ export interface paths {
          *     2. 백엔드: AI 서버에 시뮬레이션 요청
          *     3. 백엔드: 결과 이미지 s3 임시 저장
          *     4. 백엔드: 결과 이미지 이름 및 S3 URL 반환
+         *
+         *     **참고:**
+         *     - styleImageName 또는 styleImage 중 하나는 필수입니다.
+         *     - styleImageName: 추천 받은 이미지 이름
+         *     - styleImage: 직접 업로드한 스타일 이미지 파일
          */
         post: operations["simulateMakeUp"];
         delete?: never;
@@ -411,7 +416,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/skin-analyses/{analysisId}": {
+    "/skin-analysis/{analysisId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -435,7 +440,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/skin-analyses/trends/yearly": {
+    "/skin-analysis/trends/yearly": {
         parameters: {
             query?: never;
             header?: never;
@@ -459,7 +464,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/skin-analyses/trends/60days": {
+    "/skin-analysis/trends/60days": {
         parameters: {
             query?: never;
             header?: never;
@@ -483,7 +488,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/skin-analyses/monthly": {
+    "/skin-analysis/monthly": {
         parameters: {
             query?: never;
             header?: never;
@@ -508,7 +513,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/skin-analyses/latest": {
+    "/skin-analysis/latest": {
         parameters: {
             query?: never;
             header?: never;
@@ -532,7 +537,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/skin-analyses/daily": {
+    "/skin-analysis/daily": {
         parameters: {
             query?: never;
             header?: never;
@@ -563,6 +568,14 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /**
+         * OAuth 콜백 리다이렉트 (내부용)
+         * @description OAuth2 인증 후 프론트엔드로 리다이렉트하는 중간 엔드포인트입니다.
+         *     환경 변수 app.oauth2.redirect에 설정된 URL로 자동 리다이렉트됩니다.
+         *
+         *     - 로컬: https://localhost:5173/oauth/callback (기본값)
+         *     - 프로덕션: 환경 변수에 설정된 값 사용
+         */
         get: operations["oauthCallback"];
         put?: never;
         post?: never;
@@ -1092,6 +1105,7 @@ export interface components {
             empty?: boolean;
         };
         PageableObject: {
+            unpaged?: boolean;
             paged?: boolean;
             /** Format: int32 */
             pageNumber?: number;
@@ -1100,12 +1114,11 @@ export interface components {
             /** Format: int64 */
             offset?: number;
             sort?: components["schemas"]["SortObject"];
-            unpaged?: boolean;
         };
         SortObject: {
             sorted?: boolean;
-            empty?: boolean;
             unsorted?: boolean;
+            empty?: boolean;
         };
         /** @description 위시리스트 제품 정보 */
         WishProduct: {
@@ -1739,7 +1752,13 @@ export interface operations {
         requestBody?: {
             content: {
                 "multipart/form-data": {
-                    styleImage: string;
+                    /** @description 추천 받은 스타일 이미지 이름 (styleImage와 둘 중 하나 필수) */
+                    styleImageName?: string;
+                    /**
+                     * Format: binary
+                     * @description 직접 업로드한 스타일 이미지 파일 (styleImageName과 둘 중 하나 필수)
+                     */
+                    styleImage?: string;
                 };
             };
         };
@@ -2475,8 +2494,8 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description OK */
-            200: {
+            /** @description 프론트엔드 콜백 페이지로 리다이렉트 */
+            302: {
                 headers: {
                     [name: string]: unknown;
                 };

@@ -47,7 +47,7 @@ export const patchWishlistToggle = async (
   }
 };
 
-export type WishlistProductsResponse = components["schemas"]["Page"];
+export type WishlistProductsResponse = components["schemas"]["Page"]["content"]["0"];
 
 /**
  * 사용자의 위시리스트에 담긴 제품 전체 조회

@@ -15,8 +15,8 @@ const WishListPage = () => {
         {/* TODO : 정렬 UI 퍼블리싱 및 API 연결 */}
         {ProductList.map((item) => (
           <ProductListItem
-            key={item.productId}
-            product={item}
+            key={item.wishProduct.productId}
+            product={item.wishProduct}
             reason="임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 "
           />
         ))}

@@ -1,10 +1,10 @@
-import type { RecommendProductResponse } from "@apis/domain/product/api";
+import type { WishlistProductsResponse } from "@apis/domain/product/api";
 import { useState } from "react";
 
 import * as S from "./ProductListItem.styled";
 
 interface ListItemProps {
-  product: RecommendProductResponse["products"][0]["product"];
+  product: WishlistProductsResponse;
   reason: string;
 }
 
