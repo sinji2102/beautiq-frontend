@@ -30,9 +30,6 @@ const PART_LABEL: Record<FacePart, string> = {
   cheek: "뺨",
 };
 
-/** base64 → data URL (png 가정) */
-const asDataUrl = (b64?: string | null) => (b64 ? `data:image/png;base64,${b64}` : null);
-
 const StyleCustomizingPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -51,12 +48,8 @@ const StyleCustomizingPage: React.FC = () => {
 
   // 전달받은 네비게이션 상태
   const [originalUrl, setOriginalUrl] = useState<string | null>(null);
-  const [editedUrl, setEditedUrl] = useState<string | null>(null);
   const [imageName, setImageName] = useState<string | null>(null);
   const [recommendData, setRecommendData] = useState<MakeupRecommendationRequest | null>(null);
-
-  // 원본 잠깐 보기
-  const [peekOriginal, setPeekOriginal] = useState(false);
 
   // 선택 파트 & 강도값
   const [selected, setSelected] = useState<FacePart | null>(null);
@@ -74,19 +67,18 @@ const StyleCustomizingPage: React.FC = () => {
   // 최초/복귀 진입 시 NavState 반영
   useEffect(() => {
     setOriginalUrl(navState.originalUrl ?? null);
-    setEditedUrl(navState.editedUrl ?? navState.originalUrl ?? null);
     setImageName(navState.imageName ?? null);
     setRecommendData(navState.recommendData ?? null);
     // 의존성은 개별 필드만
   }, [navState.originalUrl, navState.editedUrl, navState.imageName, navState.recommendData]);
 
-  const hasImage = useMemo(() => !!(originalUrl || editedUrl), [originalUrl, editedUrl]);
+  const hasImage = useMemo(() => !!(originalUrl ), [originalUrl]);
 
   // 표시용 URL: (원본 미리보기 중이면 원본) 아니면 (편집본 또는 원본)
   const displayUrl = useMemo(() => {
-    if (peekOriginal && originalUrl) return originalUrl;
-    return editedUrl || originalUrl || null;
-  }, [peekOriginal, originalUrl, editedUrl]);
+    if (originalUrl) return originalUrl;
+    return  originalUrl || null;
+  }, [originalUrl]);
 
   /** 슬라이더 변경 → 값 반영 + dirty 활성화 */
   const onChangeSlider: NonNullable<SliderProps["onChange"]> = (_e, value) => {
@@ -112,14 +104,16 @@ const StyleCustomizingPage: React.FC = () => {
     try {
       setLoading(true);
 
-      // CustomizeRequestDto 구조에 맞게 data 작성
-      // (실제 스키마의 필드명/중첩 구조가 다르면 여기를 조정)
+      const editsArray = (Object.keys(values) as FacePart[]).map((part) => {
+        return {
+          region: part,        
+          intensity: values[part], 
+        };
+      });
+
       const data: MakeupCustomizeRequest = {
-        edits: {
-          region: selected,
-          intensity: values[selected],
-        },
-      } as unknown as MakeupCustomizeRequest;
+        edits: editsArray,
+      };
 
       const res: MakeupCustomizeResponse | null = await postCustomize(imageName, data);
       if (!res) {
@@ -127,13 +121,11 @@ const StyleCustomizingPage: React.FC = () => {
         return;
       }
 
-      // 응답 타입 예시: { status?: string; result_image_base64?: string; message?: string; ... }
-      const nextUrl = asDataUrl((res as MakeupCustomizeResponse).imageUrl) ?? editedUrl;
-      setEditedUrl(nextUrl ?? null);
+      const nextUrl = (res as MakeupCustomizeResponse).imageUrl ;
       setDirty(false);
 
       // 결과 페이지로 되돌아가기 (imageName/recommendData 유지)
-      navigate("/styleResult", {
+      navigate("/style/result", {
         replace: true,
         state: {
           originalUrl,
@@ -150,9 +142,6 @@ const StyleCustomizingPage: React.FC = () => {
     }
   };
 
-  const startPeek = () => originalUrl && setPeekOriginal(true);
-  const endPeek = () => setPeekOriginal(false);
-
   // 적용 가능 조건
   const canApply = hasImage && dirty && !!selected && !loading;
 
@@ -167,26 +156,13 @@ const StyleCustomizingPage: React.FC = () => {
             {displayUrl ? (
               <img
                 src={displayUrl}
-                alt={peekOriginal ? "원본 미리보기" : "커스터마이징 프리뷰"}
+                alt="원본 프리뷰"
                 draggable={false}
               />
             ) : (
               <S.PlaceholderText>이미지를 불러오는 중...</S.PlaceholderText>
             )}
 
-            {hasImage && (
-              <S.OriginalPeekBtn
-                type="button"
-                aria-label="원본 잠깐 보기"
-                onMouseDown={startPeek}
-                onMouseUp={endPeek}
-                onMouseLeave={endPeek}
-                onTouchStart={startPeek}
-                onTouchEnd={endPeek}
-              >
-                <S.PeekIcon aria-hidden />
-              </S.OriginalPeekBtn>
-            )}
           </S.ImageBox>
         </S.PreviewWrap>
 
