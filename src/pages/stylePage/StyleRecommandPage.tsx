@@ -103,7 +103,7 @@ const StyleRecommandPage: React.FC = () => {
       const resultData =
         res.recommendations
 
-      navigate("/styleResult", {
+      navigate("/style/ai", {
         state: {
           recommendData: resultData                
         },
