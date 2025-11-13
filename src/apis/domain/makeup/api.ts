@@ -4,7 +4,6 @@ import type { AxiosResponse } from "axios";
 
 export type MakeupSimulationResponse = components["schemas"]["ImageItem"]; // 동일
 
-import type { ApiResponseType } from "@custom-types/commonType";
 
 export const postMakeupSimulation = async (
   image: File | string   // ⭐ File 또는 URL 문자열
@@ -22,12 +21,12 @@ export const postMakeupSimulation = async (
     }
 
     // 래핑 여부에 따라 타입 수정해야 함
-    const response: AxiosResponse<ApiResponseType<MakeupSimulationResponse>> = await post(
+    const response: AxiosResponse<MakeupSimulationResponse> = await post(
       "/makeup/simulation",
       formData
     );
 
-    return response.data.data; // API 응답 구조가 { data: {...} }
+    return response.data; // API 응답 구조가 { data: {...} }
   } catch (error) {
     console.error("postMakeupSimulation error", error);
     return null;

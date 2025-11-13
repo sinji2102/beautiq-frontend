@@ -134,6 +134,8 @@ const ChooseAIStylePage: React.FC = () => {
 
       // 🔥 시뮬레이션 API 호출 (File | string 둘 다 지원)
       const simRes = await postMakeupSimulation(imageToSend);
+      console.log(simRes)
+
       if (!simRes) {
         alert("이미지 시뮬레이션에 실패했습니다.");
         return;
