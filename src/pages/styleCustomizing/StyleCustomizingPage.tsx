@@ -1,4 +1,3 @@
-// src/pages/stylePage/StyleCustomizingPage.tsx
 import type { MakeupCustomizeRequest, MakeupCustomizeResponse, MakeupRecommendationRequest } from "@apis/domain/makeup/api";
 import { postCustomize } from "@apis/domain/makeup/api";
 import Button from "@components/commons/button/Button";
@@ -129,7 +128,7 @@ const StyleCustomizingPage: React.FC = () => {
       }
 
       // 응답 타입 예시: { status?: string; result_image_base64?: string; message?: string; ... }
-      const nextUrl = asDataUrl((res as MakeupCustomizeResponse).result_image_base64) ?? editedUrl;
+      const nextUrl = asDataUrl((res as MakeupCustomizeResponse).imageUrl) ?? editedUrl;
       setEditedUrl(nextUrl ?? null);
       setDirty(false);
 

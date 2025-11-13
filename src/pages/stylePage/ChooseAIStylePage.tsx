@@ -1,4 +1,3 @@
-// src/pages/stylePage/ChooseAIStylePage.tsx
 import Button from "@components/commons/button/Button";
 import Header from "@components/commons/header/Header";
 import type { ContentsProps, ItemProps } from "@pages/stylePage/types";

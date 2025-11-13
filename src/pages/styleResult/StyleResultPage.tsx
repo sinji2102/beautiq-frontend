@@ -1,4 +1,3 @@
-// src/pages/styleResult/StyleResultPage.tsx
 import type {
   MakeupCustomizeRequest,
   MakeupCustomizeResponse,
@@ -26,7 +25,6 @@ type NavState = {
   recommendData?: MakeupRecommendationRequest | null;
 };
 
-/** base64를 data URL로 변환 (png 가정) */
 const asDataUrl = (b64: string | undefined | null) =>
   b64 ? `data:image/png;base64,${b64}` : null;
 
@@ -102,7 +100,7 @@ const StyleResultPage: React.FC = () => {
       //    예: { status?: string; result_image_base64?: string; message?: string; }
       const typed: MakeupCustomizeResponse = res;
 
-      const nextUrl = asDataUrl(typed.result_image_base64);
+      const nextUrl = asDataUrl(typed.imageUrl);
       if (nextUrl) setEditedUrl(nextUrl);
 
       // 일부 백엔드는 커스터마이징 결과 imageName을 갱신하지 않을 수 있음

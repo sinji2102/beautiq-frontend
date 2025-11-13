@@ -9,3 +9,12 @@ export interface ContentsProps {
   itemInfo: ItemProps;
   itemImage: File | string | undefined;
 }
+
+export interface MakeupCustomizeResponse {
+  status?: string;
+  imageName?: string;
+  imageUrl?: string;
+  message?: string;
+  /** ✅ 서버가 base64를 내려줄 때 사용되는 필드 */
+  result_image_base64?: string;
+}
