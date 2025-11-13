@@ -1,4 +1,5 @@
 import { getSkinAnalysisResult, type SkinAnalysisResponse } from "@apis/domain/skin-analysis/api";
+import Button from "@components/commons/button/Button";
 import Header from "@components/commons/header/Header";
 import * as S from "@pages/detailPage/DetailPage.styled";
 import { useEffect, useState } from "react";
@@ -49,34 +50,11 @@ const SkinChart = ({ data }: { data: { name: string; uv: number }[] }) => {
   );
 };
 
-// DetailPage의 상세 점수 데이터
-// const data = {
-//   id: "analysis_1a2b3c",
-//   userId: "user_test_001",
-//   SkinAnalysisScores: {
-//     pigmentationReg: 80, // 색소침착
-//     moistureReg: 100, // 건조 (수분)
-//     elasticityReg: 60, // 처짐 (탄력)
-//     wrinkleReg: 80, // 주름
-//     poreReg: 80, // 모공
-//   },
-//   feedback:
-//     "전반적으로 피부 상태가 양호합니다. 다만, 주름 점수가 다소 낮으니 아이크림 사용과 수분 섭취에 신경 써주세요.",
-//   averageScore: 81.2,
-//   createdAt: "2025-11-07T14:30:15Z",
-// };
-
 const DetailPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
   const [data, setData] = useState<SkinAnalysisResponse | null>(null);
-
-  // useEffect(() => {
-  //   if (!location.state) {
-  //     navigate("/tracking");
-  //   }
-  // }, [location.state, navigate]);
 
   useEffect(() => {
     const state = location.state;
@@ -123,6 +101,10 @@ const DetailPage = () => {
     uv: data?.skinAnalysis[key as keyof typeof data.skinAnalysis] ?? 0,
   }));
 
+  const RecommandOnClick = () => {
+    navigate(`/detail/recommend-product/${data?.id}`);
+  };
+
   return (
     <>
       <Header left="back" text={location.state?.dateStr + " 분석결과"} />
@@ -163,6 +145,13 @@ const DetailPage = () => {
           <S.FeedBackTitle>AI 분석 피드백</S.FeedBackTitle>
           <S.FeedBackText>{data?.feedback}</S.FeedBackText>
         </S.FeedBackWrapper>
+        <S.RecommandButtonWrapper>
+          <Button
+            size="xlarge"
+            children="내 피부에 맞는 제품 추천 보기"
+            onClick={RecommandOnClick}
+          />
+        </S.RecommandButtonWrapper>
       </S.BarGraphWrapper>
     </>
   );

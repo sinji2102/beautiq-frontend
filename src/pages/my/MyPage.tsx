@@ -32,7 +32,7 @@ const MyPage = () => {
         <S.MenuSection>
           <MenuItem title="피부 분석 히스토리" onClick={() => navigate("/tracking")} />
           <MenuItem title="추천 스타일 확인" onClick={() => navigate("/my/style")} />
-          <MenuItem title="찜한 제품 확인" onClick={() => navigate("/my/like")} />
+          <MenuItem title="찜한 제품 확인" onClick={() => navigate("/my/wishlist")} />
         </S.MenuSection>
 
         <S.Divider />

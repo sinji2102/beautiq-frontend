@@ -50,7 +50,7 @@ const RecentAnalysisCard = () => {
         <S.ResultBox>
           <S.ItemInfo>
             <S.Title>피부 분석</S.Title>
-            <S.DateText>{skinData?.createdAt}</S.DateText>
+            <S.DateText>{skinData?.createdAt.split("T")[0]}</S.DateText>
           </S.ItemInfo>
           <S.ScoreBox>
             <S.Badge score={skinData?.averageScore}>

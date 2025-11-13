@@ -30,7 +30,7 @@ const router = createBrowserRouter([
       { path: "my", element: <MyPage /> },
       { path: "my/edit", element: <EditProfile /> },
       { path: "my/recommend-style", element: <RecommendStylePage /> },
-      { path: "my/wishlist/:analysisId", element: <WishListPage /> },
+      { path: "my/wishlist", element: <WishListPage /> },
       { path: "style/recommend", element: <StyleRecommandPage /> },
       { path: "detail", element: <DetailPage /> },
       { path: "tracking", element: <TrackingPage /> },
