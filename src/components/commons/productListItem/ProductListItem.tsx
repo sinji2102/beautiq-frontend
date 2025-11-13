@@ -1,21 +1,10 @@
+import type { WishlistProductsResponse } from "@apis/domain/product/api";
 import { useState } from "react";
 
 import * as S from "./ProductListItem.styled";
 
-type ProductItem = {
-  productId: string;
-  name: string;
-  brand: string;
-  category: string;
-  price: number;
-  rating: number;
-  reviewCount: number;
-  imageUrl: string;
-  description: string;
-};
-
 interface ListItemProps {
-  product: ProductItem;
+  product: WishlistProductsResponse["products"][0]["product"];
   reason: string;
 }
 
@@ -32,10 +21,10 @@ const ProductListItem = ({ product, reason }: ListItemProps) => {
       <S.RecommendProductContainer>
         <S.ProductImage src={product?.imageUrl} alt="Product" />
         <S.ProductInfo>
-          <S.ProductText className="title">{product?.name}</S.ProductText>
-          <S.ProductText>{product?.price}원</S.ProductText>
+          <S.ProductText className="title">{product?.productName}</S.ProductText>
+          <S.ProductText>{product?.salePrice}원</S.ProductText>
           <S.ReviewText>
-            ⭐ {product?.rating} (리뷰 {product?.reviewCount})
+            ⭐ {product?.reviewScore} (리뷰 {product?.reviewCount})
           </S.ReviewText>
         </S.ProductInfo>
         <S.LikeButton onClick={handleLikeClick}>
