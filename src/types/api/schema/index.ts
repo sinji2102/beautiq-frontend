@@ -416,6 +416,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/today-tip": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 오늘의 뷰티 팁 조회
+         * @description 하루에 하나, 고정적으로 제공되는 오늘의 뷰티 팁을 반환합니다.
+         */
+        get: operations["getTodayTip"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/skin-analysis/{analysisId}": {
         parameters: {
             query?: never;
@@ -882,7 +902,7 @@ export interface components {
              * @example BEST
              * @enum {string}
              */
-            bestOrNew?: string;
+            bestOrNew?: "BEST" | "NEW" | "";
             /**
              * Format: uri
              * @description 제품 이미지 URL
@@ -1105,19 +1125,19 @@ export interface components {
             empty?: boolean;
         };
         PageableObject: {
+            unpaged?: boolean;
             paged?: boolean;
             /** Format: int32 */
             pageNumber?: number;
             /** Format: int32 */
             pageSize?: number;
-            unpaged?: boolean;
             /** Format: int64 */
             offset?: number;
             sort?: components["schemas"]["SortObject"];
         };
         SortObject: {
-            sorted?: boolean;
             unsorted?: boolean;
+            sorted?: boolean;
             empty?: boolean;
         };
         /**
@@ -1172,6 +1192,14 @@ export interface components {
         };
         MakeUpListResponseDto: {
             makeUps?: components["schemas"]["MakeUpDetailResponseDto"][];
+        };
+        /** @description 오늘의 뷰티 팁 응답 */
+        TodayTipResponse: {
+            /**
+             * @description 오늘의 뷰티 팁 문장
+             * @example 세안 후에는 즉시 보습제를 발라주세요.
+             */
+            tip?: string;
         };
         /** @description 현재 월의 평균 피부 점수 */
         MonthPoint: {
@@ -2096,6 +2124,26 @@ export interface operations {
                     "*/*": {
                         [key: string]: string;
                     };
+                };
+            };
+        };
+    };
+    getTodayTip: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 조회 성공 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TodayTipResponse"];
                 };
             };
         };
