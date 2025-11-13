@@ -47,7 +47,8 @@ export const patchWishlistToggle = async (
   }
 };
 
-export type WishlistProductsResponse = components["schemas"]["Page"];
+// 서버 응답 타입 생성 어렵다고 해서 직접 생성
+export type WishlistProductsResponse = RecommendProductResponse;
 
 /**
  * 사용자의 위시리스트에 담긴 제품 전체 조회

@@ -1,25 +1,85 @@
+import type {
+  RecommendProductRequest,
+  RecommendProductResponse,
+} from "@apis/domain/product/api";
+import { postRecommendProducts } from "@apis/domain/product/api";
 import Header from "@components/commons/header/Header";
 import ProductListItem from "@components/commons/productListItem/ProductListItem";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-// import { useParams } from "react-router-dom";
-import { ProductList } from "../../mockData";
 import * as S from "./RecommendProduce.styled";
 
-const RecommendProductPage = () => {
-  // const params = useParams(); // api 요청용 params -> params.analysisId 사용
+const RecommendProductPage: React.FC = () => {
+  const { analysisId } = useParams<{ analysisId: string }>();
+
+  // ✅ 응답 타입 맞게 선언
+  const [products, setProducts] = useState<RecommendProductResponse["products"]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchRecommended = async () => {
+      if (!analysisId) {
+        setError("분석 ID가 없습니다.");
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError(null);
+
+        // ✅ sort, filters를 Swagger 명세에 맞게 작성
+        const body: RecommendProductRequest = {
+          topN: 10,
+          filters: {
+            price: { min: 0, max: 999999 },
+          },
+          sort: {
+            by: "reviewScore",
+            order: "desc",
+          },
+        };
+
+        const res = await postRecommendProducts(analysisId, body);
+        if (!res) {
+          setError("추천 데이터를 불러오지 못했습니다.");
+          return;
+        }
+
+        // ✅ 실제 응답 구조가 { products: [...] }라면 아래처럼
+        setProducts(res.products ?? []);
+      } catch (e) {
+        console.error(e);
+        setError("서버 통신 오류가 발생했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecommended();
+  }, [analysisId]);
 
   return (
     <>
       <Header left="back" text="제품 추천" />
       <S.RecommendProductWrapper>
-        {/* TODO : 정렬 UI 퍼블리싱 및 API 연결 */}
-        {ProductList.map((item) => (
-          <ProductListItem
-            key={item.productId}
-            product={item}
-            reason="임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 임시용 텍스트 "
-          />
-        ))}
+        {loading && <p>🔄 추천 제품을 불러오는 중...</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
+
+        {!loading && !error && products.length === 0 && (
+          <p>추천된 제품이 없습니다.</p>
+        )}
+
+        {!loading &&
+          !error &&
+          products.map((item) => (
+            <ProductListItem
+              key={item.product.id}
+              product={item.product}
+              reason={item.reason ?? "피부 타입에 적합한 추천 제품이에요!"}
+            />
+          ))}
       </S.RecommendProductWrapper>
     </>
   );

@@ -4,2484 +4,2453 @@
  */
 
 export interface paths {
-    "/users/edit": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * 내 정보 수정
-         * @description 현재 로그인한 사용자의 닉네임과 이메일을 수정합니다. 프로필 이미지는 별도 엔드포인트(/users/profile-image)를 사용하세요.
-         */
-        put: operations["updateMyUser"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  "/users/edit": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/users/profile-image": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 프로필 이미지 업로드
-         * @description 현재 로그인한 사용자의 프로필 이미지를 변경합니다.
-         *     - 이미지는 S3에 업로드되며, URL이 DB에 저장됩니다.
-         *     - 지원 형식: JPG, PNG, GIF 등
-         *     - 최대 크기: 50MB (설정에 따라 변경 가능)
-         */
-        post: operations["uploadMyProfileImage"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    /**
+     * 내 정보 수정
+     * @description 현재 로그인한 사용자의 닉네임과 이메일을 수정합니다. 프로필 이미지는 별도 엔드포인트(/users/profile-image)를 사용하세요.
+     */
+    put: operations["updateMyUser"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/profile-image": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/users/logout": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 로그아웃
-         * @description 인증 쿠키(Authorization)를 삭제하여 로그아웃합니다. 서버 세션은 stateless이므로 쿠키만 삭제됩니다.
-         */
-        post: operations["logout"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 프로필 이미지 업로드
+     * @description 현재 로그인한 사용자의 프로필 이미지를 변경합니다.
+     *     - 이미지는 S3에 업로드되며, URL이 DB에 저장됩니다.
+     *     - 지원 형식: JPG, PNG, GIF 등
+     *     - 최대 크기: 50MB (설정에 따라 변경 가능)
+     */
+    post: operations["uploadMyProfileImage"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/logout": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/skin-analyses": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 피부 분석 생성
-         * @description 사용자의 피부 이미지를 AI로 분석하여 결과를 저장합니다.
-         *
-         *     **흐름:**
-         *     1. 프론트에서 이미지 파일 업로드
-         *     2. 백엔드가 S3에 저장 후 AI 서버에 분석 요청
-         *     3. AI 분석 결과를 DB에 저장
-         *     4. 분석 결과 반환 (피부 타입, 수분도, 유분도, 색소침착 등)
-         *
-         *     **분석 항목:**
-         *     - 피부 타입 (건성/지성/복합성/민감성)
-         *     - 수분도, 유분도, 색소침착, 주름, 모공, 트러블 점수
-         *     - AI 피드백 메시지
-         */
-        post: operations["createAnalysis"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 로그아웃
+     * @description 인증 쿠키(Authorization)를 삭제하여 로그아웃합니다. 서버 세션은 stateless이므로 쿠키만 삭제됩니다.
+     */
+    post: operations["logout"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/skin-analysis": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/skin-analyses/{analysisId}/recommend-products": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 피부 분석 기반 제품 추천
-         * @description 피부 분석 결과를 기반으로 사용자에게 맞는 제품을 추천합니다.
-         *
-         *     **흐름:**
-         *     1. 피부 분석 ID와 카테고리 정보 입력
-         *     2. 분석 결과의 피부 타입/문제점에 맞는 제품 필터링
-         *     3. 올리브영 데이터셋에서 적합한 제품 추천
-         *
-         *     **요청 데이터:**
-         *     - analysisId: 피부 분석 ID
-         *     - category: 제품 카테고리 (스킨케어/메이크업 등)
-         *     - skinConcern: 주요 피부 고민 (선택)
-         *
-         *     **추천 기준:**
-         *     - 피부 타입 매칭
-         *     - 피부 문제점(수분/유분/색소침착 등) 개선 제품
-         *     - 평점 및 리뷰 수 고려
-         */
-        post: operations["getRecommendProducts"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 피부 분석 생성
+     * @description 사용자의 피부 이미지를 AI로 분석하여 결과를 저장합니다.
+     *
+     *     **흐름:**
+     *     1. 프론트에서 이미지 파일 업로드
+     *     2. 백엔드가 S3에 저장 후 AI 서버에 분석 요청
+     *     3. AI 분석 결과를 DB에 저장
+     *     4. 분석 결과 반환 (피부 타입, 수분도, 유분도, 색소침착 등)
+     *
+     *     **분석 항목:**
+     *     - 피부 타입 (건성/지성/복합성/민감성)
+     *     - 수분도, 유분도, 색소침착, 주름, 모공, 트러블 점수
+     *     - AI 피드백 메시지
+     */
+    post: operations["createAnalysis"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/skin-analysis/{analysisId}/recommend-products": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/makeup/simulation": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 메이크업 시뮬레이션
-         * @description 원본 이미지와 참조 스타일(파일 또는 이미지 이름)을 받아 메이크업을 적용한 결과를 s3 url로 반환합니다.
-         *
-         *     **흐름:**
-         *     1. 프론트: 추천 이미지 이름 선택 OR 새 이미지 업로드
-         *     2. 백엔드: AI 서버에 시뮬레이션 요청
-         *     3. 백엔드: 결과 이미지 s3 임시 저장
-         *     4. 백엔드: 결과 이미지 이름 및 S3 URL 반환
-         */
-        post: operations["simulateMakeUp"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 피부 분석 기반 제품 추천
+     * @description 피부 분석 결과를 기반으로 사용자에게 맞는 제품을 추천합니다.
+     *
+     *     **흐름:**
+     *     1. 피부 분석 ID와 카테고리 정보 입력
+     *     2. 분석 결과의 피부 타입/문제점에 맞는 제품 필터링
+     *     3. 올리브영 데이터셋에서 적합한 제품 추천
+     *
+     *     **요청 데이터:**
+     *     - analysisId: 피부 분석 ID
+     *     - category: 제품 카테고리 (스킨케어/메이크업 등)
+     *     - skinConcern: 주요 피부 고민 (선택)
+     *
+     *     **추천 기준:**
+     *     - 피부 타입 매칭
+     *     - 피부 문제점(수분/유분/색소침착 등) 개선 제품
+     *     - 평점 및 리뷰 수 고려
+     */
+    post: operations["getRecommendProducts"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/makeup/simulation": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/makeup/save": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 메이크업 저장
-         * @description 시뮬레이션 또는 커스터마이징 결과 이미지(Base64)를 S3에 영구 저장하고 DB에 기록합니다.
-         *
-         *     **흐름:**
-         *     1. 프론트에서 이미지 url 전송
-         *     2. 백엔드가 S3에 영구 저장
-         *     3. DB에 메이크업 기록 저장
-         *
-         *     **요청:**
-         *     - Content-Type: application/json
-         *     - imageName: 저장할 이미지 이름
-         */
-        post: operations["saveMakeUp"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 메이크업 시뮬레이션
+     * @description 원본 이미지와 참조 스타일(파일 또는 이미지 이름)을 받아 메이크업을 적용한 결과를 s3 url로 반환합니다.
+     *
+     *     **흐름:**
+     *     1. 프론트: 추천 이미지 이름 선택 OR 새 이미지 업로드
+     *     2. 백엔드: AI 서버에 시뮬레이션 요청
+     *     3. 백엔드: 결과 이미지 s3 임시 저장
+     *     4. 백엔드: 결과 이미지 이름 및 S3 URL 반환
+     *
+     *     **참고:**
+     *     - styleImageName 또는 styleImage 중 하나는 필수입니다.
+     *     - styleImageName: 추천 받은 이미지 이름
+     *     - styleImage: 직접 업로드한 스타일 이미지 파일
+     */
+    post: operations["simulateMakeUp"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/makeup/save": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/makeup/recommendation": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 메이크업 스타일 추천
-         * @description 사용자 얼굴 이미지 파일을 받아 3개의 추천 스타일을 Base64로 반환합니다.
-         *
-         *     **흐름:**
-         *     1. 프론트에서 파일 업로드
-         *     2. 백엔드에서 Base64 변환하여 AI 서버 요청
-         *     3. AI 서버에서 3개 스타일 Base64로 응답
-         *     4. 백엔드에서 Base64를 이미지로 변환 후 S3 임시 저장
-         *     5. 백엔드에서 추천 이미지 이름 및 S3 URL 반환
-         */
-        post: operations["styleRecommend"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 메이크업 저장
+     * @description 시뮬레이션 또는 커스터마이징 결과 이미지(Base64)를 S3에 영구 저장하고 DB에 기록합니다.
+     *
+     *     **흐름:**
+     *     1. 프론트에서 이미지 url 전송
+     *     2. 백엔드가 S3에 영구 저장
+     *     3. DB에 메이크업 기록 저장
+     *
+     *     **요청:**
+     *     - Content-Type: application/json
+     *     - imageName: 저장할 이미지 이름
+     */
+    post: operations["saveMakeUp"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/makeup/recommendation": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/makeup/customize": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * 메이크업 커스터마이즈
-         * @description 시뮬레이션 결과 이미지(Base64)의 색상/강도를 조정한 결과를 Base64로 반환합니다.
-         *
-         *     **흐름:**
-         *     1. 프론트: 시뮬레이션 이미지 이름 + 편집 조건
-         *     2. 백엔드: AI 서버에 커스터마이즈 요청
-         *     3. 백엔드: 커스터마이징 된 이미지 이름, url 반환
-         *     4. (반복 가능)
-         *
-         *     **편집 항목 설명:**
-         *     - edits 배열의 각 항목은 region(필수)과 intensity(필수)를 가집니다.
-         *     - region 종류 및 설명:
-         *       - "skin": 피부 톤 조정
-         *       - "lip": 입술 색상 intensity 조정
-         *       - "eyelid": 아이섀도우 intensity 조정
-         *       - "blush": 볼터치 intensity 조정
-         *     - intensity는 0~100 범위이며 기본값은 50입니다. 50보다 크면 메이크업이 더 진하게 적용되고, 50보다 작으면 더 연하게 적용됩니다.
-         */
-        post: operations["customize"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 메이크업 스타일 추천
+     * @description 사용자 얼굴 이미지 파일을 받아 3개의 추천 스타일을 Base64로 반환합니다.
+     *
+     *     **흐름:**
+     *     1. 프론트에서 파일 업로드
+     *     2. 백엔드에서 Base64 변환하여 AI 서버 요청
+     *     3. AI 서버에서 3개 스타일 Base64로 응답
+     *     4. 백엔드에서 Base64를 이미지로 변환 후 S3 임시 저장
+     *     5. 백엔드에서 추천 이미지 이름 및 S3 URL 반환
+     */
+    post: operations["styleRecommend"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/makeup/customize": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/products/{productId}/wishlists": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * 위시리스트 토글 (추가/삭제 통합)
-         * @description 제품의 위시리스트 상태를 토글합니다. (프론트엔드 편의 기능)
-         *
-         *     **동작 방식:**
-         *     - 위시리스트에 **없으면 → 추가**
-         *     - 위시리스트에 **있으면 → 삭제**
-         */
-        patch: operations["toggleWishlist"];
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * 메이크업 커스터마이즈
+     * @description 시뮬레이션 결과 이미지(Base64)의 색상/강도를 조정한 결과를 Base64로 반환합니다.
+     *
+     *     **흐름:**
+     *     1. 프론트: 시뮬레이션 이미지 이름 + 편집 조건
+     *     2. 백엔드: AI 서버에 커스터마이즈 요청
+     *     3. 백엔드: 커스터마이징 된 이미지 이름, url 반환
+     *     4. (반복 가능)
+     *
+     *     **편집 항목 설명:**
+     *     - edits 배열의 각 항목은 region(필수)과 intensity(필수)를 가집니다.
+     *     - region 종류 및 설명:
+     *       - "skin": 피부 톤 조정
+     *       - "lip": 입술 색상 intensity 조정
+     *       - "eyelid": 아이섀도우 intensity 조정
+     *       - "blush": 볼터치 intensity 조정
+     *     - intensity는 0~100 범위이며 기본값은 50입니다. 50보다 크면 메이크업이 더 진하게 적용되고, 50보다 작으면 더 연하게 적용됩니다.
+     */
+    post: operations["customize"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/products/{productId}/wishlists": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/users/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 내 정보 조회
-         * @description 현재 로그인한 사용자의 정보를 조회합니다. JWT 쿠키 인증 필요.
-         */
-        get: operations["getMe"];
-        put?: never;
-        post?: never;
-        /**
-         * 회원 탈퇴
-         * @description 현재 로그인한 사용자의 계정을 영구적으로 삭제합니다. 삭제 후 자동으로 로그아웃됩니다.
-         */
-        delete: operations["deleteMe"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /**
+     * 위시리스트 토글 (추가/삭제 통합)
+     * @description 제품의 위시리스트 상태를 토글합니다. (프론트엔드 편의 기능)
+     *
+     *     **동작 방식:**
+     *     - 위시리스트에 **없으면 → 추가**
+     *     - 위시리스트에 **있으면 → 삭제**
+     */
+    patch: operations["toggleWishlist"];
+    trace?: never;
+  };
+  "/users/me": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/users/me/wishlists/products": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 위시리스트 전체 조회
-         * @description 사용자의 위시리스트에 담긴 모든 제품을 조회합니다.
-         *
-         *     **정렬 옵션:**
-         *     - rate: 평점 높은 순
-         *     - popular: 인기순 (리뷰 많은 순)
-         *     - newest: 최신 추가순 (기본)
-         *
-         *     **페이징:**
-         *     - page: 페이지 번호 (1부터 시작, 기본: 1)
-         *     - 페이지당 10개 제품 반환
-         */
-        get: operations["getAllWishProduct"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 내 정보 조회
+     * @description 현재 로그인한 사용자의 정보를 조회합니다. JWT 쿠키 인증 필요.
+     */
+    get: operations["getMe"];
+    put?: never;
+    post?: never;
+    /**
+     * 회원 탈퇴
+     * @description 현재 로그인한 사용자의 계정을 영구적으로 삭제합니다. 삭제 후 자동으로 로그아웃됩니다.
+     */
+    delete: operations["deleteMe"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/me/wishlists/products": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/users/me/wishlists/products/{productId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 위시리스트 특정 제품 조회
-         * @description 위시리스트에 담긴 특정 제품의 상세 정보를 조회합니다.
-         */
-        get: operations["getWishProduct"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 위시리스트 전체 조회
+     * @description 사용자의 위시리스트에 담긴 모든 제품을 조회합니다.
+     *
+     *     **정렬 옵션:**
+     *     - rate: 평점 높은 순
+     *     - popular: 인기순 (리뷰 많은 순)
+     *     - newest: 최신 추가순 (기본)
+     *
+     *     **페이징:**
+     *     - page: 페이지 번호 (1부터 시작, 기본: 1)
+     *     - 페이지당 10개 제품 반환
+     */
+    get: operations["getAllWishProduct"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/me/wishlists/products/{productId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/users/me/saved/makeups": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["getMakeUpList"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 위시리스트 특정 제품 조회
+     * @description 위시리스트에 담긴 특정 제품의 상세 정보를 조회합니다.
+     */
+    get: operations["getWishProduct"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/me/saved/makeups": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/users/me/saved/makeups/{makeUpId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["getMakeUp"];
-        put?: never;
-        post?: never;
-        delete: operations["deleteMakeUp"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get: operations["getMakeUpList"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/me/saved/makeups/{makeUpId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/users/login": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * OAuth2 로그인 (문서용)
-         * @description ⚠️ 이 엔드포인트는 문서화 목적으로만 표시됩니다.
-         *
-         *     실제 로그인 방법:
-         *     1. Google 로그인: GET /oauth2/authorization/google
-         *     2. Kakao 로그인: GET /oauth2/authorization/kakao
-         *
-         *     로그인 흐름:
-         *     1. 위 URL로 브라우저 리다이렉트
-         *     2. OAuth2 공급자 인증 페이지로 이동
-         *     3. 사용자 인증 완료 후 프론트엔드로 리다이렉트 (쿠키에 JWT 토큰 포함)
-         *     4. 이후 모든 요청에 자동으로 JWT 쿠키 포함
-         *
-         *     참고: 이 엔드포인트를 직접 호출하지 마세요.
-         */
-        get: operations["loginDocumentation"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get: operations["getMakeUp"];
+    put?: never;
+    post?: never;
+    delete: operations["deleteMakeUp"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/login": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/skin-analyses/{analysisId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 피부 분석 결과 조회
-         * @description 특정 분석 ID의 상세 결과를 조회합니다.
-         */
-        get: operations["getAnalysis"];
-        put?: never;
-        post?: never;
-        /**
-         * 피부 분석 결과 삭제
-         * @description 특정 분석 결과를 삭제합니다. S3 이미지도 함께 삭제됩니다.
-         */
-        delete: operations["deleteAnalysis"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * OAuth2 로그인 (문서용)
+     * @description ⚠️ 이 엔드포인트는 문서화 목적으로만 표시됩니다.
+     *
+     *     실제 로그인 방법:
+     *     1. Google 로그인: GET /oauth2/authorization/google
+     *     2. Kakao 로그인: GET /oauth2/authorization/kakao
+     *
+     *     로그인 흐름:
+     *     1. 위 URL로 브라우저 리다이렉트
+     *     2. OAuth2 공급자 인증 페이지로 이동
+     *     3. 사용자 인증 완료 후 프론트엔드로 리다이렉트 (쿠키에 JWT 토큰 포함)
+     *     4. 이후 모든 요청에 자동으로 JWT 쿠키 포함
+     *
+     *     참고: 이 엔드포인트를 직접 호출하지 마세요.
+     */
+    get: operations["loginDocumentation"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/today-tip": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/skin-analyses/trends/yearly": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 연간 피부 트렌드 조회
-         * @description 특정 연도의 월별 평균 피부 점수를 조회합니다.
-         *
-         *     **반환 정보:**
-         *     - 각 월의 평균 수분도, 유분도, 색소침착, 주름, 모공, 트러블 점수
-         *     - 연간 피부 상태 변화 추이 파악
-         */
-        get: operations["getYearlyDayTrends"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 오늘의 뷰티 팁 조회
+     * @description 하루에 하나, 고정적으로 제공되는 오늘의 뷰티 팁을 반환합니다.
+     */
+    get: operations["getTodayTip"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/skin-analysis/{analysisId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/skin-analyses/trends/60days": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 60일 피부 트렌드 조회
-         * @description 최근 60일간의 피부 점수 변화 추이를 조회합니다.
-         *
-         *     **반환 정보:**
-         *     - 일별 수분도, 유분도, 색소침착, 주름, 모공, 트러블 점수
-         *     - 그래프 차트 구성에 활용
-         */
-        get: operations["getSixtyDayTrends"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 피부 분석 결과 조회
+     * @description 특정 분석 ID의 상세 결과를 조회합니다.
+     */
+    get: operations["getAnalysis"];
+    put?: never;
+    post?: never;
+    /**
+     * 피부 분석 결과 삭제
+     * @description 특정 분석 결과를 삭제합니다. S3 이미지도 함께 삭제됩니다.
+     */
+    delete: operations["deleteAnalysis"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/skin-analysis/trends/yearly": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/skin-analyses/monthly": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 월별 피부 상태 조회
-         * @description 특정 월의 일별 피부 분석 요약 정보를 조회합니다.
-         *
-         *     **반환 정보:**
-         *     - 해당 월의 각 날짜별로 분석이 있는지 여부
-         *     - 각 날짜의 대표 피부 점수
-         *     - 캘린더 UI 구성에 활용
-         */
-        get: operations["getMonthlyHistory"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 연간 피부 트렌드 조회
+     * @description 특정 연도의 월별 평균 피부 점수를 조회합니다.
+     *
+     *     **반환 정보:**
+     *     - 각 월의 평균 수분도, 유분도, 색소침착, 주름, 모공, 트러블 점수
+     *     - 연간 피부 상태 변화 추이 파악
+     */
+    get: operations["getYearlyDayTrends"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/skin-analysis/trends/60days": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/skin-analyses/latest": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 최신 피부 분석 결과 조회
-         * @description 사용자의 가장 최근 피부 분석 결과를 반환합니다.
-         *
-         *     **사용 사례:**
-         *     - 홈 화면에 최신 피부 상태 표시
-         *     - 제품 추천 시 최신 분석 데이터 활용
-         */
-        get: operations["getLatestAnalysis"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 60일 피부 트렌드 조회
+     * @description 최근 60일간의 피부 점수 변화 추이를 조회합니다.
+     *
+     *     **반환 정보:**
+     *     - 일별 수분도, 유분도, 색소침착, 주름, 모공, 트러블 점수
+     *     - 그래프 차트 구성에 활용
+     */
+    get: operations["getSixtyDayTrends"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/skin-analysis/monthly": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/skin-analyses/daily": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * 특정 일자의 분석 타임스탬프 조회
-         * @description 특정 날짜에 수행된 모든 피부 분석의 시간 목록을 반환합니다.
-         *
-         *     **사용 사례:**
-         *     - 하루에 여러 번 분석한 경우 각 분석 시간 표시
-         *     - 사용자가 원하는 시간대의 분석 선택 가능
-         */
-        get: operations["getDailyDates"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 월별 피부 상태 조회
+     * @description 특정 월의 일별 피부 분석 요약 정보를 조회합니다.
+     *
+     *     **반환 정보:**
+     *     - 해당 월의 각 날짜별로 분석이 있는지 여부
+     *     - 각 날짜의 대표 피부 점수
+     *     - 캘린더 UI 구성에 활용
+     */
+    get: operations["getMonthlyHistory"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/skin-analysis/latest": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/oauth/callback": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["oauthCallback"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * 최신 피부 분석 결과 조회
+     * @description 사용자의 가장 최근 피부 분석 결과를 반환합니다.
+     *
+     *     **사용 사례:**
+     *     - 홈 화면에 최신 피부 상태 표시
+     *     - 제품 추천 시 최신 분석 데이터 활용
+     */
+    get: operations["getLatestAnalysis"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/skin-analysis/daily": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    /**
+     * 특정 일자의 분석 타임스탬프 조회
+     * @description 특정 날짜에 수행된 모든 피부 분석의 시간 목록을 반환합니다.
+     *
+     *     **사용 사례:**
+     *     - 하루에 여러 번 분석한 경우 각 분석 시간 표시
+     *     - 사용자가 원하는 시간대의 분석 선택 가능
+     */
+    get: operations["getDailyDates"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/oauth/callback": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * OAuth 콜백 리다이렉트 (내부용)
+     * @description OAuth2 인증 후 프론트엔드로 리다이렉트하는 중간 엔드포인트입니다.
+     *     환경 변수 app.oauth2.redirect에 설정된 URL로 자동 리다이렉트됩니다.
+     *
+     *     - 로컬: https://localhost:5173/oauth/callback (기본값)
+     *     - 프로덕션: 환경 변수에 설정된 값 사용
+     */
+    get: operations["oauthCallback"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        /** @description 사용자 정보 수정 요청 DTO */
-        UserRequest: {
-            /**
-             * @description 변경할 닉네임 (2-20자, 영문/한글/숫자 가능)
-             * @example 홍길동123
-             */
-            username: string;
-            /**
-             * @description 변경할 이메일 주소
-             * @example newemail@example.com
-             */
-            email: string;
-        };
-        /**
-         * @description 피부 분석 응답
-         * @example {
-         *       "id": "550e8400-e29b-41d4-a716-446655440000",
-         *       "userId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-         *       "skinAnalysis": {
-         *         "pigmentationReg": 50,
-         *         "moistureReg": 65,
-         *         "elasticityReg": 78,
-         *         "wrinkleReg": 35,
-         *         "poreReg": 55
-         *       },
-         *       "feedback": "전반적으로 건조한 피부 타입으로 보습 관리가 필요합니다.",
-         *       "averageScore": 72.5,
-         *       "createdAt": "2025-01-15T10:30:00Z"
-         *     }
-         */
-        SkinAnalysisResponse: {
-            /**
-             * Format: uuid
-             * @description 피부 분석 고유 식별자
-             * @example 550e8400-e29b-41d4-a716-446655440000
-             */
-            id: string;
-            /**
-             * Format: uuid
-             * @description 분석 대상 사용자의 고유 식별자
-             * @example a1b2c3d4-e5f6-7890-abcd-ef1234567890
-             */
-            userId: string;
-            /** @description 피부 분석 세부 점수 결과 (모든 점수는 0-100 범위) */
-            skinAnalysis: components["schemas"]["SkinAnalysisScores"];
-            /**
-             * @description AI가 생성한 개인화된 피부 분석 피드백 및 관리 조언
-             * @example 전반적으로 건조한 피부 타입으로 보습 관리가 필요합니다. 특히 T존 부위의 모공 관리와 함께 수분 공급에 집중하시기 바랍니다.
-             */
-            feedback: string;
-            /**
-             * Format: float
-             * @description 전체 피부 상태 평균 점수 (0.0-100.0)
-             * @example 72.5
-             */
-            averageScore: number;
-            /**
-             * Format: date-time
-             * @description 피부 분석이 수행된 일시 (ISO 8601 형식; Z 또는 UTC 오프셋 허용)
-             * @example 2025-01-15T10:30:00Z
-             */
-            createdAt: string;
-        };
-        /** @description 피부 분석 점수 DTO (0~100 범위의 정수 점수들) */
-        SkinAnalysisScores: {
-            /**
-             * Format: int32
-             * @description 색소침착 회귀 점수
-             * @example 50
-             */
-            pigmentationReg: number;
-            /**
-             * Format: int32
-             * @description 수분 점수
-             * @example 65
-             */
-            moistureReg: number;
-            /**
-             * Format: int32
-             * @description 탄력 점수
-             * @example 78
-             */
-            elasticityReg: number;
-            /**
-             * Format: int32
-             * @description 주름 회귀 점수
-             * @example 35
-             */
-            wrinkleReg: number;
-            /**
-             * Format: int32
-             * @description 모공 회귀 점수
-             * @example 55
-             */
-            poreReg: number;
-        };
-        /** @description 가격 필터 */
-        PriceFilter: {
-            /**
-             * Format: int32
-             * @description 최소 가격 (원)
-             * @example 10000
-             */
-            min?: number;
-            /**
-             * Format: int32
-             * @description 최대 가격 (원)
-             * @example 50000
-             */
-            max?: number;
-        };
-        /** @description 제품 필터 옵션 */
-        ProductFilters: {
-            /** @description 가격 범위 필터 */
-            price?: components["schemas"]["PriceFilter"];
-            /** @description 리뷰 평점 필터 */
-            reviewScore?: components["schemas"]["ReviewScoreFilter"];
-            /** @description 리뷰 개수 필터 */
-            reviewCount?: components["schemas"]["ReviewCountFilter"];
-        };
-        /**
-         * @description 개인화 제품 추천 요청
-         * @example {
-         *       "topN": 2,
-         *       "filters": {
-         *         "price": {
-         *           "min": 10000,
-         *           "max": 50000
-         *         },
-         *         "reviewScore": {
-         *           "min": 4
-         *         },
-         *         "reviewCount": {
-         *           "min": 50
-         *         }
-         *       },
-         *       "sort": {
-         *         "by": "reviewScore",
-         *         "order": "desc"
-         *       }
-         *     }
-         */
-        ProductRequest: {
-            /**
-             * Format: int32
-             * @description 추천받을 카테고리별 제품의 최대 개수
-             * @example 2
-             */
-            topN: number;
-            /** @description 제품 필터 옵션 (가격, 리뷰 평점, 리뷰 개수) */
-            filters?: components["schemas"]["ProductFilters"];
-            /** @description 정렬 옵션 (정렬 기준 및 순서) */
-            sort?: components["schemas"]["ProductSort"];
-        };
-        /** @description 정렬 옵션 */
-        ProductSort: {
-            /**
-             * @description 정렬 기준
-             * @example reviewScore
-             * @enum {string}
-             */
-            by: "price" | "reviewScore" | "reviewCount";
-            /**
-             * @description 정렬 순서
-             * @example desc
-             * @enum {string}
-             */
-            order: "asc" | "desc";
-        };
-        /** @description 리뷰 개수 필터 */
-        ReviewCountFilter: {
-            /**
-             * Format: int32
-             * @description 최소 리뷰 개수
-             * @example 50
-             */
-            min?: number;
-        };
-        /** @description 리뷰 평점 필터 */
-        ReviewScoreFilter: {
-            /**
-             * Format: double
-             * @description 최소 리뷰 평점 (0.0-5.0)
-             * @example 4
-             */
-            min?: number;
-        };
-        /**
-         * @description 제품 상세 정보
-         * @example {
-         *       "id": "550e8400-e29b-41d4-a716-446655440000",
-         *       "category": "스킨케어",
-         *       "overallRank": 1,
-         *       "pageNumber": 1,
-         *       "pageRank": 1,
-         *       "brand": "라운드랩",
-         *       "productName": "1025 독도 토너",
-         *       "listPrice": 20000,
-         *       "salePrice": 15000,
-         *       "reviewScore": 4.8,
-         *       "reviewCount": 1234,
-         *       "ingredients": "정제수, 글리세린, 부틸렌글라이콜, 판테놀, 해조추출물",
-         *       "description": "민감한 피부를 진정시키는 토너",
-         *       "tags": "민감성피부, 진정, 보습",
-         *       "bestOrNew": "BEST",
-         *       "imageUrl": "https://image.oliveyoung.co.kr/uploads/images/goods/400/10/0000/0018/A00000018321012ko.jpg",
-         *       "productUrl": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000183210"
-         *     }
-         */
-        Product: {
-            /**
-             * Format: uuid
-             * @description 제품 고유 ID
-             * @example 550e8400-e29b-41d4-a716-446655440000
-             */
-            id: string;
-            /**
-             * @description 제품 카테고리
-             * @example 스킨케어
-             */
-            category?: string;
-            /**
-             * Format: int32
-             * @description 전체 순위 (올리브영 전체 랭킹)
-             * @example 1
-             */
-            overallRank?: number;
-            /**
-             * Format: int32
-             * @description 페이지 번호
-             * @example 1
-             */
-            pageNumber?: number;
-            /**
-             * Format: int32
-             * @description 페이지 내 순위
-             * @example 1
-             */
-            pageRank?: number;
-            /**
-             * @description 브랜드명
-             * @example 라운드랩
-             */
-            brand?: string;
-            /**
-             * @description 제품명
-             * @example 1025
-             */
-            productName: string;
-            /**
-             * Format: int32
-             * @description 정가 (원)
-             * @example 20000
-             */
-            listPrice?: number;
-            /**
-             * Format: int32
-             * @description 판매가 (원)
-             * @example 15000
-             */
-            salePrice?: number;
-            /**
-             * Format: float
-             * @description 리뷰 평점 (0.0-5.0)
-             * @example 4.8
-             */
-            reviewScore?: number;
-            /**
-             * Format: int32
-             * @description 리뷰 개수
-             * @example 1234
-             */
-            reviewCount?: number;
-            /**
-             * @description 제품 성분 목록
-             * @example 정제수, 글리세린, 부틸렌글라이콜, 판테놀, 해조추출물
-             */
-            ingredients?: string;
-            /**
-             * @description 제품 설명
-             * @example 민감한 피부를 진정시키는 토너
-             */
-            description?: string;
-            /**
-             * @description 제품 태그 (쉼표로 구분)
-             * @example 민감성피부, 진정, 보습
-             */
-            tags?: string;
-            /**
-             * @description 베스트/신제품 구분
-             * @example BEST
-             * @enum {string}
-             */
-            bestOrNew?: "BEST" | "NEW" | "";
-            /**
-             * Format: uri
-             * @description 제품 이미지 URL
-             * @example https://image.oliveyoung.co.kr/uploads/images/goods/400/10/0000/0018/A00000018321012ko.jpg
-             */
-            imageUrl?: string;
-            /**
-             * Format: uri
-             * @description 제품 상세 페이지 URL
-             * @example https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000183210
-             */
-            productUrl?: string;
-        };
-        /** @description 개인화된 제품 추천 항목 */
-        ProductRecommendation: {
-            /** @description 제품 상세 정보 */
-            product: components["schemas"]["Product"];
-            /**
-             * @description LLM이 생성한 개인화 추천 이유
-             * @example 귀하의 민감성 피부 타입에 적합한 진정 성분이 포함되어 있습니다.
-             */
-            reason: string;
-            /**
-             * @description 위시리스트 포함 여부
-             * @example false
-             */
-            isWish: boolean;
-        };
-        /**
-         * @description 개인화된 제품 추천 응답
-         * @example {
-         *       "products": [
-         *         {
-         *           "product": {
-         *             "id": "550e8400-e29b-41d4-a716-446655440000",
-         *             "category": "스킨케어",
-         *             "overallRank": 1,
-         *             "pageNumber": 1,
-         *             "pageRank": 1,
-         *             "brand": "라운드랩",
-         *             "productName": "1025 독도 토너",
-         *             "listPrice": 20000,
-         *             "salePrice": 15000,
-         *             "reviewScore": 4.8,
-         *             "reviewCount": 1234,
-         *             "ingredients": "정제수, 글리세린, 부틸렌글라이콜, 판테놀, 해조추출물",
-         *             "description": "민감한 피부를 진정시키는 토너",
-         *             "tags": "민감성피부, 진정, 보습",
-         *             "bestOrNew": "BEST",
-         *             "imageUrl": "https://example.com/image.jpg",
-         *             "productUrl": "https://example.com/product/1"
-         *           },
-         *           "reason": "귀하의 민감성 피부 타입에 적합한 진정 성분이 포함되어 있습니다.",
-         *           "isWish": false
-         *         }
-         *       ]
-         *     }
-         */
-        ProductResponse: {
-            /** @description 추천 제품 목록 */
-            products: components["schemas"]["ProductRecommendation"][];
-        };
-        ImageItem: {
-            imageName?: string;
-            imageUrl?: string;
-        };
-        /** @description 키워드 (선택, 최대 5개) */
-        RecommendRequestDto: {
-            /**
-             * @description 스타일 추천 키워드 배열 (선택, 최대 5개)
-             * @example [
-             *       "고급스럽게",
-             *       "차분하게",
-             *       "세련된 분위기",
-             *       "우아한 메이크업",
-             *       "톤 다운된 색감"
-             *     ]
-             */
-            keywords?: string[];
-        };
-        /** @description 추천 스타일 항목 */
-        RecommendItem: {
-            /**
-             * @description 이미지 이름
-             * @example temp/7f000001-9a61-1a59-819a-61ba765e0603/85708e33...
-             */
-            recommendImageName?: string;
-            /**
-             * @description 스타일 이미지 s3 url
-             * @example https://beautiq-s3.s3.amazonaws.com/temp/7f000001-9a61-1a59-819a-61ba765e0603/85708e33-838c-411d-89f0-df271c10ae5e.png?X-Am...
-             */
-            recommendImageUrl?: string;
-        };
-        /** @description 스타일 추천 응답 DTO */
-        RecommendResponseDto: {
-            /** @description 추천 스타일 목록 (3개) */
-            recommendations?: components["schemas"]["RecommendItem"][];
-        };
-        /**
-         * @description 메이크업 커스터마이즈 요청 DTO
-         * @example {
-         *       "edits": [
-         *         {
-         *           "region": "lip",
-         *           "intensity": 60
-         *         },
-         *         {
-         *           "region": "skin",
-         *           "intensity": 40
-         *         }
-         *       ]
-         *     }
-         */
-        CustomizeRequestDto: {
-            /** @description 편집 항목 배열 (필수) */
-            edits: components["schemas"]["EditForWeb"][];
-        };
-        /** @description 편집 항목 */
-        EditForWeb: {
-            region?: string;
-            /** Format: int32 */
-            intensity?: number;
-            edited?: boolean;
-        };
-        /** @description 메이크업 커스터마이즈 응답 DTO */
-        CustomizeResponseDto: {
-            /**
-             * @description 처리 상태 - success | failed
-             * @example success
-             */
-            status?: string;
-            /**
-             * @description 처리된 결과 이미지 이름 - 성공 시 존재
-             * @example temp/7f000001-9a6e-12b7-819a-6e42edf20000/fc32f75...
-             */
-            imageName?: string;
-            /**
-             * @description 처리된 결과 이미지 url - 성공 시 존재
-             * @example https://beautiq-s3.s3.amazon...
-             */
-            imageUrl?: string;
-            /**
-             * @description 실패 시 에러 메시지
-             * @example Invalid edit parameters
-             */
-            message?: string;
-        };
-        /**
-         * @description 위시리스트 토글 응답 DTO
-         * @example {
-         *       "productId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
-         *       "isWish": true,
-         *       "message": "위시리스트에 추가되었습니다."
-         *     }
-         */
-        WishlistToggleResponse: {
-            /**
-             * Format: uuid
-             * @description 제품 ID
-             * @example 7c9e6679-7425-40de-944b-e07fc1f90ae7
-             */
-            productId: string;
-            /**
-             * @description 현재 위시리스트 포함 여부 (true: 추가됨, false: 제거됨)
-             * @example true
-             */
-            isWish: boolean;
-            /**
-             * @description 작업 결과 메시지
-             * @example 위시리스트에 추가되었습니다.
-             */
-            message: string;
-        };
-        /** @description 사용자 응답 DTO - 사용자 정보 조회 시 반환되는 데이터 */
-        UserResponse: {
-            /**
-             * Format: uuid
-             * @description 사용자 고유 ID (UUID)
-             * @example 550e8400-e29b-41d4-a716-446655440000
-             */
-            id: string;
-            /**
-             * @description 이메일 주소 (OAuth 로그인 시 제공된 이메일)
-             * @example hong@example.com
-             */
-            email: string;
-            /**
-             * @description 사용자 닉네임 (변경 가능)
-             * @example 홍길동123
-             */
-            username: string;
-            /**
-             * @description 프로필 이미지 URL (S3 저장소 경로)
-             * @example https://beautiq-test.s3.ap-northeast-2.amazonaws.com/550e8400-e29b-41d4-a716-446655440000
-             */
-            profileImage?: string;
-            /**
-             * Format: date-time
-             * @description 가입일시 (계정 생성 시각)
-             * @example 2024-01-15T10:30:00
-             */
-            createdAt: string;
-        };
-        Page: {
-            /** Format: int64 */
-            totalElements?: number;
-            /** Format: int32 */
-            totalPages?: number;
-            pageable?: components["schemas"]["PageableObject"];
-            /** Format: int32 */
-            numberOfElements?: number;
-            /** Format: int32 */
-            size?: number;
-            content?: unknown[];
-            /** Format: int32 */
-            number?: number;
-            sort?: components["schemas"]["SortObject"];
-            first?: boolean;
-            last?: boolean;
-            empty?: boolean;
-        };
-        PageableObject: {
-            paged?: boolean;
-            /** Format: int32 */
-            pageNumber?: number;
-            /** Format: int32 */
-            pageSize?: number;
-            /** Format: int64 */
-            offset?: number;
-            sort?: components["schemas"]["SortObject"];
-            unpaged?: boolean;
-        };
-        SortObject: {
-            sorted?: boolean;
-            empty?: boolean;
-            unsorted?: boolean;
-        };
-        /** @description 위시리스트 제품 정보 */
-        WishProduct: {
-            /**
-             * Format: uuid
-             * @description 제품 고유 ID
-             * @example 7c9e6679-7425-40de-944b-e07fc1f90ae7
-             */
-            productId: string;
-            /**
-             * @description 제품 카테고리
-             * @example 스킨케어
-             */
-            category?: string;
-            /**
-             * Format: int32
-             * @description 전체 순위
-             * @example 1
-             */
-            overallRank?: number;
-            /**
-             * Format: int32
-             * @description 페이지 번호
-             * @example 1
-             */
-            pageNumber?: number;
-            /**
-             * Format: int32
-             * @description 페이지 내 순위
-             * @example 1
-             */
-            pageRank?: number;
-            /**
-             * @description 브랜드명
-             * @example 라운드랩
-             */
-            brand?: string;
-            /**
-             * @description 제품명
-             * @example [라운드랩] 1025 독도 토너 200ml
-             */
-            productName: string;
-            /**
-             * Format: int32
-             * @description 정가
-             * @example 30000
-             */
-            listPrice?: number;
-            /**
-             * Format: int32
-             * @description 판매가
-             * @example 25000
-             */
-            salePrice?: number;
-            /**
-             * Format: float
-             * @description 리뷰 평점
-             * @example 4.5
-             */
-            reviewScore?: number;
-            /**
-             * Format: int32
-             * @description 리뷰 개수
-             * @example 1234
-             */
-            reviewCount?: number;
-            /**
-             * @description 제품 성분 목록
-             * @example 정제수, 글리세린, 부틸렌글라이콜, 판테놀, 해조추출물
-             */
-            ingredients?: string;
-            /**
-             * @description 제품 설명
-             * @example 독도 해양심층수로 피부를 진정시키는 토너
-             */
-            description?: string;
-            /**
-             * @description 제품 태그 (쉼표로 구분)
-             * @example 민감성피부, 진정, 보습
-             */
-            tags?: string;
-            /**
-             * @description 베스트/신제품 구분
-             * @example BEST
-             */
-            bestOrNew?: string;
-            /**
-             * Format: uri
-             * @description 이미지 URL
-             * @example https://example.com/image.jpg
-             */
-            imageUrl?: string;
-            /**
-             * Format: uri
-             * @description 제품 상세 페이지 URL
-             * @example https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000183210
-             */
-            productUrl?: string;
-        };
-        /**
-         * @description 위시리스트 제품 응답 DTO
-         * @example {
-         *       "id": "550e8400-e29b-41d4-a716-446655440000",
-         *       "userId": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
-         *       "wishProduct": {
-         *         "productId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
-         *         "category": "스킨케어",
-         *         "overallRank": 1,
-         *         "pageNumber": 1,
-         *         "pageRank": 1,
-         *         "brand": "라운드랩",
-         *         "productName": "[라운드랩] 1025 독도 토너 200ml",
-         *         "listPrice": 30000,
-         *         "salePrice": 25000,
-         *         "reviewScore": 4.5,
-         *         "reviewCount": 1234,
-         *         "ingredients": "정제수, 글리세린, 부틸렌글라이콜, 판테놀, 해조추출물",
-         *         "description": "독도 해양심층수로 피부를 진정시키는 토너",
-         *         "tags": "민감성피부, 진정, 보습",
-         *         "bestOrNew": "BEST",
-         *         "imageUrl": "https://example.com/image.jpg",
-         *         "productUrl": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000183210"
-         *       }
-         *     }
-         */
-        WishProductResponse: {
-            /**
-             * Format: uuid
-             * @description 위시리스트 항목 ID
-             * @example 550e8400-e29b-41d4-a716-446655440000
-             */
-            id: string;
-            /**
-             * Format: uuid
-             * @description 사용자 ID
-             * @example 6ba7b810-9dad-11d1-80b4-00c04fd430c8
-             */
-            userId: string;
-            /** @description 위시리스트 제품 정보 */
-            wishProduct: components["schemas"]["WishProduct"];
-        };
-        MakeUpDetailResponseDto: {
-            /** Format: uuid */
-            makeUpId?: string;
-            imageName?: string;
-            imageUrl?: string;
-            keywords?: string[];
-            createdAt?: string;
-        };
-        MakeUpListResponseDto: {
-            makeUps?: components["schemas"]["MakeUpDetailResponseDto"][];
-        };
-        /** @description 현재 월의 평균 피부 점수 */
-        MonthPoint: {
-            /**
-             * @description 월 (YYYY-MM 형식)
-             * @example 2023-01
-             */
-            monthDate: string;
-            /**
-             * Format: int32
-             * @description 한 달 피부 평균 점수
-             * @example 85
-             */
-            point: number;
-        };
-        /**
-         * @description 연간 월별 피부 평균 점수 및 연간 피드백 응답
-         * @example {
-         *       "yearlyHistory": [
-         *         {
-         *           "monthDate": "2025-01",
-         *           "point": 78
-         *         },
-         *         {
-         *           "monthDate": "2025-02",
-         *           "point": 80
-         *         },
-         *         {
-         *           "monthDate": "2025-03",
-         *           "point": 82
-         *         }
-         *       ],
-         *       "feedback": "피부 종합 점수가 꾸준히 상승하고 있습니다. 좋은 관리 습관을 유지하세요!",
-         *       "feedbackType": "UPWARD"
-         *     }
-         */
-        YearlyDaySkinPointsResponse: {
-            yearlyHistory: components["schemas"]["MonthPoint"][];
-            /**
-             * @description 연간 피부 상태 분석 결과 (SkinYearFeedbackType 기반 문자열). 가능한 의미 분류: UPWARD, DOWNWARD, FLAT
-             * @example 피부 종합 점수가 꾸준히 상승하고 있습니다. 좋은 관리 습관을 유지하세요!
-             */
-            feedback: string;
-            /**
-             * @description 연간 피부 상태 피드백 유형 (UPWARD, DOWNWARD, FLAT 중 하나)
-             * @example UPWARD
-             */
-            feedbackType: string;
-        };
-        DayPoint: {
-            /**
-             * @description 날짜 (YYYY-MM-DD 형식)
-             * @example 2023-01-01
-             */
-            dayDate: string;
-            /**
-             * Format: int32
-             * @description 하루 피부 평균 점수
-             * @example 85
-             */
-            point: number;
-        };
-        /**
-         * @description 60일간 피부 점수 변화 및 현재 월 평균 점수 응답
-         * @example {
-         *       "within60Days": [
-         *         {
-         *           "dayDate": "2025-09-06",
-         *           "point": 85
-         *         },
-         *         {
-         *           "dayDate": "2025-09-07",
-         *           "point": 78
-         *         }
-         *       ],
-         *       "currentMonth": {
-         *         "monthDate": "2025-09",
-         *         "point": 82
-         *       }
-         *     }
-         */
-        SixtyDaySkinPointsResponse: {
-            within60Days: components["schemas"]["DayPoint"][];
-            /** @description 현재 월의 평균 피부 점수 */
-            currentMonth: components["schemas"]["MonthPoint"];
-        };
-        SkinStatusHistory: {
-            /**
-             * @description 피부 상태 (GOOD, CAUTION, DANGER)
-             * @example GOOD
-             * @enum {string}
-             */
-            skinStatus: "GOOD" | "CAUTION" | "DANGER";
-            /**
-             * Format: date
-             * @description 날짜 (YYYY-MM-DD 형식)
-             * @example 2023-01-01
-             */
-            dayDate: string;
-        };
-        /**
-         * @description 월별 피부 상태 이력 응답 래퍼
-         * @example {
-         *       "monthlyHistory": [
-         *         {
-         *           "skinStatus": "GOOD",
-         *           "dayDate": "2025-09-06"
-         *         },
-         *         {
-         *           "skinStatus": "CAUTION",
-         *           "dayDate": "2025-09-07"
-         *         }
-         *       ]
-         *     }
-         */
-        MonthlySkinStatusResponse: {
-            monthlyHistory: components["schemas"]["SkinStatusHistory"][];
-        };
-        /** @description 피부 분석 날짜 항목 */
-        DailySkinDateItem: {
-            /**
-             * Format: uuid
-             * @description 피부 분석 고유 식별자
-             * @example 550e8400-e29b-41d4-a716-446655440000
-             */
-            id: string;
-            /**
-             * Format: date-time
-             * @description 피부 분석 수행 날짜 및 시간 (yyyy-MM-dd'T'HH:mm)
-             * @example 2024-08-18T09:12
-             */
-            date: string;
-        };
-        /**
-         * @description 일별 피부 분석 날짜 목록 응답 래퍼
-         * @example {
-         *       "dailyDates": [
-         *         {
-         *           "id": "550e8400-e29b-41d4-a716-446655440000",
-         *           "date": "2024-08-18T09:12"
-         *         },
-         *         {
-         *           "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-         *           "date": "2024-08-19T14:30"
-         *         }
-         *       ]
-         *     }
-         */
-        DailySkinDatesResponse: {
-            dailyDates: components["schemas"]["DailySkinDateItem"][];
-        };
+  schemas: {
+    /** @description 사용자 정보 수정 요청 DTO */
+    UserRequest: {
+      /**
+       * @description 변경할 닉네임 (2-20자, 영문/한글/숫자 가능)
+       * @example 홍길동123
+       */
+      username: string;
+      /**
+       * @description 변경할 이메일 주소
+       * @example newemail@example.com
+       */
+      email: string;
     };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    /**
+     * @description 피부 분석 응답
+     * @example {
+     *       "id": "550e8400-e29b-41d4-a716-446655440000",
+     *       "userId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+     *       "skinAnalysis": {
+     *         "pigmentationReg": 50,
+     *         "moistureReg": 65,
+     *         "elasticityReg": 78,
+     *         "wrinkleReg": 35,
+     *         "poreReg": 55
+     *       },
+     *       "feedback": "전반적으로 건조한 피부 타입으로 보습 관리가 필요합니다.",
+     *       "averageScore": 72.5,
+     *       "createdAt": "2025-01-15T10:30:00Z"
+     *     }
+     */
+    SkinAnalysisResponse: {
+      /**
+       * Format: uuid
+       * @description 피부 분석 고유 식별자
+       * @example 550e8400-e29b-41d4-a716-446655440000
+       */
+      id: string;
+      /**
+       * Format: uuid
+       * @description 분석 대상 사용자의 고유 식별자
+       * @example a1b2c3d4-e5f6-7890-abcd-ef1234567890
+       */
+      userId: string;
+      /** @description 피부 분석 세부 점수 결과 (모든 점수는 0-100 범위) */
+      skinAnalysis: components["schemas"]["SkinAnalysisScores"];
+      /**
+       * @description AI가 생성한 개인화된 피부 분석 피드백 및 관리 조언
+       * @example 전반적으로 건조한 피부 타입으로 보습 관리가 필요합니다. 특히 T존 부위의 모공 관리와 함께 수분 공급에 집중하시기 바랍니다.
+       */
+      feedback: string;
+      /**
+       * Format: float
+       * @description 전체 피부 상태 평균 점수 (0.0-100.0)
+       * @example 72.5
+       */
+      averageScore: number;
+      /**
+       * Format: date-time
+       * @description 피부 분석이 수행된 일시 (ISO 8601 형식; Z 또는 UTC 오프셋 허용)
+       * @example 2025-01-15T10:30:00Z
+       */
+      createdAt: string;
+    };
+    /** @description 피부 분석 점수 DTO (0~100 범위의 정수 점수들) */
+    SkinAnalysisScores: {
+      /**
+       * Format: int32
+       * @description 색소침착 회귀 점수
+       * @example 50
+       */
+      pigmentationReg: number;
+      /**
+       * Format: int32
+       * @description 수분 점수
+       * @example 65
+       */
+      moistureReg: number;
+      /**
+       * Format: int32
+       * @description 탄력 점수
+       * @example 78
+       */
+      elasticityReg: number;
+      /**
+       * Format: int32
+       * @description 주름 회귀 점수
+       * @example 35
+       */
+      wrinkleReg: number;
+      /**
+       * Format: int32
+       * @description 모공 회귀 점수
+       * @example 55
+       */
+      poreReg: number;
+    };
+    /** @description 가격 필터 */
+    PriceFilter: {
+      /**
+       * Format: int32
+       * @description 최소 가격 (원)
+       * @example 10000
+       */
+      min?: number;
+      /**
+       * Format: int32
+       * @description 최대 가격 (원)
+       * @example 50000
+       */
+      max?: number;
+    };
+    /** @description 제품 필터 옵션 */
+    ProductFilters: {
+      /** @description 가격 범위 필터 */
+      price?: components["schemas"]["PriceFilter"];
+      /** @description 리뷰 평점 필터 */
+      reviewScore?: components["schemas"]["ReviewScoreFilter"];
+      /** @description 리뷰 개수 필터 */
+      reviewCount?: components["schemas"]["ReviewCountFilter"];
+    };
+    /**
+     * @description 개인화 제품 추천 요청
+     * @example {
+     *       "topN": 2,
+     *       "filters": {
+     *         "price": {
+     *           "min": 10000,
+     *           "max": 50000
+     *         },
+     *         "reviewScore": {
+     *           "min": 4
+     *         },
+     *         "reviewCount": {
+     *           "min": 50
+     *         }
+     *       },
+     *       "sort": {
+     *         "by": "reviewScore",
+     *         "order": "desc"
+     *       }
+     *     }
+     */
+    ProductRequest: {
+      /**
+       * Format: int32
+       * @description 추천받을 카테고리별 제품의 최대 개수
+       * @example 2
+       */
+      topN: number;
+      /** @description 제품 필터 옵션 (가격, 리뷰 평점, 리뷰 개수) */
+      filters?: components["schemas"]["ProductFilters"];
+      /** @description 정렬 옵션 (정렬 기준 및 순서) */
+      sort?: components["schemas"]["ProductSort"];
+    };
+    /** @description 정렬 옵션 */
+    ProductSort: {
+      /**
+       * @description 정렬 기준
+       * @example reviewScore
+       * @enum {string}
+       */
+      by: "price" | "reviewScore" | "reviewCount";
+      /**
+       * @description 정렬 순서
+       * @example desc
+       * @enum {string}
+       */
+      order: "asc" | "desc";
+    };
+    /** @description 리뷰 개수 필터 */
+    ReviewCountFilter: {
+      /**
+       * Format: int32
+       * @description 최소 리뷰 개수
+       * @example 50
+       */
+      min?: number;
+    };
+    /** @description 리뷰 평점 필터 */
+    ReviewScoreFilter: {
+      /**
+       * Format: double
+       * @description 최소 리뷰 평점 (0.0-5.0)
+       * @example 4
+       */
+      min?: number;
+    };
+    /**
+     * @description 제품 상세 정보
+     * @example {
+     *       "id": "550e8400-e29b-41d4-a716-446655440000",
+     *       "category": "스킨케어",
+     *       "overallRank": 1,
+     *       "pageNumber": 1,
+     *       "pageRank": 1,
+     *       "brand": "라운드랩",
+     *       "productName": "1025 독도 토너",
+     *       "listPrice": 20000,
+     *       "salePrice": 15000,
+     *       "reviewScore": 4.8,
+     *       "reviewCount": 1234,
+     *       "ingredients": "정제수, 글리세린, 부틸렌글라이콜, 판테놀, 해조추출물",
+     *       "description": "민감한 피부를 진정시키는 토너",
+     *       "tags": "민감성피부, 진정, 보습",
+     *       "bestOrNew": "BEST",
+     *       "imageUrl": "https://image.oliveyoung.co.kr/uploads/images/goods/400/10/0000/0018/A00000018321012ko.jpg",
+     *       "productUrl": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000183210"
+     *     }
+     */
+    Product: {
+      /**
+       * Format: uuid
+       * @description 제품 고유 ID
+       * @example 550e8400-e29b-41d4-a716-446655440000
+       */
+      id: string;
+      /**
+       * @description 제품 카테고리
+       * @example 스킨케어
+       */
+      category?: string;
+      /**
+       * Format: int32
+       * @description 전체 순위 (올리브영 전체 랭킹)
+       * @example 1
+       */
+      overallRank?: number;
+      /**
+       * Format: int32
+       * @description 페이지 번호
+       * @example 1
+       */
+      pageNumber?: number;
+      /**
+       * Format: int32
+       * @description 페이지 내 순위
+       * @example 1
+       */
+      pageRank?: number;
+      /**
+       * @description 브랜드명
+       * @example 라운드랩
+       */
+      brand?: string;
+      /**
+       * @description 제품명
+       * @example 1025
+       */
+      productName: string;
+      /**
+       * Format: int32
+       * @description 정가 (원)
+       * @example 20000
+       */
+      listPrice?: number;
+      /**
+       * Format: int32
+       * @description 판매가 (원)
+       * @example 15000
+       */
+      salePrice?: number;
+      /**
+       * Format: float
+       * @description 리뷰 평점 (0.0-5.0)
+       * @example 4.8
+       */
+      reviewScore?: number;
+      /**
+       * Format: int32
+       * @description 리뷰 개수
+       * @example 1234
+       */
+      reviewCount?: number;
+      /**
+       * @description 제품 성분 목록
+       * @example 정제수, 글리세린, 부틸렌글라이콜, 판테놀, 해조추출물
+       */
+      ingredients?: string;
+      /**
+       * @description 제품 설명
+       * @example 민감한 피부를 진정시키는 토너
+       */
+      description?: string;
+      /**
+       * @description 제품 태그 (쉼표로 구분)
+       * @example 민감성피부, 진정, 보습
+       */
+      tags?: string;
+      /**
+       * @description 베스트/신제품 구분
+       * @example BEST
+       * @enum {string}
+       */
+      bestOrNew?: string;
+      /**
+       * Format: uri
+       * @description 제품 이미지 URL
+       * @example https://image.oliveyoung.co.kr/uploads/images/goods/400/10/0000/0018/A00000018321012ko.jpg
+       */
+      imageUrl?: string;
+      /**
+       * Format: uri
+       * @description 제품 상세 페이지 URL
+       * @example https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000183210
+       */
+      productUrl?: string;
+    };
+    /** @description 개인화된 제품 추천 항목 */
+    ProductRecommendation: {
+      /** @description 제품 상세 정보 */
+      product: components["schemas"]["Product"];
+      /**
+       * @description LLM이 생성한 개인화 추천 이유
+       * @example 귀하의 민감성 피부 타입에 적합한 진정 성분이 포함되어 있습니다.
+       */
+      reason: string;
+      /**
+       * @description 위시리스트 포함 여부
+       * @example false
+       */
+      isWish: boolean;
+    };
+    /**
+     * @description 개인화된 제품 추천 응답
+     * @example {
+     *       "products": [
+     *         {
+     *           "product": {
+     *             "id": "550e8400-e29b-41d4-a716-446655440000",
+     *             "category": "스킨케어",
+     *             "overallRank": 1,
+     *             "pageNumber": 1,
+     *             "pageRank": 1,
+     *             "brand": "라운드랩",
+     *             "productName": "1025 독도 토너",
+     *             "listPrice": 20000,
+     *             "salePrice": 15000,
+     *             "reviewScore": 4.8,
+     *             "reviewCount": 1234,
+     *             "ingredients": "정제수, 글리세린, 부틸렌글라이콜, 판테놀, 해조추출물",
+     *             "description": "민감한 피부를 진정시키는 토너",
+     *             "tags": "민감성피부, 진정, 보습",
+     *             "bestOrNew": "BEST",
+     *             "imageUrl": "https://example.com/image.jpg",
+     *             "productUrl": "https://example.com/product/1"
+     *           },
+     *           "reason": "귀하의 민감성 피부 타입에 적합한 진정 성분이 포함되어 있습니다.",
+     *           "isWish": false
+     *         }
+     *       ]
+     *     }
+     */
+    ProductResponse: {
+      /** @description 추천 제품 목록 */
+      products: components["schemas"]["ProductRecommendation"][];
+    };
+    ImageItem: {
+      imageName?: string;
+      imageUrl?: string;
+    };
+    /** @description 키워드 (선택, 최대 5개) */
+    RecommendRequestDto: {
+      /**
+       * @description 스타일 추천 키워드 배열 (선택, 최대 5개)
+       * @example [
+       *       "고급스럽게",
+       *       "차분하게",
+       *       "세련된 분위기",
+       *       "우아한 메이크업",
+       *       "톤 다운된 색감"
+       *     ]
+       */
+      keywords?: string[];
+    };
+    /** @description 추천 스타일 항목 */
+    RecommendItem: {
+      /**
+       * @description 이미지 이름
+       * @example temp/7f000001-9a61-1a59-819a-61ba765e0603/85708e33...
+       */
+      recommendImageName?: string;
+      /**
+       * @description 스타일 이미지 s3 url
+       * @example https://beautiq-s3.s3.amazonaws.com/temp/7f000001-9a61-1a59-819a-61ba765e0603/85708e33-838c-411d-89f0-df271c10ae5e.png?X-Am...
+       */
+      recommendImageUrl?: string;
+    };
+    /** @description 스타일 추천 응답 DTO */
+    RecommendResponseDto: {
+      /** @description 추천 스타일 목록 (3개) */
+      recommendations?: components["schemas"]["RecommendItem"][];
+    };
+    /**
+     * @description 메이크업 커스터마이즈 요청 DTO
+     * @example {
+     *       "edits": [
+     *         {
+     *           "region": "lip",
+     *           "intensity": 60
+     *         },
+     *         {
+     *           "region": "skin",
+     *           "intensity": 40
+     *         }
+     *       ]
+     *     }
+     */
+    CustomizeRequestDto: {
+      /** @description 편집 항목 배열 (필수) */
+      edits: components["schemas"]["EditForWeb"][];
+    };
+    /** @description 편집 항목 */
+    EditForWeb: {
+      region?: string;
+      /** Format: int32 */
+      intensity?: number;
+      edited?: boolean;
+    };
+    /** @description 메이크업 커스터마이즈 응답 DTO */
+    CustomizeResponseDto: {
+      /**
+       * @description 처리 상태 - success | failed
+       * @example success
+       */
+      status?: string;
+      /**
+       * @description 처리된 결과 이미지 이름 - 성공 시 존재
+       * @example temp/7f000001-9a6e-12b7-819a-6e42edf20000/fc32f75...
+       */
+      imageName?: string;
+      /**
+       * @description 처리된 결과 이미지 url - 성공 시 존재
+       * @example https://beautiq-s3.s3.amazon...
+       */
+      imageUrl?: string;
+      /**
+       * @description 실패 시 에러 메시지
+       * @example Invalid edit parameters
+       */
+      message?: string;
+    };
+    /**
+     * @description 위시리스트 토글 응답 DTO
+     * @example {
+     *       "productId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+     *       "isWish": true,
+     *       "message": "위시리스트에 추가되었습니다."
+     *     }
+     */
+    WishlistToggleResponse: {
+      /**
+       * Format: uuid
+       * @description 제품 ID
+       * @example 7c9e6679-7425-40de-944b-e07fc1f90ae7
+       */
+      productId: string;
+      /**
+       * @description 현재 위시리스트 포함 여부 (true: 추가됨, false: 제거됨)
+       * @example true
+       */
+      isWish: boolean;
+      /**
+       * @description 작업 결과 메시지
+       * @example 위시리스트에 추가되었습니다.
+       */
+      message: string;
+    };
+    /** @description 사용자 응답 DTO - 사용자 정보 조회 시 반환되는 데이터 */
+    UserResponse: {
+      /**
+       * Format: uuid
+       * @description 사용자 고유 ID (UUID)
+       * @example 550e8400-e29b-41d4-a716-446655440000
+       */
+      id: string;
+      /**
+       * @description 이메일 주소 (OAuth 로그인 시 제공된 이메일)
+       * @example hong@example.com
+       */
+      email: string;
+      /**
+       * @description 사용자 닉네임 (변경 가능)
+       * @example 홍길동123
+       */
+      username: string;
+      /**
+       * @description 프로필 이미지 URL (S3 저장소 경로)
+       * @example https://beautiq-test.s3.ap-northeast-2.amazonaws.com/550e8400-e29b-41d4-a716-446655440000
+       */
+      profileImage?: string;
+      /**
+       * Format: date-time
+       * @description 가입일시 (계정 생성 시각)
+       * @example 2024-01-15T10:30:00
+       */
+      createdAt: string;
+    };
+    Page: {
+      /** Format: int64 */
+      totalElements?: number;
+      /** Format: int32 */
+      totalPages?: number;
+      pageable?: components["schemas"]["PageableObject"];
+      /** Format: int32 */
+      numberOfElements?: number;
+      /** Format: int32 */
+      size?: number;
+      content?: unknown[];
+      /** Format: int32 */
+      number?: number;
+      sort?: components["schemas"]["SortObject"];
+      first?: boolean;
+      last?: boolean;
+      empty?: boolean;
+    };
+    PageableObject: {
+      unpaged?: boolean;
+      paged?: boolean;
+      /** Format: int32 */
+      pageNumber?: number;
+      /** Format: int32 */
+      pageSize?: number;
+      /** Format: int64 */
+      offset?: number;
+      sort?: components["schemas"]["SortObject"];
+    };
+    SortObject: {
+      unsorted?: boolean;
+      sorted?: boolean;
+      empty?: boolean;
+    };
+    /**
+     * @description 위시리스트 제품 응답 DTO
+     * @example {
+     *       "id": "550e8400-e29b-41d4-a716-446655440000",
+     *       "userId": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+     *       "product": {
+     *         "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+     *         "category": "스킨케어",
+     *         "overallRank": 1,
+     *         "pageNumber": 1,
+     *         "pageRank": 1,
+     *         "brand": "라운드랩",
+     *         "productName": "[라운드랩] 1025 독도 토너 200ml",
+     *         "listPrice": 30000,
+     *         "salePrice": 25000,
+     *         "reviewScore": 4.5,
+     *         "reviewCount": 1234,
+     *         "ingredients": "정제수, 글리세린, 부틸렌글라이콜, 판테놀, 해조추출물",
+     *         "description": "독도 해양심층수로 피부를 진정시키는 토너",
+     *         "tags": "민감성피부, 진정, 보습",
+     *         "bestOrNew": "BEST",
+     *         "imageUrl": "https://example.com/image.jpg",
+     *         "productUrl": "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000183210"
+     *       }
+     *     }
+     */
+    WishProductResponse: {
+      /**
+       * Format: uuid
+       * @description 위시리스트 항목 ID
+       * @example 550e8400-e29b-41d4-a716-446655440000
+       */
+      id: string;
+      /**
+       * Format: uuid
+       * @description 사용자 ID
+       * @example 6ba7b810-9dad-11d1-80b4-00c04fd430c8
+       */
+      userId: string;
+      /** @description 제품 정보 */
+      product: components["schemas"]["Product"];
+    };
+    MakeUpDetailResponseDto: {
+      /** Format: uuid */
+      makeUpId?: string;
+      imageName?: string;
+      imageUrl?: string;
+      keywords?: string[];
+      createdAt?: string;
+    };
+    MakeUpListResponseDto: {
+      makeUps?: components["schemas"]["MakeUpDetailResponseDto"][];
+    };
+    /** @description 오늘의 뷰티 팁 응답 */
+    TodayTipResponse: {
+      /**
+       * @description 오늘의 뷰티 팁 문장
+       * @example 세안 후에는 즉시 보습제를 발라주세요.
+       */
+      tip?: string;
+    };
+    /** @description 현재 월의 평균 피부 점수 */
+    MonthPoint: {
+      /**
+       * @description 월 (YYYY-MM 형식)
+       * @example 2023-01
+       */
+      monthDate: string;
+      /**
+       * Format: int32
+       * @description 한 달 피부 평균 점수
+       * @example 85
+       */
+      point: number;
+    };
+    /**
+     * @description 연간 월별 피부 평균 점수 및 연간 피드백 응답
+     * @example {
+     *       "yearlyHistory": [
+     *         {
+     *           "monthDate": "2025-01",
+     *           "point": 78
+     *         },
+     *         {
+     *           "monthDate": "2025-02",
+     *           "point": 80
+     *         },
+     *         {
+     *           "monthDate": "2025-03",
+     *           "point": 82
+     *         }
+     *       ],
+     *       "feedback": "피부 종합 점수가 꾸준히 상승하고 있습니다. 좋은 관리 습관을 유지하세요!",
+     *       "feedbackType": "UPWARD"
+     *     }
+     */
+    YearlyDaySkinPointsResponse: {
+      yearlyHistory: components["schemas"]["MonthPoint"][];
+      /**
+       * @description 연간 피부 상태 분석 결과 (SkinYearFeedbackType 기반 문자열). 가능한 의미 분류: UPWARD, DOWNWARD, FLAT
+       * @example 피부 종합 점수가 꾸준히 상승하고 있습니다. 좋은 관리 습관을 유지하세요!
+       */
+      feedback: string;
+      /**
+       * @description 연간 피부 상태 피드백 유형 (UPWARD, DOWNWARD, FLAT 중 하나)
+       * @example UPWARD
+       */
+      feedbackType: string;
+    };
+    DayPoint: {
+      /**
+       * @description 날짜 (YYYY-MM-DD 형식)
+       * @example 2023-01-01
+       */
+      dayDate: string;
+      /**
+       * Format: int32
+       * @description 하루 피부 평균 점수
+       * @example 85
+       */
+      point: number;
+    };
+    /**
+     * @description 60일간 피부 점수 변화 및 현재 월 평균 점수 응답
+     * @example {
+     *       "within60Days": [
+     *         {
+     *           "dayDate": "2025-09-06",
+     *           "point": 85
+     *         },
+     *         {
+     *           "dayDate": "2025-09-07",
+     *           "point": 78
+     *         }
+     *       ],
+     *       "currentMonth": {
+     *         "monthDate": "2025-09",
+     *         "point": 82
+     *       }
+     *     }
+     */
+    SixtyDaySkinPointsResponse: {
+      within60Days: components["schemas"]["DayPoint"][];
+      /** @description 현재 월의 평균 피부 점수 */
+      currentMonth: components["schemas"]["MonthPoint"];
+    };
+    SkinStatusHistory: {
+      /**
+       * @description 피부 상태 (GOOD, CAUTION, DANGER)
+       * @example GOOD
+       * @enum {string}
+       */
+      skinStatus: "GOOD" | "CAUTION" | "DANGER";
+      /**
+       * Format: date
+       * @description 날짜 (YYYY-MM-DD 형식)
+       * @example 2023-01-01
+       */
+      dayDate: string;
+    };
+    /**
+     * @description 월별 피부 상태 이력 응답 래퍼
+     * @example {
+     *       "monthlyHistory": [
+     *         {
+     *           "skinStatus": "GOOD",
+     *           "dayDate": "2025-09-06"
+     *         },
+     *         {
+     *           "skinStatus": "CAUTION",
+     *           "dayDate": "2025-09-07"
+     *         }
+     *       ]
+     *     }
+     */
+    MonthlySkinStatusResponse: {
+      monthlyHistory: components["schemas"]["SkinStatusHistory"][];
+    };
+    /** @description 피부 분석 날짜 항목 */
+    DailySkinDateItem: {
+      /**
+       * Format: uuid
+       * @description 피부 분석 고유 식별자
+       * @example 550e8400-e29b-41d4-a716-446655440000
+       */
+      id: string;
+      /**
+       * Format: date-time
+       * @description 피부 분석 수행 날짜 및 시간 (yyyy-MM-dd'T'HH:mm)
+       * @example 2024-08-18T09:12
+       */
+      date: string;
+    };
+    /**
+     * @description 일별 피부 분석 날짜 목록 응답 래퍼
+     * @example {
+     *       "dailyDates": [
+     *         {
+     *           "id": "550e8400-e29b-41d4-a716-446655440000",
+     *           "date": "2024-08-18T09:12"
+     *         },
+     *         {
+     *           "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+     *           "date": "2024-08-19T14:30"
+     *         }
+     *       ]
+     *     }
+     */
+    DailySkinDatesResponse: {
+      dailyDates: components["schemas"]["DailySkinDateItem"][];
+    };
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    updateMyUser: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description 수정할 사용자 정보 (닉네임과 이메일 변경 가능) */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UserRequest"];
-            };
-        };
-        responses: {
-            /** @description 수정 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "message": "회원 정보가 수정되었습니다."
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-            /** @description 잘못된 요청 - 유효성 검증 실패 */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "error": "이미 사용중인 사용자명입니다."
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "error": "Unauthorized"
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-        };
+  updateMyUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    uploadMyProfileImage: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "multipart/form-data": {
-                    /**
-                     * Format: binary
-                     * @description 업로드할 프로필 이미지 파일
-                     */
-                    file: string;
-                };
-            };
-        };
-        responses: {
-            /** @description 업로드 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description 잘못된 요청 - 파일이 비어있거나 형식 오류 */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "error": "파일이 비어있습니다."
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "error": "Unauthorized"
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-            /** @description 서버 오류 - S3 업로드 실패 */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "error": "이미지 업로드에 실패했습니다."
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-        };
+    /** @description 수정할 사용자 정보 (닉네임과 이메일 변경 가능) */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserRequest"];
+      };
     };
-    logout: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description 수정 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description 로그아웃 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "message": "로그아웃되었습니다."
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
+        content: {
+          /**
+           * @example {
+           *       "message": "회원 정보가 수정되었습니다."
+           *     }
+           */
+          "application/json": unknown;
         };
+      };
+      /** @description 잘못된 요청 - 유효성 검증 실패 */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": "이미 사용중인 사용자명입니다."
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": "Unauthorized"
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
     };
-    createAnalysis: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "multipart/form-data": {
-                    /**
-                     * Format: binary
-                     * @description 피부 이미지 파일 (JPG/PNG)
-                     */
-                    image: string;
-                };
-            };
-        };
-        responses: {
-            /** @description 분석 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SkinAnalysisResponse"];
-                };
-            };
-            /** @description 잘못된 입력 - 이미지 파일 누락 또는 형식 오류 */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "code": "IMAGE_INVALID_TYPE",
-                     *       "message": "이미지 파일이 필요합니다. JPG 또는 PNG 형식만 지원됩니다.",
-                     *       "status": 400,
-                     *       "timestamp": "2025-01-10T10:30:00.123Z"
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "code": "UNAUTHORIZED",
-                     *       "message": "인증이 필요합니다.",
-                     *       "status": 401,
-                     *       "timestamp": "2025-01-10T10:30:00.123Z"
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-            /** @description AI 서버 오류 */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "code": "AI_SERVER_RESPONSE_EMPTY",
-                     *       "message": "AI 분석 서버와 통신 중 오류가 발생했습니다.",
-                     *       "status": 500,
-                     *       "timestamp": "2025-01-10T10:30:00.123Z"
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-        };
+  };
+  uploadMyProfileImage: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    getRecommendProducts: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /**
-                 * @description 피부 분석 ID
-                 * @example 550e8400-e29b-41d4-a716-446655440000
-                 */
-                analysisId: string;
-            };
-            cookie?: never;
+    requestBody?: {
+      content: {
+        "multipart/form-data": {
+          /**
+           * Format: binary
+           * @description 업로드할 프로필 이미지 파일
+           */
+          file: string;
         };
-        /** @description 제품 추천 요청 정보 */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ProductRequest"];
-            };
-        };
-        responses: {
-            /** @description 추천 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ProductResponse"];
-                };
-            };
-            /** @description 잘못된 요청 - 필터 조건 오류 또는 필수 필드 누락 */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description 인증 실패 - JWT 토큰이 없거나 유효하지 않음 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description 권한 없음 - 다른 사용자의 분석 결과에 접근 */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description 피부 분석 결과를 찾을 수 없음 */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description 서버 오류 - AI 서버 통신 실패 */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-        };
+      };
     };
-    simulateMakeUp: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description 업로드 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: {
-            content: {
-                "multipart/form-data": {
-                    styleImage: string;
-                };
-            };
+        content: {
+          "application/json": unknown;
         };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ImageItem"];
-                };
-            };
+      };
+      /** @description 잘못된 요청 - 파일이 비어있거나 형식 오류 */
+      400: {
+        headers: {
+          [name: string]: unknown;
         };
+        content: {
+          /**
+           * @example {
+           *       "error": "파일이 비어있습니다."
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": "Unauthorized"
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+      /** @description 서버 오류 - S3 업로드 실패 */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": "이미지 업로드에 실패했습니다."
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
     };
-    saveMakeUp: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "multipart/form-data": {
-                    imageName: string;
-                    data: components["schemas"]["RecommendRequestDto"];
-                };
-            };
-        };
-        responses: {
-            /** @description 저장 성공 */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 잘못된 입력 */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  logout: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    styleRecommend: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      /** @description 로그아웃 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: {
-            content: {
-                "multipart/form-data": {
-                    /**
-                     * Format: binary
-                     * @description 사용자 얼굴 이미지 파일 (JPG/PNG)
-                     */
-                    sourceImage: string;
-                    data: components["schemas"]["RecommendRequestDto"];
-                };
-            };
+        content: {
+          /**
+           * @example {
+           *       "message": "로그아웃되었습니다."
+           *     }
+           */
+          "application/json": unknown;
         };
-        responses: {
-            /** @description 추천 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["RecommendResponseDto"];
-                };
-            };
-        };
+      };
     };
-    customize: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "multipart/form-data": {
-                    /**
-                     * @description 시뮬레이션 된 이미지 이름
-                     * @example temp/7f000001-9a6e-12b7-819a-6e42edf20000/fc32f75...
-                     */
-                    imageName: string;
-                    data: components["schemas"]["CustomizeRequestDto"];
-                };
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["CustomizeResponseDto"];
-                };
-            };
-        };
+  };
+  createAnalysis: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    toggleWishlist: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /**
-                 * @description 제품 ID
-                 * @example 550e8400-e29b-41d4-a716-446655440000
-                 */
-                productId: string;
-            };
-            cookie?: never;
+    requestBody?: {
+      content: {
+        "multipart/form-data": {
+          /**
+           * Format: binary
+           * @description 피부 이미지 파일 (JPG/PNG)
+           */
+          image: string;
         };
-        requestBody?: never;
-        responses: {
-            /** @description 토글 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["WishlistToggleResponse"];
-                };
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "code": "UNAUTHORIZED",
-                     *       "message": "인증이 필요합니다.",
-                     *       "status": 401,
-                     *       "timestamp": "2025-01-10T10:30:00.123Z"
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-            /** @description 제품을 찾을 수 없음 */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "code": "PRODUCT_NOT_FOUND",
-                     *       "message": "제품을 찾을 수 없습니다.",
-                     *       "status": 404,
-                     *       "timestamp": "2025-01-10T10:30:00.123Z"
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-        };
+      };
     };
-    getMe: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description 분석 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserResponse"];
-                };
-            };
-            /** @description 인증 실패 - 로그인 필요 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "error": "Unauthorized"
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
+        content: {
+          "application/json": components["schemas"]["SkinAnalysisResponse"];
         };
+      };
+      /** @description 잘못된 입력 - 이미지 파일 누락 또는 형식 오류 */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "code": "IMAGE_INVALID_TYPE",
+           *       "message": "이미지 파일이 필요합니다. JPG 또는 PNG 형식만 지원됩니다.",
+           *       "status": 400,
+           *       "timestamp": "2025-01-10T10:30:00.123Z"
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "code": "UNAUTHORIZED",
+           *       "message": "인증이 필요합니다.",
+           *       "status": 401,
+           *       "timestamp": "2025-01-10T10:30:00.123Z"
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+      /** @description AI 서버 오류 */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "code": "AI_SERVER_RESPONSE_EMPTY",
+           *       "message": "AI 분석 서버와 통신 중 오류가 발생했습니다.",
+           *       "status": 500,
+           *       "timestamp": "2025-01-10T10:30:00.123Z"
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
     };
-    deleteMe: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 탈퇴 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "message": "회원 탈퇴가 완료되었습니다."
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "error": "Unauthorized"
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-        };
+  };
+  getRecommendProducts: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /**
+         * @description 피부 분석 ID
+         * @example 550e8400-e29b-41d4-a716-446655440000
+         */
+        analysisId: string;
+      };
+      cookie?: never;
     };
-    getAllWishProduct: {
-        parameters: {
-            query?: {
-                /**
-                 * @description 정렬 옵션
-                 * @example rate
-                 */
-                order?: "rate" | "popular" | "newest";
-                /**
-                 * @description 페이지 번호 (1부터 시작)
-                 * @example 1
-                 */
-                page?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Page"];
-                };
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-        };
+    /** @description 제품 추천 요청 정보 */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ProductRequest"];
+      };
     };
-    getWishProduct: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 제품 ID */
-                productId: string;
-            };
-            cookie?: never;
+    responses: {
+      /** @description 추천 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["WishProductResponse"];
-                };
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "code": "UNAUTHORIZED",
-                     *       "message": "인증이 필요합니다.",
-                     *       "status": 401,
-                     *       "timestamp": "2025-01-10T10:30:00.123Z"
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-            /** @description 위시리스트에 해당 제품이 없음 */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "code": "WISHLIST_NOT_FOUND",
-                     *       "message": "위시리스트를 찾을 수 없습니다.",
-                     *       "status": 404,
-                     *       "timestamp": "2025-01-10T10:30:00.123Z"
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
+        content: {
+          "application/json": components["schemas"]["ProductResponse"];
         };
+      };
+      /** @description 잘못된 요청 - 필터 조건 오류 또는 필수 필드 누락 */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": unknown;
+        };
+      };
+      /** @description 인증 실패 - JWT 토큰이 없거나 유효하지 않음 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": unknown;
+        };
+      };
+      /** @description 권한 없음 - 다른 사용자의 분석 결과에 접근 */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": unknown;
+        };
+      };
+      /** @description 피부 분석 결과를 찾을 수 없음 */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": unknown;
+        };
+      };
+      /** @description 서버 오류 - AI 서버 통신 실패 */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": unknown;
+        };
+      };
     };
-    getMakeUpList: {
-        parameters: {
-            query?: {
-                page?: number;
-                size?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["MakeUpListResponseDto"];
-                };
-            };
-        };
+  };
+  simulateMakeUp: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    getMakeUp: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                makeUpId: string;
-            };
-            cookie?: never;
+    requestBody?: {
+      content: {
+        "multipart/form-data": {
+          /** @description 추천 받은 스타일 이미지 이름 (styleImage와 둘 중 하나 필수) */
+          styleImageName?: string;
+          /**
+           * Format: binary
+           * @description 직접 업로드한 스타일 이미지 파일 (styleImageName과 둘 중 하나 필수)
+           */
+          styleImage?: string;
         };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["MakeUpDetailResponseDto"];
-                };
-            };
-        };
+      };
     };
-    deleteMakeUp: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                makeUpId: string;
-            };
-            cookie?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
+        content: {
+          "*/*": components["schemas"]["ImageItem"];
         };
+      };
     };
-    loginDocumentation: {
-        parameters: {
-            query?: {
-                /**
-                 * @description OAuth2 공급자 (google 또는 kakao)
-                 * @example google
-                 */
-                ignoredProvider?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OAuth2 인증 페이지로 리다이렉트 */
-            302: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": {
-                        [key: string]: string;
-                    };
-                };
-            };
-        };
+  };
+  saveMakeUp: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    getAnalysis: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /**
-                 * @description 분석 ID (UUID)
-                 * @example 550e8400-e29b-41d4-a716-446655440000
-                 */
-                analysisId: string;
-            };
-            cookie?: never;
+    requestBody?: {
+      content: {
+        "multipart/form-data": {
+          imageName: string;
+          data: components["schemas"]["RecommendRequestDto"];
         };
-        requestBody?: never;
-        responses: {
-            /** @description 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SkinAnalysisResponse"];
-                };
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "code": "UNAUTHORIZED",
-                     *       "message": "인증이 필요합니다.",
-                     *       "status": 401,
-                     *       "timestamp": "2025-01-10T10:30:00.123Z"
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-            /** @description 다른 사용자의 분석 결과 접근 불가 */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "code": "SKIN_ANALYSIS_FORBIDDEN",
-                     *       "message": "해당 피부 분석 결과에 접근할 권한이 없습니다.",
-                     *       "status": 403,
-                     *       "timestamp": "2025-01-10T10:30:00.123Z"
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-            /** @description 분석 결과를 찾을 수 없음 */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "code": "SKIN_ANALYSIS_NOT_FOUND",
-                     *       "message": "피부 분석 결과를 찾을 수 없습니다.",
-                     *       "status": 404,
-                     *       "timestamp": "2025-01-10T10:30:00.123Z"
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-        };
+      };
     };
-    deleteAnalysis: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description 분석 ID (UUID) */
-                analysisId: string;
-            };
-            cookie?: never;
+    responses: {
+      /** @description 저장 성공 */
+      201: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description 삭제 성공 - 응답 본문 없음 */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description 인증 실패 */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "code": "UNAUTHORIZED",
-                     *       "message": "인증이 필요합니다.",
-                     *       "status": 401,
-                     *       "timestamp": "2025-01-10T10:30:00.123Z"
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-            /** @description 다른 사용자의 분석 결과 삭제 불가 */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "code": "SKIN_ANALYSIS_FORBIDDEN",
-                     *       "message": "해당 피부 분석 결과를 삭제할 권한이 없습니다.",
-                     *       "status": 403,
-                     *       "timestamp": "2025-01-10T10:30:00.123Z"
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
-            /** @description 분석 결과를 찾을 수 없음 */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    /**
-                     * @example {
-                     *       "code": "SKIN_ANALYSIS_NOT_FOUND",
-                     *       "message": "피부 분석 결과를 찾을 수 없습니다.",
-                     *       "status": 404,
-                     *       "timestamp": "2025-01-10T10:30:00.123Z"
-                     *     }
-                     */
-                    "application/json": unknown;
-                };
-            };
+        content?: never;
+      };
+      /** @description 잘못된 입력 */
+      400: {
+        headers: {
+          [name: string]: unknown;
         };
+        content?: never;
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
-    getYearlyDayTrends: {
-        parameters: {
-            query?: {
-                /**
-                 * @description 조회할 연도 (기본: 현재 연도)
-                 * @example 2025
-                 */
-                year?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["YearlyDaySkinPointsResponse"];
-                };
-            };
-        };
+  };
+  styleRecommend: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    getSixtyDayTrends: {
-        parameters: {
-            query?: {
-                /**
-                 * @description 기준 날짜 (기본: 오늘, 이 날짜 기준 과거 60일)
-                 * @example 2025-01-15
-                 */
-                date?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: {
+      content: {
+        "multipart/form-data": {
+          /**
+           * Format: binary
+           * @description 사용자 얼굴 이미지 파일 (JPG/PNG)
+           */
+          sourceImage: string;
+          data: components["schemas"]["RecommendRequestDto"];
         };
-        requestBody?: never;
-        responses: {
-            /** @description 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["SixtyDaySkinPointsResponse"];
-                };
-            };
-        };
+      };
     };
-    getMonthlyHistory: {
-        parameters: {
-            query?: {
-                /**
-                 * @description 조회할 연도 (기본: 현재 연도)
-                 * @example 2025
-                 */
-                year?: number;
-                /**
-                 * @description 조회할 월 (1-12, 기본: 현재 월)
-                 * @example 1
-                 */
-                month?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description 추천 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["MonthlySkinStatusResponse"];
-                };
-            };
+        content: {
+          "*/*": components["schemas"]["RecommendResponseDto"];
         };
+      };
     };
-    getLatestAnalysis: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["SkinAnalysisResponse"];
-                };
-            };
-            /** @description 분석 기록이 없음 */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["SkinAnalysisResponse"];
-                };
-            };
-        };
+  };
+  customize: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    getDailyDates: {
-        parameters: {
-            query?: {
-                /**
-                 * @description 조회할 날짜 (기본: 오늘)
-                 * @example 2025-01-15
-                 */
-                date?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: {
+      content: {
+        "multipart/form-data": {
+          /**
+           * @description 시뮬레이션 된 이미지 이름
+           * @example temp/7f000001-9a6e-12b7-819a-6e42edf20000/fc32f75...
+           */
+          imageName: string;
+          data: components["schemas"]["CustomizeRequestDto"];
         };
-        requestBody?: never;
-        responses: {
-            /** @description 조회 성공 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["DailySkinDatesResponse"];
-                };
-            };
-        };
+      };
     };
-    oauthCallback: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
+        content: {
+          "*/*": components["schemas"]["CustomizeResponseDto"];
         };
+      };
     };
+  };
+  toggleWishlist: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /**
+         * @description 제품 ID
+         * @example 550e8400-e29b-41d4-a716-446655440000
+         */
+        productId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 토글 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WishlistToggleResponse"];
+        };
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "code": "UNAUTHORIZED",
+           *       "message": "인증이 필요합니다.",
+           *       "status": 401,
+           *       "timestamp": "2025-01-10T10:30:00.123Z"
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+      /** @description 제품을 찾을 수 없음 */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "code": "PRODUCT_NOT_FOUND",
+           *       "message": "제품을 찾을 수 없습니다.",
+           *       "status": 404,
+           *       "timestamp": "2025-01-10T10:30:00.123Z"
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+    };
+  };
+  getMe: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UserResponse"];
+        };
+      };
+      /** @description 인증 실패 - 로그인 필요 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": "Unauthorized"
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+    };
+  };
+  deleteMe: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 탈퇴 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "message": "회원 탈퇴가 완료되었습니다."
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": "Unauthorized"
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+    };
+  };
+  getAllWishProduct: {
+    parameters: {
+      query?: {
+        /**
+         * @description 정렬 옵션
+         * @example rate
+         */
+        order?: "rate" | "popular" | "newest";
+        /**
+         * @description 페이지 번호 (1부터 시작)
+         * @example 1
+         */
+        page?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Page"];
+        };
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": unknown;
+        };
+      };
+    };
+  };
+  getWishProduct: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 제품 ID */
+        productId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["WishProductResponse"];
+        };
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "code": "UNAUTHORIZED",
+           *       "message": "인증이 필요합니다.",
+           *       "status": 401,
+           *       "timestamp": "2025-01-10T10:30:00.123Z"
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+      /** @description 위시리스트에 해당 제품이 없음 */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "code": "WISHLIST_NOT_FOUND",
+           *       "message": "위시리스트를 찾을 수 없습니다.",
+           *       "status": 404,
+           *       "timestamp": "2025-01-10T10:30:00.123Z"
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+    };
+  };
+  getMakeUpList: {
+    parameters: {
+      query?: {
+        page?: number;
+        size?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["MakeUpListResponseDto"];
+        };
+      };
+    };
+  };
+  getMakeUp: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        makeUpId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["MakeUpDetailResponseDto"];
+        };
+      };
+    };
+  };
+  deleteMakeUp: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        makeUpId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  loginDocumentation: {
+    parameters: {
+      query?: {
+        /**
+         * @description OAuth2 공급자 (google 또는 kakao)
+         * @example google
+         */
+        ignoredProvider?: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OAuth2 인증 페이지로 리다이렉트 */
+      302: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": {
+            [key: string]: string;
+          };
+        };
+      };
+    };
+  };
+  getTodayTip: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TodayTipResponse"];
+        };
+      };
+    };
+  };
+  getAnalysis: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /**
+         * @description 분석 ID (UUID)
+         * @example 550e8400-e29b-41d4-a716-446655440000
+         */
+        analysisId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["SkinAnalysisResponse"];
+        };
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "code": "UNAUTHORIZED",
+           *       "message": "인증이 필요합니다.",
+           *       "status": 401,
+           *       "timestamp": "2025-01-10T10:30:00.123Z"
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+      /** @description 다른 사용자의 분석 결과 접근 불가 */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "code": "SKIN_ANALYSIS_FORBIDDEN",
+           *       "message": "해당 피부 분석 결과에 접근할 권한이 없습니다.",
+           *       "status": 403,
+           *       "timestamp": "2025-01-10T10:30:00.123Z"
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+      /** @description 분석 결과를 찾을 수 없음 */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "code": "SKIN_ANALYSIS_NOT_FOUND",
+           *       "message": "피부 분석 결과를 찾을 수 없습니다.",
+           *       "status": 404,
+           *       "timestamp": "2025-01-10T10:30:00.123Z"
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+    };
+  };
+  deleteAnalysis: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 분석 ID (UUID) */
+        analysisId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 삭제 성공 - 응답 본문 없음 */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description 인증 실패 */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "code": "UNAUTHORIZED",
+           *       "message": "인증이 필요합니다.",
+           *       "status": 401,
+           *       "timestamp": "2025-01-10T10:30:00.123Z"
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+      /** @description 다른 사용자의 분석 결과 삭제 불가 */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "code": "SKIN_ANALYSIS_FORBIDDEN",
+           *       "message": "해당 피부 분석 결과를 삭제할 권한이 없습니다.",
+           *       "status": 403,
+           *       "timestamp": "2025-01-10T10:30:00.123Z"
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+      /** @description 분석 결과를 찾을 수 없음 */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "code": "SKIN_ANALYSIS_NOT_FOUND",
+           *       "message": "피부 분석 결과를 찾을 수 없습니다.",
+           *       "status": 404,
+           *       "timestamp": "2025-01-10T10:30:00.123Z"
+           *     }
+           */
+          "application/json": unknown;
+        };
+      };
+    };
+  };
+  getYearlyDayTrends: {
+    parameters: {
+      query?: {
+        /**
+         * @description 조회할 연도 (기본: 현재 연도)
+         * @example 2025
+         */
+        year?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["YearlyDaySkinPointsResponse"];
+        };
+      };
+    };
+  };
+  getSixtyDayTrends: {
+    parameters: {
+      query?: {
+        /**
+         * @description 기준 날짜 (기본: 오늘, 이 날짜 기준 과거 60일)
+         * @example 2025-01-15
+         */
+        date?: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["SixtyDaySkinPointsResponse"];
+        };
+      };
+    };
+  };
+  getMonthlyHistory: {
+    parameters: {
+      query?: {
+        /**
+         * @description 조회할 연도 (기본: 현재 연도)
+         * @example 2025
+         */
+        year?: number;
+        /**
+         * @description 조회할 월 (1-12, 기본: 현재 월)
+         * @example 1
+         */
+        month?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["MonthlySkinStatusResponse"];
+        };
+      };
+    };
+  };
+  getLatestAnalysis: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["SkinAnalysisResponse"];
+        };
+      };
+      /** @description 분석 기록이 없음 */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["SkinAnalysisResponse"];
+        };
+      };
+    };
+  };
+  getDailyDates: {
+    parameters: {
+      query?: {
+        /**
+         * @description 조회할 날짜 (기본: 오늘)
+         * @example 2025-01-15
+         */
+        date?: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 조회 성공 */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "*/*": components["schemas"]["DailySkinDatesResponse"];
+        };
+      };
+    };
+  };
+  oauthCallback: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description 프론트엔드 콜백 페이지로 리다이렉트 */
+      302: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
 }

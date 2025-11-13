@@ -16,7 +16,12 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const [open, setOpen] = useState(isOpen);
   const [isLogin, setIsLogin] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
+
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
   const close = useCallback(() => setOpen(false), []);
+
+  const defaultImageUrl = "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png";
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -25,14 +30,17 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         const parsed = JSON.parse(userData);
         setIsLogin(true);
         setUserName(parsed.username || parsed.userName || "사용자");
+        setPreviewUrl(parsed.profileImage);
       } catch (error) {
         console.error("Failed to parse user data", error);
         setIsLogin(false);
         setUserName(null);
+        setPreviewUrl(null);
       }
     } else {
       setIsLogin(false);
       setUserName(null);
+      setPreviewUrl(null);
     }
   }, []);
 
@@ -55,7 +63,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   };
 
   const handleLogoutClick = () => {
-    // TODO : 로그인 버튼 연결
+    navigate("/my");
   };
 
   return (
@@ -70,7 +78,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
         <S.BeautiqHeader>
           <div className="brand">
-            <div className="square" />
+            <S.LogoIcon />
             <span className="logo">Beautiq</span>
           </div>
         </S.BeautiqHeader>
@@ -79,23 +87,27 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
         <S.NavList>
           <S.NavButton>
-            <S.Dot />
-            <span onClick={() => navigate("/skin")}>피부 분석</span>
+            <S.LotionIcon />
+            <span onClick={() => (isLogin ? navigate("/skinAnalysis") : navigate("/login"))}>
+              피부 분석
+            </span>
           </S.NavButton>
           <S.NavButton>
-            <S.Dot />
-            <span onClick={() => navigate("/style")}>메이크업 추천</span>
+            <S.LipstickIcon />
+            <span onClick={() => (isLogin ? navigate("/style/recommend") : navigate("/login"))}>
+              메이크업 추천
+            </span>
           </S.NavButton>
 
           {isLogin && (
             <Fragment>
               <S.DividerSpace />
               <S.NavButton>
-                <S.Dot />
+                <S.HistoryIcon />
                 <span onClick={() => navigate("/tracking")}>히스토리</span>
               </S.NavButton>
               <S.NavButton>
-                <S.Dot />
+                <S.MyIcon />
                 <span onClick={() => navigate("/my")}>마이 페이지</span>
               </S.NavButton>
             </Fragment>
@@ -103,7 +115,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         </S.NavList>
 
         <S.UserArea>
-          <S.UserBadge />
+          {/* <S.UserBadge /> */}
+          <S.ProfileImage src={previewUrl || defaultImageUrl} alt="프로필 이미지" />
           {isLogin ? (
             <S.UserButton className="loggedIn" onClick={handleLogoutClick}>
               {userName || "사용자"}
