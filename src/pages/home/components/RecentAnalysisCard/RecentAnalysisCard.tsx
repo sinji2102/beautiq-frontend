@@ -11,7 +11,7 @@ const tempAPI = {
   },
   makeup: {
     date: "2025.08.12",
-    style: ["내추럴", "테스트"],
+    style: ["청순", "사랑스러운"],
   },
 };
 

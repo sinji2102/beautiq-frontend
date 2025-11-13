@@ -9,23 +9,12 @@ export type KeywordPickerProps = {
   onToggle: (kw: string) => void;
 };
 
-const KeywordPicker: React.FC<KeywordPickerProps> = ({
-  all,
-  selected,
-  max,
-  onToggle,
-}) => {
-  // 피그마 기준 기본 13개를 4-4-3-2로 분할
-  const base = all.slice(0, 13);
-  const rows = [
-    base.slice(0, 4),   // 1줄: 4개
-    base.slice(4, 8),   // 2줄: 4개
-    base.slice(8, 11),  // 3줄: 3개
-    base.slice(11, 13), // 4줄: 2개
-  ];
+const KeywordPicker: React.FC<KeywordPickerProps> = ({ all, selected, max, onToggle }) => {
+  const base = all.slice(0, 16);
+  const rows = [base.slice(0, 4), base.slice(4, 7), base.slice(7, 11), base.slice(11, 15)];
 
   // 13개 이후(사용자 추가 키워드)는 추가 행으로 중앙 정렬 + 줄바꿈 허용
-  const extras = all.slice(13);
+  const extras = all.slice(15);
 
   const renderChip = (kw: string) => {
     const active = selected.includes(kw);
@@ -46,14 +35,14 @@ const KeywordPicker: React.FC<KeywordPickerProps> = ({
 
   return (
     <S.Wrap>
-      <S.Count>현재 선택된 키워드({selected.length}/{max})</S.Count>
+      <S.Count>
+        현재 선택된 키워드({selected.length}/{max})
+      </S.Count>
       <S.Guide>원하는 스타일의 키워드를 선택하거나 직접 입력해주세요.</S.Guide>
 
       {/* 피그마처럼 4-4-3-2 줄로 고정 렌더 */}
       {rows.map((items, idx) => (
-        <S.Row key={`row-${idx}`}>
-          {items.map(renderChip)}
-        </S.Row>
+        <S.Row key={`row-${idx}`}>{items.map(renderChip)}</S.Row>
       ))}
 
       {/* 추가 키워드는 중앙 정렬로 이어서 표시 */}

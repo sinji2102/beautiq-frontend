@@ -43,10 +43,10 @@ const ChooseAIStylePage: React.FC = () => {
 
   // 기본은 preset 이미지로 시작
   const initial: ContentsProps[] = [
-    { itemId: 1, recommendImageUrl: presetUrls[0].url,  recommendImageName: ""},
-    { itemId: 2, recommendImageUrl: presetUrls[1].url,  recommendImageName: ""},
-    { itemId: 3, recommendImageUrl: presetUrls[2].url, recommendImageName: ""},
-    { itemId: 4, recommendImageUrl: undefined, recommendImageName: ""},
+    { itemId: 1, recommendImageUrl: presetUrls[0].url, recommendImageName: "" },
+    { itemId: 2, recommendImageUrl: presetUrls[1].url, recommendImageName: "" },
+    { itemId: 3, recommendImageUrl: presetUrls[2].url, recommendImageName: "" },
+    { itemId: 4, recommendImageUrl: undefined, recommendImageName: "" },
   ];
 
   const [contents, setContents] = useState<ContentsProps[]>(initial);
@@ -75,13 +75,9 @@ const ChooseAIStylePage: React.FC = () => {
       return;
     }
 
-    console.log("🟢 recommendData 로 contents 덮어씀:", recs);
-
     setContents((prev) => {
       const mapped: ContentsProps[] = recs.slice(0, 3).map((rec, idx) => {
-        const url =
-          rec.recommendImageUrl ??
-          presetUrls[idx].url; // 그래도 없으면 preset fallback
+        const url = rec.recommendImageUrl ?? presetUrls[idx].url; // 그래도 없으면 preset fallback
 
         return {
           itemId: idx + 1,
@@ -90,27 +86,24 @@ const ChooseAIStylePage: React.FC = () => {
         };
       });
 
-      const item4 =
-        prev.find((c) => c.itemId === 4) ??
-        { itemId: 4, itemImage: undefined, recommendImageName: "", recommendImageUrl: undefined };
+      const item4 = prev.find((c) => c.itemId === 4) ?? {
+        itemId: 4,
+        itemImage: undefined,
+        recommendImageName: "",
+        recommendImageUrl: undefined,
+      };
 
       return [...mapped, item4];
     });
   }, [navState?.recommendData]);
 
   const handleFile = (file: File) => {
-    setContents((prev) =>
-      prev.map((c) => (c.itemId === 4 ? { ...c, itemImage: file } : c)),
-    );
+    setContents((prev) => prev.map((c) => (c.itemId === 4 ? { ...c, itemImage: file } : c)));
     setSelectedId(4); // 업로드 타일 선택
   };
 
   const removeFile = () => {
-    setContents((prev) =>
-      prev.map((c) =>
-        c.itemId === 4 ? { ...c, itemImage: undefined } : c,
-      ),
-    );
+    setContents((prev) => prev.map((c) => (c.itemId === 4 ? { ...c, itemImage: undefined } : c)));
     if (previewUrl?.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
     setPreviewUrl(null);
     if (inputRef.current) inputRef.current.value = "";
@@ -141,9 +134,7 @@ const ChooseAIStylePage: React.FC = () => {
     return; // cleanup은 위 File 분기에서만
   }, [contents]);
 
-  const uploaded4 = Boolean(
-    contents.find((c) => c.itemId === 4)?.recommendImageName,
-  );
+  const uploaded4 = Boolean(contents.find((c) => c.itemId === 4)?.recommendImageName);
 
   // 다음으로 버튼 활성화: 하나 선택 + (4번이면 업로드 있음)
   const canNext = Boolean(selectedId && (selectedId !== 4 || uploaded4));
@@ -193,7 +184,7 @@ const ChooseAIStylePage: React.FC = () => {
       navigate("/style/result", {
         state: {
           originalUrl: simRes.imageUrl, // 프리뷰용
-          imageName: simRes.imageName,  // 이후 customize/save에 필요
+          imageName: simRes.imageName, // 이후 customize/save에 필요
           styleImageFile: imageToSend instanceof File ? imageToSend : null,
         },
       });
@@ -228,8 +219,7 @@ const ChooseAIStylePage: React.FC = () => {
                 selected={selectedId === c.itemId}
                 onClick={() => setSelectedId(c.itemId)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ")
-                    setSelectedId(c.itemId);
+                  if (e.key === "Enter" || e.key === " ") setSelectedId(c.itemId);
                 }}
                 aria-label={`샘플 이미지 ${c.itemId} 선택`}
               >
@@ -247,8 +237,7 @@ const ChooseAIStylePage: React.FC = () => {
               className={previewUrl ? "hasImage" : ""}
               onClick={handleClickUpload}
               onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ")
-                  handleClickUpload();
+                if (e.key === "Enter" || e.key === " ") handleClickUpload();
               }}
               aria-label="사진 업로드"
             >
@@ -286,12 +275,7 @@ const ChooseAIStylePage: React.FC = () => {
         </S.Body>
 
         <S.BottomBar>
-          <Button
-            size="xlarge"
-            variant="primary"
-            disabled={!canNext || loading}
-            onClick={goNext}
-          >
+          <Button size="xlarge" variant="primary" disabled={!canNext || loading} onClick={goNext}>
             {loading ? "분석 중..." : "다음으로"}
           </Button>
         </S.BottomBar>

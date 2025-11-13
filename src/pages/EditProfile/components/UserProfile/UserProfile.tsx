@@ -3,17 +3,12 @@ import { useEffect, useRef, useState } from "react";
 
 import * as S from "./UserProfile.styled";
 
-const tempData = {
-  email: "user@example.com",
-  username: "민우",
-  provider: "kakao", // "kakao" | "google" (서버에서 요청 어떻게 오는지 확인 필요)
-};
-
 const UserProfile = () => {
   const [userName, setUserName] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [provider, setProvider] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -27,16 +22,19 @@ const UserProfile = () => {
         setPreviewUrl(parsed.profileImage);
         setUserName(parsed.username || "사용자");
         setUserEmail(parsed.email);
+        setProvider(parsed.provider);
       } catch (error) {
         console.error("Failed to parse user data", error);
         setPreviewUrl(null);
         setUserName("사용자");
         setUserEmail(null);
+        setProvider("kakao");
       }
     } else {
       setPreviewUrl(null);
       setUserName("사용자");
       setUserEmail(null);
+      setProvider("kakao");
     }
   }, []);
 
@@ -61,7 +59,6 @@ const UserProfile = () => {
 
   const handleSubmit = async () => {
     try {
-      // username, email 등 필요한 값이 있다고 가정
       if (!userName || !userEmail) {
         alert("이름과 이메일을 입력해주세요.");
         return;
@@ -138,7 +135,7 @@ const UserProfile = () => {
         <S.UserInfo>
           <S.InfoText>소셜 로그인 정보</S.InfoText>
 
-          {tempData.provider === "kakao" ? (
+          {provider === "kakao" ? (
             <S.LoginInfo>
               카카오 로그인 <S.KakaoIcon />
             </S.LoginInfo>

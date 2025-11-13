@@ -1,4 +1,7 @@
-import { type MakeupRecommendationRequest, postMakeupRecommendation } from "@apis/domain/makeup/api";
+import {
+  type MakeupRecommendationRequest,
+  postMakeupRecommendation,
+} from "@apis/domain/makeup/api";
 import Button from "@components/commons/button/Button";
 import Header from "@components/commons/header/Header";
 import type { StyleContentsProps } from "@pages/stylePage/types";
@@ -47,11 +50,7 @@ const StyleRecommandPage: React.FC = () => {
   const toggleKeyword = (kw: string) => {
     const k = normalize(kw);
     setSelected((prev) =>
-      prev.includes(k)
-        ? prev.filter((v) => v !== k)
-        : prev.length >= MAX
-        ? prev
-        : [...prev, k],
+      prev.includes(k) ? prev.filter((v) => v !== k) : prev.length >= MAX ? prev : [...prev, k]
     );
   };
 
@@ -70,14 +69,11 @@ const StyleRecommandPage: React.FC = () => {
     }
   };
 
-  const hasAnyImage = useMemo(
-    () => contents.some((c) => Boolean(c.itemImage)),
-    [contents],
-  );
+  const hasAnyImage = useMemo(() => contents.some((c) => Boolean(c.itemImage)), [contents]);
 
   const canNext = useMemo(
     () => hasAnyImage || selected.length > 0 || styleValue.trim().length > 0,
-    [hasAnyImage, selected.length, styleValue],
+    [hasAnyImage, selected.length, styleValue]
   );
 
   const extractFirstFile = (): File | undefined => {
@@ -102,17 +98,15 @@ const StyleRecommandPage: React.FC = () => {
       setLoading(true);
 
       const res = await postMakeupRecommendation(imageFile, params);
+
+      localStorage.setItem("keywords", JSON.stringify(selected));
       if (!res) {
         alert("추천을 가져오지 못했어요. 잠시 후 다시 시도해 주세요.");
         return;
       }
 
       // 🔥 응답에서 안전하게 추천 리스트 꺼내기
-      const resultData = Array.isArray(res.recommendations)
-        ? res.recommendations
-        : [];
-
-      console.log("🟢 Makeup recommend resultData:", resultData);
+      const resultData = Array.isArray(res.recommendations) ? res.recommendations : [];
 
       navigate("/style/ai", {
         state: {
@@ -159,12 +153,7 @@ const StyleRecommandPage: React.FC = () => {
         </S.InputBlock>
 
         <S.BottomBar>
-          <Button
-            size="large"
-            variant="primary"
-            disabled={!canNext}
-            onClick={handleNextBtn}
-          >
+          <Button size="large" variant="primary" disabled={!canNext} onClick={handleNextBtn}>
             다음으로
           </Button>
         </S.BottomBar>

@@ -24,14 +24,14 @@ const MyPage = () => {
         <UserProfile />
         <S.MenuSection>
           <MenuItem title="개인정보 수정" onClick={() => navigate("/my/edit")} />
-          <MenuItem title="서비스 정보" onClick={() => navigate("/my/service")} />
+          {/* <MenuItem title="서비스 정보" onClick={() => navigate("/my/service")} /> */}
         </S.MenuSection>
 
         <S.Divider />
 
         <S.MenuSection>
           <MenuItem title="피부 분석 히스토리" onClick={() => navigate("/tracking")} />
-          <MenuItem title="추천 스타일 확인" onClick={() => navigate("/my/style")} />
+          <MenuItem title="추천 스타일 확인" onClick={() => navigate("/my/recommend-style")} />
           <MenuItem title="찜한 제품 확인" onClick={() => navigate("/my/wishlist")} />
         </S.MenuSection>
 

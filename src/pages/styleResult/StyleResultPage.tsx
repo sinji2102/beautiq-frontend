@@ -2,6 +2,7 @@ import type { MakeupRecommendationRequest } from "@apis/domain/makeup/api";
 import { postMakeupSave } from "@apis/domain/makeup/api";
 import Button from "@components/commons/button/Button";
 import Header from "@components/commons/header/Header";
+import { useModal } from "@hooks/useModal";
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -18,14 +19,14 @@ const StyleResultPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const navState = (location.state || {}) as NavState;
+  const { modalOpen } = useModal();
 
   const [originalUrl, setOriginalUrl] = useState<string | null>(null);
   const [editedUrl, setEditedUrl] = useState<string | null>(null);
   const [imageName, setImageName] = useState<string | null>(null);
-  // const [recommendData, setRecommendData] =
-  //   useState<MakeupRecommendationRequest["keywords"] | null>(null);
-    const [recommendData, setRecommendData] =
-    useState<MakeupRecommendationRequest["keywords"] | null>(["사랑스러운"]);
+  const [recommendData, setRecommendData] = useState<
+    MakeupRecommendationRequest["keywords"] | null
+  >(null);
   const [loading, setLoading] = useState(false);
 
   const [peekOriginal, setPeekOriginal] = useState(false);
@@ -35,23 +36,17 @@ const StyleResultPage: React.FC = () => {
     if (navState.editedUrl ?? undefined) setEditedUrl(navState.editedUrl || null);
     if (navState.imageName) setImageName(navState.imageName);
     if (navState.recommendData) setRecommendData(navState.recommendData);
-  }, [
-    navState.originalUrl,
-    navState.editedUrl,
-    navState.imageName,
-    navState.recommendData,
-  ]);
 
-  const hasImage = useMemo(() => !!(originalUrl || editedUrl), [
-    originalUrl,
-    editedUrl,
-  ]);
+    const keywords = localStorage.getItem("keywords");
+    setRecommendData([JSON.parse(keywords ?? "")]);
+  }, [navState.originalUrl, navState.editedUrl, navState.imageName, navState.recommendData]);
+
+  const hasImage = useMemo(() => !!(originalUrl || editedUrl), [originalUrl, editedUrl]);
 
   const displayUrl = useMemo(() => {
     if (peekOriginal && originalUrl) return originalUrl;
     return editedUrl || originalUrl || null;
   }, [peekOriginal, originalUrl, editedUrl]);
-
 
   /** 🔁 커스터마이징 페이지로 이동만 (API 호출 없음) */
   const goCustomize = () => {
@@ -79,9 +74,13 @@ const StyleResultPage: React.FC = () => {
 
     try {
       setLoading(true);
+
       await postMakeupSave(imageName, recommendData);
-      alert("저장 완료!");
-      // navigate("/my");
+      modalOpen({
+        variant: "line",
+        type: "alert",
+        title: "스타일 저장을 완료하였습니다.",
+      });
     } catch (error) {
       console.error(error);
       alert("저장 중 오류가 발생했습니다.");
@@ -139,19 +138,10 @@ const StyleResultPage: React.FC = () => {
 
         <S.Footer>
           <S.ActionRow>
-            <Button
-              variant="line"
-              size="medium"
-              onClick={undoToOriginal}
-              disabled={loading}
-            >
+            <Button variant="line" size="medium" onClick={undoToOriginal} disabled={loading}>
               되돌리기
             </Button>
-            <Button
-              size="medium"
-              onClick={goCustomize}
-              disabled={loading || !imageName}
-            >
+            <Button size="medium" onClick={goCustomize} disabled={loading || !imageName}>
               커스터마이징
             </Button>
           </S.ActionRow>
@@ -161,8 +151,8 @@ const StyleResultPage: React.FC = () => {
               size="xlarge"
               onClick={saveToList}
               // 키워드까지 보내도록 반영
-              // disabled={loading || !imageName || !recommendData}
-              disabled={loading || !imageName}
+              disabled={loading || !imageName || !recommendData}
+              // disabled={loading || !imageName}
             >
               {loading ? "처리 중..." : "저장하기"}
             </Button>
