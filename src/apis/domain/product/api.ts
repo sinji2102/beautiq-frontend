@@ -15,7 +15,7 @@ export const postRecommendProducts = async (
 ): Promise<RecommendProductResponse | null> => {
   try {
     const response: AxiosResponse<RecommendProductResponse> = await post(
-      `/skin-analyses/${analysisId}/recommend-products`,
+      `/skin-analysis/${analysisId}/recommend-products`,
       data
     );
 

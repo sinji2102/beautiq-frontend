@@ -1,4 +1,5 @@
 import type { WishlistProductsResponse } from "@apis/domain/product/api";
+import { patchWishlistToggle } from "@apis/domain/product/api";
 import { useState } from "react";
 
 import * as S from "./ProductListItem.styled";
@@ -6,14 +7,15 @@ import * as S from "./ProductListItem.styled";
 interface ListItemProps {
   product: WishlistProductsResponse["products"][0]["product"];
   reason: string;
+  isWish: boolean;
 }
 
-const ProductListItem = ({ product, reason }: ListItemProps) => {
-  const [liked, setLiked] = useState(false); // TODO : API 수정되면 기본값이 API에서 넘어온 boolean으로 수정
+const ProductListItem = ({ product, reason, isWish }: ListItemProps) => {
+  const [liked, setLiked] = useState(isWish); // TODO : API 수정되면 기본값이 API에서 넘어온 boolean으로 수정
 
   const handleLikeClick = () => {
     setLiked((prev) => !prev);
-    // TODO : 서버 연동 로직 추가
+    patchWishlistToggle(product.id);
   };
 
   return (

@@ -145,3 +145,8 @@ export const FeedBackTitle = styled.div`
 export const FeedBackText = styled.div`
   ${getTypography("caption2Medi")};
 `;
+
+export const RecommandButtonWrapper = styled.div`
+  display: flex;
+  padding: 1.8rem 0;
+`;

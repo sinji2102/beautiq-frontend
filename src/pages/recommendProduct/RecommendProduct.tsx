@@ -1,7 +1,4 @@
-import type {
-  RecommendProductRequest,
-  RecommendProductResponse,
-} from "@apis/domain/product/api";
+import type { RecommendProductRequest, RecommendProductResponse } from "@apis/domain/product/api";
 import { postRecommendProducts } from "@apis/domain/product/api";
 import Header from "@components/commons/header/Header";
 import ProductListItem from "@components/commons/productListItem/ProductListItem";
@@ -11,16 +8,15 @@ import { useParams } from "react-router-dom";
 import * as S from "./RecommendProduce.styled";
 
 const RecommendProductPage: React.FC = () => {
-  const { analysisId } = useParams<{ analysisId: string }>();
-
   // ✅ 응답 타입 맞게 선언
   const [products, setProducts] = useState<RecommendProductResponse["products"]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const params = useParams();
 
   useEffect(() => {
     const fetchRecommended = async () => {
-      if (!analysisId) {
+      if (!params.analysisId) {
         setError("분석 ID가 없습니다.");
         return;
       }
@@ -29,7 +25,6 @@ const RecommendProductPage: React.FC = () => {
         setLoading(true);
         setError(null);
 
-        // ✅ sort, filters를 Swagger 명세에 맞게 작성
         const body: RecommendProductRequest = {
           topN: 10,
           filters: {
@@ -41,13 +36,12 @@ const RecommendProductPage: React.FC = () => {
           },
         };
 
-        const res = await postRecommendProducts(analysisId, body);
+        const res = await postRecommendProducts(params.analysisId, body);
         if (!res) {
           setError("추천 데이터를 불러오지 못했습니다.");
           return;
         }
 
-        // ✅ 실제 응답 구조가 { products: [...] }라면 아래처럼
         setProducts(res.products ?? []);
       } catch (e) {
         console.error(e);
@@ -58,7 +52,7 @@ const RecommendProductPage: React.FC = () => {
     };
 
     fetchRecommended();
-  }, [analysisId]);
+  }, [params.analysisId]);
 
   return (
     <>
@@ -67,9 +61,7 @@ const RecommendProductPage: React.FC = () => {
         {loading && <p>🔄 추천 제품을 불러오는 중...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
 
-        {!loading && !error && products.length === 0 && (
-          <p>추천된 제품이 없습니다.</p>
-        )}
+        {!loading && !error && products.length === 0 && <p>추천된 제품이 없습니다.</p>}
 
         {!loading &&
           !error &&
@@ -78,6 +70,7 @@ const RecommendProductPage: React.FC = () => {
               key={item.product.id}
               product={item.product}
               reason={item.reason ?? "피부 타입에 적합한 추천 제품이에요!"}
+              isWish={item.isWish}
             />
           ))}
       </S.RecommendProductWrapper>

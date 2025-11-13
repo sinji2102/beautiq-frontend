@@ -80,6 +80,7 @@ export const ProductText = styled.h3`
     display: -webkit-box;
     min-height: calc(1.6rem * 2);
     overflow: hidden;
+    text-align: left;
 
     line-height: 1.6rem;
     white-space: normal;
