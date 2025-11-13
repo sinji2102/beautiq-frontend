@@ -1,3 +1,12 @@
+import type {
+  MakeupCustomizeRequest,
+  MakeupCustomizeResponse,
+  MakeupRecommendationRequest,
+} from "@apis/domain/makeup/api";
+import {
+  postCustomize,
+  postMakeupSave,
+} from "@apis/domain/makeup/api";
 import Button from "@components/commons/button/Button";
 import Header from "@components/commons/header/Header";
 import React, { useEffect, useMemo, useState } from "react";
@@ -10,7 +19,14 @@ type NavState = {
   originalUrl?: string | null;
   /** 커스터마이징 적용 결과 이미지 */
   editedUrl?: string | null;
+  /** 시뮬레이션 결과 이미지 이름 (커스터마이징/저장 시 필요) */
+  imageName?: string | null;
+  /** 키워드/사용자 입력 DTO (저장 API에 사용) */
+  recommendData?: MakeupRecommendationRequest | null;
 };
+
+const asDataUrl = (b64: string | undefined | null) =>
+  b64 ? `data:image/png;base64,${b64}` : null;
 
 const StyleResultPage: React.FC = () => {
   const navigate = useNavigate();
@@ -20,15 +36,26 @@ const StyleResultPage: React.FC = () => {
   // 결과/원본 이미지 URL
   const [originalUrl, setOriginalUrl] = useState<string | null>(null);
   const [editedUrl, setEditedUrl] = useState<string | null>(null);
+  const [imageName, setImageName] = useState<string | null>(null);
+  const [recommendData, setRecommendData] =
+    useState<MakeupRecommendationRequest | null>(null);
+  const [loading, setLoading] = useState(false);
 
   // 길게 눌러 원본 잠깐 보기
   const [peekOriginal, setPeekOriginal] = useState(false);
 
-  // 최초/복귀 진입 시 NavState 반영
+  // 최초/복귀 진입 시 NavState 반영 (의존성은 개별 필드로 명시)
   useEffect(() => {
     if (navState.originalUrl) setOriginalUrl(navState.originalUrl);
     if (navState.editedUrl ?? undefined) setEditedUrl(navState.editedUrl || null);
-  }, [navState.originalUrl, navState.editedUrl]);
+    if (navState.imageName) setImageName(navState.imageName);
+    if (navState.recommendData) setRecommendData(navState.recommendData);
+  }, [
+    navState.originalUrl,
+    navState.editedUrl,
+    navState.imageName,
+    navState.recommendData,
+  ]);
 
   const hasImage = useMemo(() => !!(originalUrl || editedUrl), [originalUrl, editedUrl]);
 
@@ -38,13 +65,75 @@ const StyleResultPage: React.FC = () => {
     return editedUrl || originalUrl || null;
   }, [peekOriginal, originalUrl, editedUrl]);
 
-  const goCustomize = () =>
-    navigate("/style/customizing", {
-      state: {
-        originalUrl: originalUrl,
-        editedUrl: editedUrl ?? originalUrl, // 편집본 없으면 원본을 들고가서 시작
-      } as NavState,
-    });
+  /** ✅ 커스터마이징 요청 (/makeup/customize)
+   *  CustomizeRequestDto의 구조에 맞게 data를 만들어야 함.
+   *  에러 스크린샷상 타입은 대략:
+   *    { base_image_base64: string; edits: { region?: string; intensity?: number; ... } }
+   *  백엔드가 imageName으로 원본을 식별한다면 base_image_base64가 선택일 수도 있으므로
+   *  최소한 edits만 채워 전송하고, 타입은 DTO에 맞춰 캐스팅한다.
+   */
+  const goCustomize = async () => {
+    if (!imageName) {
+      alert("이미지 이름이 없습니다. 시뮬레이션부터 다시 진행해주세요.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      // ✅ 실제 스키마에 맞게 필드 보정 필요 (여기서는 edits만 사용)
+      const customizeData = {
+        edits: {
+          region: "lip",
+          intensity: 50,
+        },
+      } as unknown as MakeupCustomizeRequest;
+
+      const res = await postCustomize(imageName, customizeData);
+
+      if (!res) {
+        alert("커스터마이징에 실패했습니다.");
+        return;
+      }
+
+      // ✅ CustomizeResponseDto는 imageUrl/imageName이 아니라 base64를 반환하는 타입(스크린샷 기준)
+      //    예: { status?: string; result_image_base64?: string; message?: string; }
+      const typed: MakeupCustomizeResponse = res;
+
+      const nextUrl = asDataUrl(typed.imageUrl);
+      if (nextUrl) setEditedUrl(nextUrl);
+
+      // 일부 백엔드는 커스터마이징 결과 imageName을 갱신하지 않을 수 있음
+      // setImageName(typed.imageName ?? imageName);
+
+      alert("커스터마이징이 완료되었습니다!");
+    } catch (error) {
+      console.error(error);
+      alert("커스터마이징 중 오류가 발생했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /** ✅ 저장하기 (/makeup/save): imageName + recommendData(JSON) */
+  const saveToList = async () => {
+    if (!imageName || !recommendData) {
+      alert("저장할 데이터가 없습니다.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await postMakeupSave(imageName, recommendData);
+      alert("저장 완료!");
+      navigate("/my"); // 저장 후 이동 경로는 필요에 맞게 수정
+    } catch (error) {
+      console.error(error);
+      alert("저장 중 오류가 발생했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // 되돌리기: 커스터마이징 적용 이전(=원본 상태)으로 복구
   const undoToOriginal = () => {
@@ -52,19 +141,12 @@ const StyleResultPage: React.FC = () => {
     setEditedUrl(originalUrl);
   };
 
-  // 저장하기: "추천스타일 확인" 목록(LocalStorage) 에 추가
-  const saveToList = () => {
-    // TODO : API 연결하기
-
-  };
-
   const startPeek = () => originalUrl && setPeekOriginal(true);
   const endPeek = () => setPeekOriginal(false);
 
-
   return (
     <S.Screen>
-      <Header text="스타일 추천" right="close" left="back"/>
+      <Header text="스타일 추천" right="close" left="back" />
 
       <S.Body>
         {/* 상단 큰 프리뷰 */}
@@ -107,13 +189,18 @@ const StyleResultPage: React.FC = () => {
         {/* 하단 고정 영역: 버튼들 아래 배치 */}
         <S.Footer>
           <S.ActionRow>
-            {/* TODO : API 연결할 때 커스터마이징이면 뒤로가기 가능하도록 */}
-            <Button variant="line" size="medium" onClick={undoToOriginal}>되돌리기</Button>
-            <Button size="medium" onClick={goCustomize}>커스터마이징</Button>
+            <Button variant="line" size="medium" onClick={undoToOriginal} disabled={loading}>
+              되돌리기
+            </Button>
+            <Button size="medium" onClick={goCustomize} disabled={loading || !imageName}>
+              커스터마이징
+            </Button>
           </S.ActionRow>
 
           <S.SaveBar>
-            <Button size="xlarge" onClick={saveToList}>저장하기</Button>
+            <Button size="xlarge" onClick={saveToList} disabled={loading || !imageName || !recommendData}>
+              {loading ? "처리 중..." : "저장하기"}
+            </Button>
           </S.SaveBar>
         </S.Footer>
       </S.Body>
