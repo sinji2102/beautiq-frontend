@@ -17,7 +17,7 @@ export const putRecommendProducts = async (
 
     return response.data;
   } catch (error) {
-    console.error("postRecommendProducts error:", error);
+    console.error("putRecommendProducts error:", error);
     return null;
   }
 };
@@ -29,7 +29,7 @@ export const postProfileImage = async (imageFile: File): Promise<ProfileImageRes
   try {
     const formData = new FormData();
 
-    formData.append("image", imageFile);
+    formData.append("file", imageFile);
 
     const response: AxiosResponse<ProfileImageResponse> = await post(
       "/users/profile-image",

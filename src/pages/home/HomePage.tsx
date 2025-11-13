@@ -18,7 +18,7 @@ const HomePage = () => {
     <>
       <Header left="beautiq" right="hambuger" handleClickHamburger={handleClickSidebar} />
       <S.HomePageWrapper>
-        <S.HomeImage />
+        <S.HomeImage src="/images/homeImage.png" alt="Home Image" />
         <CardContainer />
         <RecentAnalysisCard />
         <TodayTip />

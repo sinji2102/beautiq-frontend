@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { getUserInfo, postProfileImage, putRecommendProducts } from "@apis/domain/user/api";
+import { useEffect, useRef, useState } from "react";
 
 import * as S from "./UserProfile.styled";
 
@@ -9,13 +10,35 @@ const tempData = {
 };
 
 const UserProfile = () => {
-  const [username, setUsername] = useState(tempData.username);
+  const [userName, setUserName] = useState<string>("");
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const defaultImageUrl = "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png";
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      try {
+        const parsed = JSON.parse(userData);
+        setPreviewUrl(parsed.profileImage);
+        setUserName(parsed.username || "사용자");
+        setUserEmail(parsed.email);
+      } catch (error) {
+        console.error("Failed to parse user data", error);
+        setPreviewUrl(null);
+        setUserName("사용자");
+        setUserEmail(null);
+      }
+    } else {
+      setPreviewUrl(null);
+      setUserName("사용자");
+      setUserEmail(null);
+    }
+  }, []);
 
   const handleImageChangeClick = () => {
     fileInputRef.current?.click();
@@ -37,23 +60,56 @@ const UserProfile = () => {
   };
 
   const handleSubmit = async () => {
-    if (!imageFile) {
-      // TODO : 현재 임시 처리 -> 이미지 없을 때 처리 필요
-      alert("변경할 이미지를 선택해주세요.");
-      return;
+    try {
+      // username, email 등 필요한 값이 있다고 가정
+      if (!userName || !userEmail) {
+        alert("이름과 이메일을 입력해주세요.");
+        return;
+      }
+
+      if (imageFile) {
+        const imageResponse = await postProfileImage(imageFile);
+
+        if (!imageResponse?.success) {
+          alert("이미지 업로드에 실패했습니다.");
+          return;
+        }
+
+        console.log("업로드된 이미지 URL:", imageResponse.imageUrl);
+      }
+
+      const result = await putRecommendProducts(userName, userEmail);
+
+      // 완료되면 유저 정보 다시 받아오기
+
+      if (result === null) {
+        alert("내 정보 수정에 실패했습니다.");
+        return;
+      }
+
+      const fetchAndStoreUser = async () => {
+        try {
+          const userInfo = await getUserInfo();
+
+          if (userInfo) {
+            // 유저 정보가 성공적으로 받아와졌다면 localStorage에 저장
+            localStorage.setItem("user", JSON.stringify(userInfo));
+          } else {
+            // 유저 정보를 받아오지 못했다면 로그인 페이지 등으로 리디렉션
+            console.log(userInfo);
+            console.error("유저 정보를 가져오는데 실패했습니다.");
+          }
+        } catch (error) {
+          // API 호출 중 예외 발생 시 처리
+          console.error("API 호출 중 오류 발생:", error);
+        }
+      };
+
+      fetchAndStoreUser();
+    } catch (error) {
+      console.error("handleSubmit error:", error);
+      alert("저장 중 오류가 발생했습니다.");
     }
-
-    const formData = new FormData();
-    // TODO : 실제 API 명세에 맞게 변경 필요
-    formData.append("sourceImage", imageFile);
-
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-
-    // TODO : username API 연결 필요
-
-    alert("저장 완료");
   };
 
   return (
@@ -74,11 +130,11 @@ const UserProfile = () => {
         <S.InfoTitle>기본 정보</S.InfoTitle>
         <S.UserInfo>
           <S.InfoText>사용자명</S.InfoText>
-          <S.InfoInput value={username} onChange={(e) => setUsername(e.target.value)} />
+          <S.InfoInput value={userName} onChange={(e) => setUserName(e.target.value)} />
         </S.UserInfo>
         <S.UserInfo>
           <S.InfoText>이메일</S.InfoText>
-          {tempData.email}
+          {userEmail}
         </S.UserInfo>
         <S.UserInfo>
           <S.InfoText>소셜 로그인 정보</S.InfoText>

@@ -38,8 +38,20 @@ const MyPage = () => {
         <S.Divider />
 
         <S.MenuSection>
-          <MenuItem title="이용 약관" onClick={() => navigate("")} />
-          <MenuItem title="개인정보 처리방침" onClick={() => navigate("")} />
+          <MenuItem
+            title="이용 약관"
+            onClick={() =>
+              (window.location.href =
+                "https://shard-pressure-1be.notion.site/2aa520739007806487ffcedab2a619e0?source=copy_link")
+            }
+          />
+          <MenuItem
+            title="개인정보 처리방침"
+            onClick={() =>
+              (window.location.href =
+                "https://shard-pressure-1be.notion.site/2aa5207390078030914ccdd665d908a5?source=copy_link")
+            }
+          />
         </S.MenuSection>
       </S.MyPageWrapper>
 
