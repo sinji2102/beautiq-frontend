@@ -94,6 +94,7 @@ const UserProfile = () => {
           if (userInfo) {
             // 유저 정보가 성공적으로 받아와졌다면 localStorage에 저장
             localStorage.setItem("user", JSON.stringify(userInfo));
+            console.log(userInfo);
           } else {
             // 유저 정보를 받아오지 못했다면 로그인 페이지 등으로 리디렉션
             console.log(userInfo);
