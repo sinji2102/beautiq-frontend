@@ -1,4 +1,4 @@
-import { postMakeupSimulation } from "@apis/domain/makeup/api"; // ✅ 시뮬레이션 API 추가
+import { postMakeupSimulation } from "@apis/domain/makeup/api"; // ✅ 시뮬레이션 API
 import Button from "@components/commons/button/Button";
 import Header from "@components/commons/header/Header";
 import type { ContentsProps, ItemProps } from "@pages/stylePage/types";
@@ -24,17 +24,6 @@ const presetUrls = [
     url: "https://images.unsplash.com/photo-1540206276207-3af25c08abc4?q=80&w=800&auto=format&fit=crop",
   },
 ] as const;
-
-// URL → File 변환 유틸
-async function urlToFile(
-  url: string,
-  filename = "image.jpg",
-  mime = "image/jpeg"
-): Promise<File> {
-  const res = await fetch(url, { cache: "no-store" });
-  const blob = await res.blob();
-  return new File([blob], filename, { type: mime });
-}
 
 const ChooseAIStylePage: React.FC = () => {
   const navigate = useNavigate();
@@ -116,39 +105,35 @@ const ChooseAIStylePage: React.FC = () => {
     setSelectedId(4);
   };
 
-  // ✅ 다음 단계: 선택한 이미지를 시뮬레이션 API로 보내고 결과와 함께 이동
+  // ✅ 다음 단계: 선택한 이미지를 (File 또는 URL) 시뮬레이션 API로 보내고 결과와 함께 이동
   const goNext = async () => {
     if (!canNext || selectedId == null) return;
 
-    let fileToPass: File | null = null;
+    let imageToSend: File | string | null = null;
 
     if (selectedId === 4) {
+      // 업로드된 이미지 (File)
       const img = contents.find((c) => c.itemId === 4)?.itemImage;
       if (img instanceof File) {
-        fileToPass = img;
+        imageToSend = img;
       } else {
         alert("업로드된 이미지가 없습니다.");
         return;
       }
     } else {
-      // 1~3번: URL → File 변환 후 시뮬레이션 API로 전달
+      // 1~3번 샘플: URL 그대로 사용
       const c = contents.find((v) => v.itemId === selectedId);
       if (!c || typeof c.itemImage !== "string") return;
-      const presetMeta = presetUrls[selectedId - 1];
-      fileToPass = await urlToFile(
-        c.itemImage,
-        `${presetMeta.imageName}.jpg`,
-        "image/jpeg"
-      );
+      imageToSend = c.itemImage; // ⭐ URL 문자열 그대로
     }
 
-    if (!fileToPass) return;
+    if (!imageToSend) return;
 
     try {
       setLoading(true);
 
-      // 🔥 시뮬레이션 API 호출
-      const simRes = await postMakeupSimulation(fileToPass);
+      // 🔥 시뮬레이션 API 호출 (File | string 둘 다 지원)
+      const simRes = await postMakeupSimulation(imageToSend);
       if (!simRes) {
         alert("이미지 시뮬레이션에 실패했습니다.");
         return;
@@ -160,8 +145,8 @@ const ChooseAIStylePage: React.FC = () => {
           // 다음 페이지가 사용할 값들
           originalUrl: simRes.imageUrl, // 프리뷰용
           imageName: simRes.imageName,  // 이후 customize/save에 필요
-          // 필요하면 원본 파일도 같이 넘겨두기
-          styleImageFile: fileToPass,
+          // 필요하면 원본도 넘겨두기 (File만 넘김, URL은 null)
+          styleImageFile: imageToSend instanceof File ? imageToSend : null,
         },
       });
     } catch (error) {

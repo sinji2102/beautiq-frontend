@@ -4,29 +4,36 @@ import type { AxiosResponse } from "axios";
 
 export type MakeupSimulationResponse = components["schemas"]["ImageItem"]; // 동일
 
-/**
- * 1) 시뮬레이션: 원본/참조 이미지 업로드 → S3 URL 반환
- * POST /makeup/simulation
- * form-data: styleImage (file)
- * response: { imageName, imageUrl }
- */
+import type { ApiResponseType } from "@custom-types/commonType";
+
 export const postMakeupSimulation = async (
-  styleImageFile: File
+  image: File | string   // ⭐ File 또는 URL 문자열
 ): Promise<MakeupSimulationResponse | null> => {
   try {
     const formData = new FormData();
-    formData.append("styleImage", styleImageFile);
 
-    const response: AxiosResponse<MakeupSimulationResponse> = await post(
+    if (image instanceof File) {
+      // ① 사용자가 업로드한 파일
+      formData.append("styleImage", image);
+    } else {
+      // ② 샘플 URL
+      // 백엔드에서 URL을 받는 필드명과 동일해야 함
+      formData.append("styleImageUrl", image);
+    }
+
+    // 래핑 여부에 따라 타입 수정해야 함
+    const response: AxiosResponse<ApiResponseType<MakeupSimulationResponse>> = await post(
       "/makeup/simulation",
       formData
     );
-    return response.data;
+
+    return response.data.data; // API 응답 구조가 { data: {...} }
   } catch (error) {
     console.error("postMakeupSimulation error", error);
     return null;
   }
 };
+
 
 export type MakeupRecommendationRequest = components["schemas"]["RecommendRequestDto"];
 export type MakeupRecommendationResponse = components["schemas"]["RecommendResponseDto"];
