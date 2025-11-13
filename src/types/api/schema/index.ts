@@ -882,7 +882,7 @@ export interface components {
              * @example BEST
              * @enum {string}
              */
-            bestOrNew?: "BEST" | "NEW" | "";
+            bestOrNew?: string;
             /**
              * Format: uri
              * @description 제품 이미지 URL
@@ -1105,12 +1105,12 @@ export interface components {
             empty?: boolean;
         };
         PageableObject: {
-            unpaged?: boolean;
             paged?: boolean;
             /** Format: int32 */
             pageNumber?: number;
             /** Format: int32 */
             pageSize?: number;
+            unpaged?: boolean;
             /** Format: int64 */
             offset?: number;
             sort?: components["schemas"]["SortObject"];
@@ -1120,111 +1120,13 @@ export interface components {
             unsorted?: boolean;
             empty?: boolean;
         };
-        /** @description 위시리스트 제품 정보 */
-        WishProduct: {
-            /**
-             * Format: uuid
-             * @description 제품 고유 ID
-             * @example 7c9e6679-7425-40de-944b-e07fc1f90ae7
-             */
-            productId: string;
-            /**
-             * @description 제품 카테고리
-             * @example 스킨케어
-             */
-            category?: string;
-            /**
-             * Format: int32
-             * @description 전체 순위
-             * @example 1
-             */
-            overallRank?: number;
-            /**
-             * Format: int32
-             * @description 페이지 번호
-             * @example 1
-             */
-            pageNumber?: number;
-            /**
-             * Format: int32
-             * @description 페이지 내 순위
-             * @example 1
-             */
-            pageRank?: number;
-            /**
-             * @description 브랜드명
-             * @example 라운드랩
-             */
-            brand?: string;
-            /**
-             * @description 제품명
-             * @example [라운드랩] 1025 독도 토너 200ml
-             */
-            productName: string;
-            /**
-             * Format: int32
-             * @description 정가
-             * @example 30000
-             */
-            listPrice?: number;
-            /**
-             * Format: int32
-             * @description 판매가
-             * @example 25000
-             */
-            salePrice?: number;
-            /**
-             * Format: float
-             * @description 리뷰 평점
-             * @example 4.5
-             */
-            reviewScore?: number;
-            /**
-             * Format: int32
-             * @description 리뷰 개수
-             * @example 1234
-             */
-            reviewCount?: number;
-            /**
-             * @description 제품 성분 목록
-             * @example 정제수, 글리세린, 부틸렌글라이콜, 판테놀, 해조추출물
-             */
-            ingredients?: string;
-            /**
-             * @description 제품 설명
-             * @example 독도 해양심층수로 피부를 진정시키는 토너
-             */
-            description?: string;
-            /**
-             * @description 제품 태그 (쉼표로 구분)
-             * @example 민감성피부, 진정, 보습
-             */
-            tags?: string;
-            /**
-             * @description 베스트/신제품 구분
-             * @example BEST
-             */
-            bestOrNew?: string;
-            /**
-             * Format: uri
-             * @description 이미지 URL
-             * @example https://example.com/image.jpg
-             */
-            imageUrl?: string;
-            /**
-             * Format: uri
-             * @description 제품 상세 페이지 URL
-             * @example https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000183210
-             */
-            productUrl?: string;
-        };
         /**
          * @description 위시리스트 제품 응답 DTO
          * @example {
          *       "id": "550e8400-e29b-41d4-a716-446655440000",
          *       "userId": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
-         *       "wishProduct": {
-         *         "productId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+         *       "product": {
+         *         "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
          *         "category": "스킨케어",
          *         "overallRank": 1,
          *         "pageNumber": 1,
@@ -1257,8 +1159,8 @@ export interface components {
              * @example 6ba7b810-9dad-11d1-80b4-00c04fd430c8
              */
             userId: string;
-            /** @description 위시리스트 제품 정보 */
-            wishProduct: components["schemas"]["WishProduct"];
+            /** @description 제품 정보 */
+            product: components["schemas"]["Product"];
         };
         MakeUpDetailResponseDto: {
             /** Format: uuid */

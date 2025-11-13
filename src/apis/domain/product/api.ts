@@ -1,6 +1,5 @@
 import { get, patch, post } from "@apis/index";
 import type { components } from "@custom-types/api/schema";
-import type { WishListResponse } from "@custom-types/api/wishlist";
 import type { AxiosResponse } from "axios";
 
 export type RecommendProductRequest = components["schemas"]["ProductRequest"];
@@ -49,7 +48,7 @@ export const patchWishlistToggle = async (
 };
 
 // 서버 응답 타입 생성 어렵다고 해서 직접 생성
-export type WishlistProductsResponse = WishListResponse;
+export type WishlistProductsResponse = RecommendProductResponse;
 
 /**
  * 사용자의 위시리스트에 담긴 제품 전체 조회

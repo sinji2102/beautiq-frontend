@@ -74,7 +74,6 @@ const RecommendProductPage: React.FC = () => {
         {!loading &&
           !error &&
           products.map((item) => (
-            // ✅ 'product' prop에 바로 item 전달
             <ProductListItem
               key={item.product.id}
               product={item.product}
