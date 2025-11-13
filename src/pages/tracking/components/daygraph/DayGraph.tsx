@@ -11,64 +11,63 @@ import * as S from "@pages/tracking/components/daygraph/DayGraph.styled";
 import { useEffect, useState } from "react";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
-// const data = {
-//   within60Days: [
-//     {
-//       dayDate: "2025-09-06",
-//       point: 0,
-//     },
-//     {
-//       dayDate: "2025-09-07",
-//       point: 80,
-//     },
-//     // 아래있는 데이터를 주석 처리 하면 60일 내에 4회 이상의 피부 측정 기록이 나옵니다.
-//     {
-//       dayDate: "2025-09-08",
-//       point: 60,
-//     },
-//     {
-//       dayDate: "2025-09-09",
-//       point: 100,
-//     },
-//     {
-//       dayDate: "2025-09-10",
-//       point: 80,
-//     },
-//   ],
-//   currentMonth: {
-//     monthDate: "2D025-09",
-//     point: 80,
-//     // point: 60,
-//     // point: 40,
-//   },
-// };
+const MOCK_WITHIN60_DATA = {
+  within60Days: [
+    {
+      dayDate: "2025-09-06",
+      point: 0,
+    },
+    {
+      dayDate: "2025-09-07",
+      point: 80,
+    },
+    // 아래있는 데이터를 주석 처리 하면 60일 내에 4회 이상의 피부 측정 기록이 나옵니다.
+    {
+      dayDate: "2025-09-08",
+      point: 60,
+    },
+    {
+      dayDate: "2025-09-09",
+      point: 100,
+    },
+    {
+      dayDate: "2025-09-10",
+      point: 80,
+    },
+  ],
+  currentMonth: {
+    monthDate: "2D025-09",
+    point: 80,
+  },
+};
 
-// const data1 = {
-//   yearlyHistory: [
-//     {
-//       monthDate: "2025-05",
-//       point: 85,
-//     },
-//     {
-//       monthDate: "2025-06",
-//       point: 90,
-//     },
-//     // 아래 있는 데이터 주석 처리 하면 3달 미만으로 검사시 뜨는 텍스트 확인하실 수 있습니다.
-//     {
-//       monthDate: "2025-07",
-//       point: 75,
-//     },
-//     {
-//       monthDate: "2025-08",
-//       point: 88,
-//     },
-//     {
-//       monthDate: "2025-09",
-//       point: 95,
-//     },
-//   ],
-//   feedback: "지난 달에 비해 점수가 크게 향상되었습니다. 잘하고 있어요!",
-// };
+const MOCK_YEAR_HISTORY_DATA = {
+  yearlyHistory: [
+    {
+      monthDate: "2025-05",
+      point: 85,
+    },
+    {
+      monthDate: "2025-06",
+      point: 90,
+    },
+    // 아래 있는 데이터 주석 처리 하면 3달 미만으로 검사시 뜨는 텍스트 확인하실 수 있습니다.
+    {
+      monthDate: "2025-07",
+      point: 75,
+    },
+    {
+      monthDate: "2025-08",
+      point: 88,
+    },
+    {
+      monthDate: "2025-09",
+      point: 95,
+    },
+  ],
+  feedback: "지난 달에 비해 점수가 크게 향상되었습니다. 잘하고 있어요!",
+  feedbackType: "UPWARD",
+};
 
 const DayGraph = () => {
   const theme = useTheme();
@@ -92,8 +91,8 @@ const DayGraph = () => {
         ]);
 
         // 받아온 API DATA 저장
-        setData(result60Days);
-        setData1(resultYearly);
+        setData(result60Days ?? MOCK_WITHIN60_DATA);
+        setData1(resultYearly ?? MOCK_YEAR_HISTORY_DATA);
       } catch (error) {
         console.error("error", error);
       }
