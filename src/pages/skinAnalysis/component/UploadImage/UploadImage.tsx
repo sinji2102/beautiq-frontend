@@ -1,27 +1,32 @@
+import { postPerformance } from "@apis/domain/skin-analysis/api";
 import Button from "@components/commons/button/Button";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import Loading from "../Loading/Loading";
 import * as S from "./UploadImage.styled";
 
 const UploadImage: React.FC = () => {
   const navigate = useNavigate();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [selctImg, setSelectImg] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // ✅ 사진 영역 클릭 시 파일 선택창을 엽니다.
+  // 사진 영역 클릭 시 파일 선택창을 엽니다.
   const openFile = () => inputRef.current?.click();
 
-  // ✅ 파일을 받아 미리보기 URL을 생성하고 상태에 저장합니다.
+  // 파일을 받아 미리보기 URL을 생성하고 상태에 저장합니다.
   const handleFile = (file: File) => {
     setPreviewUrl((prev) => {
       if (prev) URL.revokeObjectURL(prev); // 이전 URL 해제 (메모리 누수 방지)
       return URL.createObjectURL(file);
     });
+    setSelectImg(file);
   };
 
-  // ✅ 업로드된 이미지를 제거하고 입력창과 미리보기를 초기화합니다.
+  // 업로드된 이미지를 제거하고 입력창과 미리보기를 초기화합니다.
   const removeFile = (e: React.MouseEvent) => {
     e.stopPropagation(); // 클릭 이벤트 전파 방지
     setPreviewUrl((prev) => {
@@ -31,7 +36,7 @@ const UploadImage: React.FC = () => {
     if (inputRef.current) inputRef.current.value = ""; // input 값 초기화
   };
 
-  // ✅ 컴포넌트가 언마운트되거나 previewUrl이 바뀔 때 메모리 해제 수행
+  //  컴포넌트가 언마운트되거나 previewUrl이 바뀔 때 메모리 해제 수행
   useEffect(() => {
     return () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
@@ -41,14 +46,44 @@ const UploadImage: React.FC = () => {
   const hasImage = Boolean(previewUrl);
 
   // 피부 분석 버튼이 눌렸을때, 오출되는 함수
-  const TestOnClick = () => {
-    navigate("/skinAnalysis/loading");
+  const TestOnClick = async () => {
+    if (!selctImg) {
+      console.error("이미지를 먼저 선택해 주세요.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await postPerformance(selctImg);
+
+      if (response) {
+        const id = response.id;
+        const dateStr = response.createdAt.slice(0, 10);
+
+        navigate("/detail", {
+          state: {
+            id: id, // DetailPage에서 'id'로 받음
+            dateStr: dateStr,
+          },
+        });
+      } else {
+        // 7. API가 null을 반환한 경우 (실패)
+        alert("피부 분석에 실패했습니다. 다시 시도해 주세요.");
+        setIsLoading(false); // 로딩 상태를 false로 되돌려 사용자가 다시 시도 가능
+      }
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false); // 로딩 상태를 false로 되돌림
+    }
   };
 
-  return (
+  return isLoading ? (
+    <Loading />
+  ) : (
     <S.Wrap>
       {hasImage ? (
-        // ✅ 이미지가 있을 경우 미리보기와 삭제 버튼을 표시
+        // 이미지가 있을 경우 미리보기와 삭제 버튼을 표시
         <S.Preview onClick={openFile}>
           <img src={previewUrl ?? ""} alt="이미지 미리보기" />
           <button className="remove" onClick={removeFile} aria-label="이미지 삭제" type="button">
@@ -56,7 +91,7 @@ const UploadImage: React.FC = () => {
           </button>
         </S.Preview>
       ) : (
-        // ✅ 이미지가 없을 경우 카메라 아이콘이 있는 placeholder 표시
+        // 이미지가 없을 경우 카메라 아이콘이 있는 placeholder 표시
         <S.Placeholder onClick={openFile}>
           <S.PlaceholderMainText>이미지 업로드</S.PlaceholderMainText>
           <S.PlaceholderSubText>

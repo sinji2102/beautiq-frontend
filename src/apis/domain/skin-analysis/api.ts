@@ -11,7 +11,7 @@ export const postPerformance = async (imageFile: File): Promise<SkinAnalysisResp
 
     formData.append("image", imageFile);
 
-    const response: AxiosResponse<SkinAnalysisResponse> = await post("/skin-analyses", formData);
+    const response: AxiosResponse<SkinAnalysisResponse> = await post("/skin-analysis", formData);
 
     return response.data;
   } catch (error) {
@@ -25,7 +25,7 @@ export const getSkinAnalysisResult = async (
   analysisId: string
 ): Promise<SkinAnalysisResponse | null> => {
   try {
-    const response: AxiosResponse<SkinAnalysisResponse> = await get(`/skin-analyses/${analysisId}`);
+    const response: AxiosResponse<SkinAnalysisResponse> = await get(`/skin-analysis/${analysisId}`);
 
     return response.data;
   } catch (error) {
@@ -37,7 +37,7 @@ export const getSkinAnalysisResult = async (
 // 피부 분석 결과 삭제 (DELETE)
 export const deleteSkinAnalysis = async (analysisId: number): Promise<void | null> => {
   try {
-    const response: AxiosResponse<void> = await del(`/skin-analyses/${analysisId}`);
+    const response: AxiosResponse<void> = await del(`/skin-analysis/${analysisId}`);
 
     return response.data;
   } catch (error) {
@@ -54,7 +54,7 @@ export const getSkinAnalysisTrendsYearly = async (
 ): Promise<YearlyDaySkinPointsResponse | null> => {
   try {
     const response: AxiosResponse<YearlyDaySkinPointsResponse> = await get(
-      "/skin-analyses/trends/yearly",
+      "/skin-analysis/trends/yearly",
       {
         params: {
           year,
@@ -77,7 +77,7 @@ export const getSkinAnalysisTrends60Days = async (
 ): Promise<SixtyDaySkinPointsResponse | null> => {
   try {
     const response: AxiosResponse<SixtyDaySkinPointsResponse> = await get(
-      "/skin-analyses/trends/60days",
+      "/skin-analysis/trends/60days",
       {
         params: {
           date,
@@ -100,7 +100,7 @@ export const getSkinAnalysisMonthly = async (
   month: number
 ): Promise<MonthlySkinStatusResponse | null> => {
   try {
-    const response: AxiosResponse<MonthlySkinStatusResponse> = await get("/skin-analyses/monthly", {
+    const response: AxiosResponse<MonthlySkinStatusResponse> = await get("/skin-analysis/monthly", {
       params: {
         year,
         month,
@@ -117,7 +117,7 @@ export const getSkinAnalysisMonthly = async (
 // 최신 피부 분석 결과 조회 (GET)
 export const getSkinAnalysisLatest = async (): Promise<SkinAnalysisResponse | null> => {
   try {
-    const response: AxiosResponse<SkinAnalysisResponse> = await get("/skin-analyses/latest");
+    const response: AxiosResponse<SkinAnalysisResponse> = await get("/skin-analysis/latest");
 
     return response.data;
   } catch (error) {
@@ -133,7 +133,7 @@ export const getSkinAnalysisDaily = async (
   date: string
 ): Promise<DailySkinDatesResponse | null> => {
   try {
-    const response: AxiosResponse<DailySkinDatesResponse> = await get("/skin-analyses/daily", {
+    const response: AxiosResponse<DailySkinDatesResponse> = await get("/skin-analysis/daily", {
       params: {
         date,
       },

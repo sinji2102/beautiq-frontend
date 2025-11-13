@@ -67,7 +67,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/skin-analyses": {
+    "/skin-analysis": {
         parameters: {
             query?: never;
             header?: never;
@@ -98,7 +98,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/skin-analyses/{analysisId}/recommend-products": {
+    "/skin-analysis/{analysisId}/recommend-products": {
         parameters: {
             query?: never;
             header?: never;
@@ -151,6 +151,11 @@ export interface paths {
          *     2. 백엔드: AI 서버에 시뮬레이션 요청
          *     3. 백엔드: 결과 이미지 s3 임시 저장
          *     4. 백엔드: 결과 이미지 이름 및 S3 URL 반환
+         *
+         *     **참고:**
+         *     - styleImageName 또는 styleImage 중 하나는 필수입니다.
+         *     - styleImageName: 추천 받은 이미지 이름
+         *     - styleImage: 직접 업로드한 스타일 이미지 파일
          */
         post: operations["simulateMakeUp"];
         delete?: never;
@@ -411,7 +416,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/skin-analyses/{analysisId}": {
+    "/skin-analysis/{analysisId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -435,7 +440,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/skin-analyses/trends/yearly": {
+    "/skin-analysis/trends/yearly": {
         parameters: {
             query?: never;
             header?: never;
@@ -459,7 +464,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/skin-analyses/trends/60days": {
+    "/skin-analysis/trends/60days": {
         parameters: {
             query?: never;
             header?: never;
@@ -483,7 +488,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/skin-analyses/monthly": {
+    "/skin-analysis/monthly": {
         parameters: {
             query?: never;
             header?: never;
@@ -508,7 +513,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/skin-analyses/latest": {
+    "/skin-analysis/latest": {
         parameters: {
             query?: never;
             header?: never;
@@ -532,7 +537,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/skin-analyses/daily": {
+    "/skin-analysis/daily": {
         parameters: {
             query?: never;
             header?: never;
@@ -563,6 +568,14 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /**
+         * OAuth 콜백 리다이렉트 (내부용)
+         * @description OAuth2 인증 후 프론트엔드로 리다이렉트하는 중간 엔드포인트입니다.
+         *     환경 변수 app.oauth2.redirect에 설정된 URL로 자동 리다이렉트됩니다.
+         *
+         *     - 로컬: https://localhost:5173/oauth/callback (기본값)
+         *     - 프로덕션: 환경 변수에 설정된 값 사용
+         */
         get: operations["oauthCallback"];
         put?: never;
         post?: never;
@@ -869,7 +882,7 @@ export interface components {
              * @example BEST
              * @enum {string}
              */
-            bestOrNew?: "BEST" | "NEW" | "";
+            bestOrNew?: string;
             /**
              * Format: uri
              * @description 제품 이미지 URL
@@ -1097,121 +1110,23 @@ export interface components {
             pageNumber?: number;
             /** Format: int32 */
             pageSize?: number;
+            unpaged?: boolean;
             /** Format: int64 */
             offset?: number;
             sort?: components["schemas"]["SortObject"];
-            unpaged?: boolean;
         };
         SortObject: {
             sorted?: boolean;
-            empty?: boolean;
             unsorted?: boolean;
-        };
-        /** @description 위시리스트 제품 정보 */
-        WishProduct: {
-            /**
-             * Format: uuid
-             * @description 제품 고유 ID
-             * @example 7c9e6679-7425-40de-944b-e07fc1f90ae7
-             */
-            productId: string;
-            /**
-             * @description 제품 카테고리
-             * @example 스킨케어
-             */
-            category?: string;
-            /**
-             * Format: int32
-             * @description 전체 순위
-             * @example 1
-             */
-            overallRank?: number;
-            /**
-             * Format: int32
-             * @description 페이지 번호
-             * @example 1
-             */
-            pageNumber?: number;
-            /**
-             * Format: int32
-             * @description 페이지 내 순위
-             * @example 1
-             */
-            pageRank?: number;
-            /**
-             * @description 브랜드명
-             * @example 라운드랩
-             */
-            brand?: string;
-            /**
-             * @description 제품명
-             * @example [라운드랩] 1025 독도 토너 200ml
-             */
-            productName: string;
-            /**
-             * Format: int32
-             * @description 정가
-             * @example 30000
-             */
-            listPrice?: number;
-            /**
-             * Format: int32
-             * @description 판매가
-             * @example 25000
-             */
-            salePrice?: number;
-            /**
-             * Format: float
-             * @description 리뷰 평점
-             * @example 4.5
-             */
-            reviewScore?: number;
-            /**
-             * Format: int32
-             * @description 리뷰 개수
-             * @example 1234
-             */
-            reviewCount?: number;
-            /**
-             * @description 제품 성분 목록
-             * @example 정제수, 글리세린, 부틸렌글라이콜, 판테놀, 해조추출물
-             */
-            ingredients?: string;
-            /**
-             * @description 제품 설명
-             * @example 독도 해양심층수로 피부를 진정시키는 토너
-             */
-            description?: string;
-            /**
-             * @description 제품 태그 (쉼표로 구분)
-             * @example 민감성피부, 진정, 보습
-             */
-            tags?: string;
-            /**
-             * @description 베스트/신제품 구분
-             * @example BEST
-             */
-            bestOrNew?: string;
-            /**
-             * Format: uri
-             * @description 이미지 URL
-             * @example https://example.com/image.jpg
-             */
-            imageUrl?: string;
-            /**
-             * Format: uri
-             * @description 제품 상세 페이지 URL
-             * @example https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000183210
-             */
-            productUrl?: string;
+            empty?: boolean;
         };
         /**
          * @description 위시리스트 제품 응답 DTO
          * @example {
          *       "id": "550e8400-e29b-41d4-a716-446655440000",
          *       "userId": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
-         *       "wishProduct": {
-         *         "productId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+         *       "product": {
+         *         "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
          *         "category": "스킨케어",
          *         "overallRank": 1,
          *         "pageNumber": 1,
@@ -1244,8 +1159,8 @@ export interface components {
              * @example 6ba7b810-9dad-11d1-80b4-00c04fd430c8
              */
             userId: string;
-            /** @description 위시리스트 제품 정보 */
-            wishProduct: components["schemas"]["WishProduct"];
+            /** @description 제품 정보 */
+            product: components["schemas"]["Product"];
         };
         MakeUpDetailResponseDto: {
             /** Format: uuid */
@@ -1739,7 +1654,13 @@ export interface operations {
         requestBody?: {
             content: {
                 "multipart/form-data": {
-                    styleImage: string;
+                    /** @description 추천 받은 스타일 이미지 이름 (styleImage와 둘 중 하나 필수) */
+                    styleImageName?: string;
+                    /**
+                     * Format: binary
+                     * @description 직접 업로드한 스타일 이미지 파일 (styleImageName과 둘 중 하나 필수)
+                     */
+                    styleImage?: string;
                 };
             };
         };
@@ -2475,8 +2396,8 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description OK */
-            200: {
+            /** @description 프론트엔드 콜백 페이지로 리다이렉트 */
+            302: {
                 headers: {
                     [name: string]: unknown;
                 };

@@ -1,6 +1,7 @@
+import { getSkinAnalysisResult, type SkinAnalysisResponse } from "@apis/domain/skin-analysis/api";
 import Header from "@components/commons/header/Header";
 import * as S from "@pages/detailPage/DetailPage.styled";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Bar,
@@ -16,11 +17,9 @@ import {
 // DetailPage의 데이터를 기반으로 차트를 그리는 컴포넌트
 const SkinChart = ({ data }: { data: { name: string; uv: number }[] }) => {
   return (
-    // [수정 1] 고정 값 327 대신 "100%"로 변경
     <ResponsiveContainer width="100%" height={150}>
       <BarChart
         data={data}
-        // [수정 2] margin 속성 추가 (그래프 내부 여백 조절)
         margin={{
           top: 10,
           right: 10,
@@ -30,7 +29,7 @@ const SkinChart = ({ data }: { data: { name: string; uv: number }[] }) => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
-        <YAxis />
+        <YAxis domain={[0, 100]} />
         <Tooltip />
         <Bar dataKey="uv">
           {data.map((entry, index) => {
@@ -51,30 +50,54 @@ const SkinChart = ({ data }: { data: { name: string; uv: number }[] }) => {
 };
 
 // DetailPage의 상세 점수 데이터
-const data = {
-  id: "analysis_1a2b3c",
-  userId: "user_test_001",
-  SkinAnalysisScores: {
-    pigmentationReg: 80, // 색소침착
-    moistureReg: 100, // 건조 (수분)
-    elasticityReg: 60, // 처짐 (탄력)
-    wrinkleReg: 80, // 주름
-    poreReg: 80, // 모공
-  },
-  feedback:
-    "전반적으로 피부 상태가 양호합니다. 다만, 주름 점수가 다소 낮으니 아이크림 사용과 수분 섭취에 신경 써주세요.",
-  averageScore: 81.2,
-  createdAt: "2025-11-07T14:30:15Z",
-};
+// const data = {
+//   id: "analysis_1a2b3c",
+//   userId: "user_test_001",
+//   SkinAnalysisScores: {
+//     pigmentationReg: 80, // 색소침착
+//     moistureReg: 100, // 건조 (수분)
+//     elasticityReg: 60, // 처짐 (탄력)
+//     wrinkleReg: 80, // 주름
+//     poreReg: 80, // 모공
+//   },
+//   feedback:
+//     "전반적으로 피부 상태가 양호합니다. 다만, 주름 점수가 다소 낮으니 아이크림 사용과 수분 섭취에 신경 써주세요.",
+//   averageScore: 81.2,
+//   createdAt: "2025-11-07T14:30:15Z",
+// };
 
 const DetailPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [data, setData] = useState<SkinAnalysisResponse | null>(null);
+
+  // useEffect(() => {
+  //   if (!location.state) {
+  //     navigate("/tracking");
+  //   }
+  // }, [location.state, navigate]);
+
   useEffect(() => {
-    if (!location.state) {
-      navigate("/tracking");
+    const state = location.state;
+
+    // state나 analysisId가 없으면 페이지 접근 오류로 간주하고 이동
+    if (!state || !state.id) {
+      console.error("Analysis ID가 없습니다. 페이지를 이동합니다.");
+      navigate("/tracking"); // ID 없으면 트래킹 페이지로
+      return;
     }
+
+    const fetchAnalysisData = async () => {
+      try {
+        const result = await getSkinAnalysisResult(state.id);
+        setData(result);
+      } catch (error) {
+        console.error("상세 데이터를 불러오는 데 실패했습니다.", error);
+      }
+    };
+
+    fetchAnalysisData();
   }, [location.state, navigate]);
 
   // 각 피부 점수에 따른 텍스트 변화 시키는 함수
@@ -95,9 +118,9 @@ const DetailPage = () => {
 
   // 차트에 전달할 데이터 형식으로 변환
   const chartData = scoreItems.map(({ label, key }) => ({
-    name: label,
+    name: label ?? "",
     // data.SkinAnalysisScores에서 'key'에 해당하는 점수를 찾아 'uv' 값으로 할당
-    uv: data.SkinAnalysisScores[key as keyof typeof data.SkinAnalysisScores],
+    uv: data?.skinAnalysis[key as keyof typeof data.skinAnalysis] ?? 0,
   }));
 
   return (
@@ -106,7 +129,7 @@ const DetailPage = () => {
 
       <S.ScoreBoardWrapper>
         {scoreItems.map(({ label, key }) => {
-          const score = data.SkinAnalysisScores[key as keyof typeof data.SkinAnalysisScores];
+          const score = data?.skinAnalysis[key as keyof typeof data.skinAnalysis] ?? 0;
           return (
             <S.ScoreBoardContainer key={key} score={score}>
               <S.ScoreBoardLeft>{label}</S.ScoreBoardLeft>
@@ -127,18 +150,18 @@ const DetailPage = () => {
           <S.CompositeScoreTitle>종합 점수</S.CompositeScoreTitle>
           <S.CompositeScoreContentWrapper>
             <S.CompositeScoreContent>
-              <S.CompositeScoreLeft>{data.averageScore}</S.CompositeScoreLeft>
+              <S.CompositeScoreLeft>{data?.averageScore}</S.CompositeScoreLeft>
               <S.CompositeScoreRight>/100</S.CompositeScoreRight>
             </S.CompositeScoreContent>
-            <S.ScoreBoardRightTop score={data.averageScore}>
-              {getScoreStatusText(data.averageScore)}
+            <S.ScoreBoardRightTop score={data?.averageScore ?? 0}>
+              {getScoreStatusText(data?.averageScore ?? 0)}
             </S.ScoreBoardRightTop>
           </S.CompositeScoreContentWrapper>
         </S.CompositeScoreWrapper>
         <SkinChart data={chartData} />
         <S.FeedBackWrapper>
           <S.FeedBackTitle>AI 분석 피드백</S.FeedBackTitle>
-          <S.FeedBackText>{data.feedback}</S.FeedBackText>
+          <S.FeedBackText>{data?.feedback}</S.FeedBackText>
         </S.FeedBackWrapper>
       </S.BarGraphWrapper>
     </>

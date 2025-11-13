@@ -15,9 +15,10 @@ interface CustomModalProps {
 const CalendarCustomModal = ({ dateStr, DailyDates, navigate }: CustomModalProps) => {
   const { modalClose } = useModal();
 
-  const CustomModalClick = () => {
+  const CustomModalClick = (id: string) => {
     navigate("/detail", {
       state: {
+        id: id,
         dateStr: dateStr,
       },
     });
@@ -34,7 +35,12 @@ const CalendarCustomModal = ({ dateStr, DailyDates, navigate }: CustomModalProps
 
       <S.CalendarButtonWrapper>
         {DailyDates.map((item) => (
-          <Button size="large" variant="line" onClick={CustomModalClick}>
+          <Button
+            key={item.id}
+            size="large"
+            variant="line"
+            onClick={() => CustomModalClick(item.id)}
+          >
             ({item.date})
           </Button>
         ))}
