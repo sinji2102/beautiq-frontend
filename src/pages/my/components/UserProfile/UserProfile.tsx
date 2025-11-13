@@ -40,7 +40,7 @@ const UserProfile = () => {
       <S.UserInfo>
         <S.UserName>{userName}</S.UserName>
         <S.Text>{userEmail}</S.Text>
-        <S.Text>가입일 {createDate.split("T")[0]}</S.Text>
+        <S.Text>가입일 {createDate?.split("T")[0]}</S.Text>
       </S.UserInfo>
     </S.UserProfileWrapper>
   );

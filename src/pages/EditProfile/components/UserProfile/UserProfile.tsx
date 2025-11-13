@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import * as S from "./UserProfile.styled";
 
@@ -9,13 +9,35 @@ const tempData = {
 };
 
 const UserProfile = () => {
-  const [username, setUsername] = useState(tempData.username);
+  const [userName, setUserName] = useState<string>("");
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const defaultImageUrl = "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png";
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      try {
+        const parsed = JSON.parse(userData);
+        setPreviewUrl(parsed.profileImage);
+        setUserName(parsed.username || "사용자");
+        setUserEmail(parsed.email);
+      } catch (error) {
+        console.error("Failed to parse user data", error);
+        setPreviewUrl(null);
+        setUserName("사용자");
+        setUserEmail(null);
+      }
+    } else {
+      setPreviewUrl(null);
+      setUserName("사용자");
+      setUserEmail(null);
+    }
+  }, []);
 
   const handleImageChangeClick = () => {
     fileInputRef.current?.click();
@@ -38,7 +60,6 @@ const UserProfile = () => {
 
   const handleSubmit = async () => {
     if (!imageFile) {
-      // TODO : 현재 임시 처리 -> 이미지 없을 때 처리 필요
       alert("변경할 이미지를 선택해주세요.");
       return;
     }
@@ -74,11 +95,11 @@ const UserProfile = () => {
         <S.InfoTitle>기본 정보</S.InfoTitle>
         <S.UserInfo>
           <S.InfoText>사용자명</S.InfoText>
-          <S.InfoInput value={username} onChange={(e) => setUsername(e.target.value)} />
+          <S.InfoInput value={userName} onChange={(e) => setUserName(e.target.value)} />
         </S.UserInfo>
         <S.UserInfo>
           <S.InfoText>이메일</S.InfoText>
-          {tempData.email}
+          {userEmail}
         </S.UserInfo>
         <S.UserInfo>
           <S.InfoText>소셜 로그인 정보</S.InfoText>
