@@ -8,7 +8,6 @@ import { muiTheme } from "@styles/theme";
 import dayjs, { type Dayjs } from "dayjs";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {getSkinAnalysisMonthly} from "@apis/domain/skin-analysis/api"
 
 import CalendarCustomModal from "../calendarCustomModal/CalendarCustomModal";
 import { StyledStaticDatePicker } from "./Calendar.styled";
@@ -30,9 +29,6 @@ interface CustomPickersDayProps extends PickersDayProps {
   MonthlySkinStatus?: MonthlySkinStatusType[];
   DailyDates?: DailyDate[];
 }
-
-// TODO : skinStatus enum 생성하기
-const tempData = getSkinAnalysisMonthly()
 
 // 개별 날짜 커스텀 스타일
 const CustomDay = MUIstyled(PickersDay, { shouldForwardProp: (prop) => prop !== "skinStatus" })<{
