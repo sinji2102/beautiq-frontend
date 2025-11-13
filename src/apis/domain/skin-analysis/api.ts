@@ -37,11 +37,9 @@ export const getSkinAnalysisResult = async (
 // 피부 분석 결과 삭제 (DELETE)
 export const deleteSkinAnalysis = async (analysisId: number): Promise<void | null> => {
   try {
-    const response: AxiosResponse<ApiResponseType<void>> = await del(
-      `/skin-analyses/${analysisId}`
-    );
+    const response: AxiosResponse<void> = await del(`/skin-analyses/${analysisId}`);
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error("deleteSkinAnalysis error", error);
     return null;
@@ -55,7 +53,7 @@ export const getSkinAnalysisTrendsYearly = async (
   year?: number // optional로 해도 괜찮습니다. 명세서에 required: false
 ): Promise<YearlyDaySkinPointsResponse | null> => {
   try {
-    const response: AxiosResponse<ApiResponseType<YearlyDaySkinPointsResponse>> = await get(
+    const response: AxiosResponse<YearlyDaySkinPointsResponse> = await get(
       "/skin-analyses/trends/yearly",
       {
         params: {
@@ -64,7 +62,7 @@ export const getSkinAnalysisTrendsYearly = async (
       }
     );
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error("error", error);
     return null;
@@ -78,7 +76,7 @@ export const getSkinAnalysisTrends60Days = async (
   date: string
 ): Promise<SixtyDaySkinPointsResponse | null> => {
   try {
-    const response: AxiosResponse<ApiResponseType<SixtyDaySkinPointsResponse>> = await get(
+    const response: AxiosResponse<SixtyDaySkinPointsResponse> = await get(
       "/skin-analyses/trends/60days",
       {
         params: {
@@ -87,7 +85,7 @@ export const getSkinAnalysisTrends60Days = async (
       }
     );
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error("error", error);
     return null;
@@ -102,17 +100,14 @@ export const getSkinAnalysisMonthly = async (
   month: number
 ): Promise<MonthlySkinStatusResponse | null> => {
   try {
-    const response: AxiosResponse<ApiResponseType<MonthlySkinStatusResponse>> = await get(
-      "/skin-analyses/monthly",
-      {
-        params: {
-          year,
-          month,
-        },
-      }
-    );
+    const response: AxiosResponse<MonthlySkinStatusResponse> = await get("/skin-analyses/monthly", {
+      params: {
+        year,
+        month,
+      },
+    });
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error("error", error);
     return null;
@@ -122,10 +117,9 @@ export const getSkinAnalysisMonthly = async (
 // 최신 피부 분석 결과 조회 (GET)
 export const getSkinAnalysisLatest = async (): Promise<SkinAnalysisResponse | null> => {
   try {
-    const response: AxiosResponse<ApiResponseType<SkinAnalysisResponse>> =
-      await get("/skin-analyses/latest");
+    const response: AxiosResponse<SkinAnalysisResponse> = await get("/skin-analyses/latest");
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error("error", error);
     return null;
@@ -139,16 +133,13 @@ export const getSkinAnalysisDaily = async (
   date: string
 ): Promise<DailySkinDatesResponse | null> => {
   try {
-    const response: AxiosResponse<ApiResponseType<DailySkinDatesResponse>> = await get(
-      "/skin-analyses/daily",
-      {
-        params: {
-          date,
-        },
-      }
-    );
+    const response: AxiosResponse<DailySkinDatesResponse> = await get("/skin-analyses/daily", {
+      params: {
+        date,
+      },
+    });
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error("error", error);
     return null;

@@ -1,6 +1,5 @@
 import { post } from "@apis/index";
 import type { components } from "@custom-types/api/schema";
-import type { ApiResponseType } from "@custom-types/commonType";
 import type { AxiosResponse } from "axios";
 
 export type MakeupSimulationResponse = components["schemas"]["ImageItem"]; // 동일
@@ -18,11 +17,11 @@ export const postMakeupSimulation = async (
     const formData = new FormData();
     formData.append("styleImage", styleImageFile);
 
-    const response: AxiosResponse<ApiResponseType<MakeupSimulationResponse>> = await post(
+    const response: AxiosResponse<MakeupSimulationResponse> = await post(
       "/makeup/simulation",
       formData
     );
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error("postMakeupSimulation error", error);
     return null;
@@ -46,11 +45,11 @@ export const postMakeupRecommendation = async (
     formData.append("Image", imageFile);
     formData.append("data", new Blob([JSON.stringify(data)], { type: "application/json" }));
 
-    const response: AxiosResponse<ApiResponseType<MakeupRecommendationResponse>> = await post(
+    const response: AxiosResponse<MakeupRecommendationResponse> = await post(
       "/makeup/recommendation",
       formData
     );
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error("postMakeupRecommendation error", error);
     return null;
@@ -72,8 +71,8 @@ export const postMakeupSave = async (
     formData.append("imageName", imageName);
     formData.append("data", new Blob([JSON.stringify(data)], { type: "application/json" }));
 
-    const response: AxiosResponse<ApiResponseType<void>> = await post("/makeup/save", formData);
-    return response.data.data; // 아마 undefined일 것
+    const response: AxiosResponse<void> = await post("/makeup/save", formData);
+    return response.data; // 아마 undefined일 것
   } catch (error) {
     console.error("postMakeupSave error", error);
     return null;
@@ -98,11 +97,11 @@ export const postCustomize = async (
     formData.append("imageName", imageName);
     formData.append("data", new Blob([JSON.stringify(data)], { type: "application/json" }));
 
-    const response: AxiosResponse<ApiResponseType<MakeupCustomizeResponse>> = await post(
+    const response: AxiosResponse<MakeupCustomizeResponse> = await post(
       "/makeup/customize",
       formData
     );
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error("postCustomize error", error);
     return null;

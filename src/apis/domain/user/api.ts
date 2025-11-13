@@ -8,14 +8,14 @@ export const putRecommendProducts = async (
   email: string
 ): Promise<void | null> => {
   try {
-    const response: AxiosResponse<ApiResponseType<void>> = await put("/users/edit", {
+    const response: AxiosResponse<void> = await put("/users/edit", {
       params: {
         username,
         email,
       },
     });
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error("postRecommendProducts error:", error);
     return null;
@@ -31,12 +31,12 @@ export const postProfileImage = async (imageFile: File): Promise<ProfileImageRes
 
     formData.append("image", imageFile);
 
-    const response: AxiosResponse<ApiResponseType<ProfileImageResponse>> = await post(
+    const response: AxiosResponse<ProfileImageResponse> = await post(
       "/users/profile-image",
       formData
     );
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error("postProfileImage error", error);
     return null;
@@ -46,9 +46,9 @@ export const postProfileImage = async (imageFile: File): Promise<ProfileImageRes
 // 로그아웃 (POST)
 export const postLogout = async (): Promise<void | null> => {
   try {
-    const response: AxiosResponse<ApiResponseType<void>> = await post("/users/logout");
+    const response: AxiosResponse<void> = await post("/users/logout");
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error("postLogout error", error);
     return null;
@@ -72,9 +72,9 @@ export const getUserInfo = async (): Promise<UserResponse | null> => {
 // 회원 탈퇴 (DELETE)
 export const deleteUser = async (): Promise<void | null> => {
   try {
-    const response: AxiosResponse<ApiResponseType<void>> = await del("/users/me");
+    const response: AxiosResponse<void> = await del("/users/me");
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error("deleteUser error", error);
     return null;
