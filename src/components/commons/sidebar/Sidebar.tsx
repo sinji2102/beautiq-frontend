@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState, } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
+import { useNavigate } from "react-router-dom";
 
 import * as S from "./Sidebar.styled";
 
@@ -10,14 +10,31 @@ export interface SidebarProps {
   onClose: () => void;
 }
 
-const Sidebar = ({ isOpen, userName, onClose }: SidebarProps) => {
+const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(isOpen);
+  const [isLogin, setIsLogin] = useState(false);
+  const [userName, setUserName] = useState<string | null>(null);
   const close = useCallback(() => setOpen(false), []);
 
-  // TODO : 로그인 연결하고 수정 필요
-  const isLogin = false;
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      try {
+        const parsed = JSON.parse(userData);
+        setIsLogin(true);
+        setUserName(parsed.username || parsed.userName || "사용자");
+      } catch (error) {
+        console.error("Failed to parse user data", error);
+        setIsLogin(false);
+        setUserName(null);
+      }
+    } else {
+      setIsLogin(false);
+      setUserName(null);
+    }
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
@@ -34,7 +51,7 @@ const Sidebar = ({ isOpen, userName, onClose }: SidebarProps) => {
   }, [open, close]);
 
   const handleLoginClick = () => {
-    // TODO : 로그인 버튼 연결
+    navigate("/login");
   };
 
   const handleLogoutClick = () => {

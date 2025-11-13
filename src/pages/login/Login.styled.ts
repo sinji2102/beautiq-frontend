@@ -1,3 +1,4 @@
+import { Google, Kakao } from "@assets/svgs";
 import styled from "@emotion/styled";
 
 export const LoginWrapper = styled.div`
@@ -47,4 +48,16 @@ export const KakaoButton = styled(GoogleButton)`
     width: 2rem;
     height: 2rem;
   }
+`;
+
+export const GoogleIcon = styled(Google)`
+  display: flex;
+  width: 2rem;
+  height: 2rem;
+`;
+
+export const KakaoIcon = styled(Kakao)`
+  display: flex;
+  width: 2rem;
+  height: 2rem;
 `;

@@ -98,7 +98,7 @@ const Calendar = () => {
       };
 
       if (tempDayData.DailyDates.length === 1) {
-        navigate("/detailPage", {
+        navigate("/detail", {
           state: {
             dateStr: dateStr,
           },

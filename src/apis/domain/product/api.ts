@@ -1,6 +1,5 @@
 import { get, patch, post } from "@apis/index";
 import type { components } from "@custom-types/api/schema";
-import type { ApiResponseType } from "@custom-types/commonType";
 import type { AxiosResponse } from "axios";
 
 export type RecommendProductRequest = components["schemas"]["ProductRequest"];
@@ -15,12 +14,12 @@ export const postRecommendProducts = async (
   data: RecommendProductRequest
 ): Promise<RecommendProductResponse | null> => {
   try {
-    const response: AxiosResponse<ApiResponseType<RecommendProductResponse>> = await post(
+    const response: AxiosResponse<RecommendProductResponse> = await post(
       `/skin-analyses/${analysisId}/recommend-products`,
       data
     );
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error(" postRecommendProducts error:", error);
     return null;
@@ -38,10 +37,10 @@ export const patchWishlistToggle = async (
   productId: string
 ): Promise<WishlistToggleResponse | null> => {
   try {
-    const res: AxiosResponse<ApiResponseType<WishlistToggleResponse>> = await patch(
+    const res: AxiosResponse<WishlistToggleResponse> = await patch(
       `/products/${productId}/wishlists`
     );
-    return res.data.data;
+    return res.data;
   } catch (e) {
     console.error("patchWishlistToggle error:", e);
     return null;
@@ -61,7 +60,7 @@ export const getWishlistProducts = async (
   page: number = 1
 ): Promise<WishlistProductsResponse | null> => {
   try {
-    const response: AxiosResponse<ApiResponseType<WishlistProductsResponse>> = await get(
+    const response: AxiosResponse<WishlistProductsResponse> = await get(
       "/users/me/wishlists/products",
       {
         params: {
@@ -71,7 +70,7 @@ export const getWishlistProducts = async (
       }
     );
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error(" getWishlistProducts error:", error);
     return null;
@@ -89,10 +88,10 @@ export const getWishlistProductDetail = async (
   productId: string
 ): Promise<WishlistProductDetailResponse | null> => {
   try {
-    const res: AxiosResponse<ApiResponseType<WishlistProductDetailResponse>> = await get(
+    const res: AxiosResponse<WishlistProductDetailResponse> = await get(
       `/users/me/wishlists/products/${productId}`
     );
-    return res.data.data;
+    return res.data;
   } catch (e) {
     console.error("getWishlistProductDetail error:", e);
     return null;
