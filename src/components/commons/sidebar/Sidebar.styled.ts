@@ -1,4 +1,5 @@
-import { IconClose } from "@assets/svgs";
+import { IconBook, IconClose, IconLipstick, IconLotionBottle, IconPerson } from "@assets/svgs";
+import { Logo } from "@assets/svgs";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { getTypography } from "@styles/typography";
@@ -57,14 +58,6 @@ export const BeautiqHeader = styled.div`
     display: flex;
     gap: 1rem;
     align-items: center;
-  }
-
-  .square {
-    width: 4rem;
-    height: 4rem;
-
-    background: ${({ theme }) => theme.colors.gray[200]};
-    border-radius: 0.8rem;
   }
 
   .logo {
@@ -158,7 +151,6 @@ export const UserButton = styled.button`
   all: unset;
   ${getTypography("body1NormalMedi")}
   flex: 1;
-  padding: 1rem 1.4rem;
 
   color: ${({ theme }) => theme.colors.primary[500]};
   text-align: left;
@@ -168,4 +160,42 @@ export const UserButton = styled.button`
   .loggedIn {
     color: ${({ theme }) => theme.colors.primary[300]};
   }
+`;
+
+export const LogoIcon = styled(Logo)`
+  display: flex;
+  width: 4rem;
+  height: 4rem;
+`;
+
+export const LotionIcon = styled(IconLotionBottle)`
+  display: flex;
+  width: 2.8rem;
+  height: 2.8rem;
+`;
+
+export const LipstickIcon = styled(IconLipstick)`
+  display: flex;
+  width: 2.8rem;
+  height: 2.8rem;
+`;
+
+export const HistoryIcon = styled(IconBook)`
+  display: flex;
+  width: 2.8rem;
+  height: 2.8rem;
+`;
+
+export const MyIcon = styled(IconPerson)`
+  display: flex;
+  width: 2.8rem;
+  height: 2.8rem;
+`;
+
+export const ProfileImage = styled.img`
+  display: flex;
+  width: 4.4rem;
+  height: 4.4rem;
+
+  border-radius: 50%;
 `;
