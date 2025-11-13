@@ -1,12 +1,12 @@
-import type { WishlistProductsResponse } from "@apis/domain/product/api";
+import type { RecommendProductResponse } from "@apis/domain/product/api";
 import { patchWishlistToggle } from "@apis/domain/product/api";
 import { useState } from "react";
 
 import * as S from "./ProductListItem.styled";
 
 interface ListItemProps {
-  product: WishlistProductsResponse["products"][0]["product"];
-  reason: string;
+  product: RecommendProductResponse["products"][0]["product"];
+  reason?: string;
   isWish: boolean;
 }
 
@@ -33,10 +33,12 @@ const ProductListItem = ({ product, reason, isWish }: ListItemProps) => {
           <S.HeartIcon $liked={liked} />
         </S.LikeButton>
       </S.RecommendProductContainer>
-      <S.RecommendReason>
-        <S.WandIcon />
-        <S.ReasonText>AI 추천 코멘트: {reason}</S.ReasonText>
-      </S.RecommendReason>
+      {reason && (
+        <S.RecommendReason>
+          <S.WandIcon />
+          <S.ReasonText>AI 추천 코멘트: {reason}</S.ReasonText>
+        </S.RecommendReason>
+      )}
     </S.RecommendProductWrapper>
   );
 };
