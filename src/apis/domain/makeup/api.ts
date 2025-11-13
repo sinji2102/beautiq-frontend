@@ -42,7 +42,7 @@ export const postMakeupRecommendation = async (
 ): Promise<MakeupRecommendationResponse | null> => {
   try {
     const formData = new FormData();
-    formData.append("Image", imageFile);
+    formData.append("sourceImage", imageFile);
     formData.append("data", new Blob([JSON.stringify(data)], { type: "application/json" }));
 
     const response: AxiosResponse<MakeupRecommendationResponse> = await post(

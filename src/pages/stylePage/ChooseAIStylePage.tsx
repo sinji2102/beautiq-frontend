@@ -1,3 +1,4 @@
+import { postMakeupSimulation } from "@apis/domain/makeup/api"; // ✅ 시뮬레이션 API 추가
 import Button from "@components/commons/button/Button";
 import Header from "@components/commons/header/Header";
 import type { ContentsProps, ItemProps } from "@pages/stylePage/types";
@@ -25,7 +26,11 @@ const presetUrls = [
 ] as const;
 
 // URL → File 변환 유틸
-async function urlToFile(url: string, filename = "image.jpg", mime = "image/jpeg"): Promise<File> {
+async function urlToFile(
+  url: string,
+  filename = "image.jpg",
+  mime = "image/jpeg"
+): Promise<File> {
   const res = await fetch(url, { cache: "no-store" });
   const blob = await res.blob();
   return new File([blob], filename, { type: mime });
@@ -51,15 +56,24 @@ const ChooseAIStylePage: React.FC = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
+  // 로딩 상태 (시뮬레이션 API 호출 중)
+  const [loading, setLoading] = useState(false);
+
   const openFile = () => inputRef.current?.click();
 
   const handleFile = (file: File) => {
-    setContents((prev) => prev.map((c) => (c.itemId === 4 ? { ...c, itemImage: file } : c)));
+    setContents((prev) =>
+      prev.map((c) => (c.itemId === 4 ? { ...c, itemImage: file } : c))
+    );
     setSelectedId(4); // 업로드 타일 선택
   };
 
   const removeFile = () => {
-    setContents((prev) => prev.map((c) => (c.itemId === 4 ? { ...c, itemImage: undefined } : c)));
+    setContents((prev) =>
+      prev.map((c) =>
+        c.itemId === 4 ? { ...c, itemImage: undefined } : c
+      )
+    );
     if (previewUrl?.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
     setPreviewUrl(null);
     if (inputRef.current) inputRef.current.value = "";
@@ -90,7 +104,9 @@ const ChooseAIStylePage: React.FC = () => {
     return; // cleanup은 위 File 분기에서만
   }, [contents]);
 
-  const uploaded4 = Boolean(contents.find((c) => c.itemId === 4)?.itemImage);
+  const uploaded4 = Boolean(
+    contents.find((c) => c.itemId === 4)?.itemImage
+  );
 
   // 다음으로 버튼 활성화: 하나 선택 + (4번이면 업로드 있음)
   const canNext = Boolean(selectedId && (selectedId !== 4 || uploaded4));
@@ -100,7 +116,7 @@ const ChooseAIStylePage: React.FC = () => {
     setSelectedId(4);
   };
 
-  // 다음 단계: 선택한 이미지를 File로 확보해서 StyleRecommandPage에 전달
+  // ✅ 다음 단계: 선택한 이미지를 시뮬레이션 API로 보내고 결과와 함께 이동
   const goNext = async () => {
     if (!canNext || selectedId == null) return;
 
@@ -115,18 +131,45 @@ const ChooseAIStylePage: React.FC = () => {
         return;
       }
     } else {
-      // 1~3번: URL → File 변환 후 전달
+      // 1~3번: URL → File 변환 후 시뮬레이션 API로 전달
       const c = contents.find((v) => v.itemId === selectedId);
       if (!c || typeof c.itemImage !== "string") return;
       const presetMeta = presetUrls[selectedId - 1];
-      fileToPass = await urlToFile(c.itemImage, `${presetMeta.imageName}.jpg`, "image/jpeg");
+      fileToPass = await urlToFile(
+        c.itemImage,
+        `${presetMeta.imageName}.jpg`,
+        "image/jpeg"
+      );
     }
 
-    navigate("/style/recommend", {
-      state: {
-        initialImageFile: fileToPass, // StyleRecommandPage에서 받아서 contents[0].itemImage로 세팅
-      },
-    });
+    if (!fileToPass) return;
+
+    try {
+      setLoading(true);
+
+      // 🔥 시뮬레이션 API 호출
+      const simRes = await postMakeupSimulation(fileToPass);
+      if (!simRes) {
+        alert("이미지 시뮬레이션에 실패했습니다.");
+        return;
+      }
+
+      // simRes: { imageName, imageUrl, ... } 형태라고 가정
+      navigate("/style/recommend", {
+        state: {
+          // 다음 페이지가 사용할 값들
+          originalUrl: simRes.imageUrl, // 프리뷰용
+          imageName: simRes.imageName,  // 이후 customize/save에 필요
+          // 필요하면 원본 파일도 같이 넘겨두기
+          styleImageFile: fileToPass,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      alert("스타일 시뮬레이션 중 오류가 발생했습니다.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -152,7 +195,8 @@ const ChooseAIStylePage: React.FC = () => {
                 selected={selectedId === c.itemId}
                 onClick={() => setSelectedId(c.itemId)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") setSelectedId(c.itemId);
+                  if (e.key === "Enter" || e.key === " ")
+                    setSelectedId(c.itemId);
                 }}
                 aria-label={`샘플 이미지 ${c.itemId} 선택`}
               >
@@ -170,7 +214,8 @@ const ChooseAIStylePage: React.FC = () => {
               className={previewUrl ? "hasImage" : ""}
               onClick={handleClickUpload}
               onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") handleClickUpload();
+                if (e.key === "Enter" || e.key === " ")
+                  handleClickUpload();
               }}
               aria-label="사진 업로드"
             >
@@ -211,10 +256,10 @@ const ChooseAIStylePage: React.FC = () => {
           <Button
             size="xlarge"
             variant="primary"
-            disabled={!canNext}
+            disabled={!canNext || loading}
             onClick={goNext}
           >
-            다음으로
+            {loading ? "분석 중..." : "다음으로"}
           </Button>
         </S.BottomBar>
       </S.Screen>
