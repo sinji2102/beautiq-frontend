@@ -15,12 +15,12 @@ const LoginPage = () => {
       <OnboardingCarousel />
       <S.LoginButtonContainer>
         <S.GoogleButton onClick={handleGoogleLogin}>
-          <img src="/src/assets/icons/google.svg" alt="Google" />
+          <S.GoogleIcon />
           Google 계정으로 로그인
         </S.GoogleButton>
 
         <S.KakaoButton onClick={handleKakaoLogin}>
-          <img src="/src/assets/icons/kakao.svg" alt="Kakao" />
+          <S.KakaoIcon />
           카카오로 로그인
         </S.KakaoButton>
       </S.LoginButtonContainer>
