@@ -16,7 +16,7 @@ const CalendarCustomModal = ({ dateStr, DailyDates, navigate }: CustomModalProps
   const { modalClose } = useModal();
 
   const CustomModalClick = () => {
-    navigate("/detailPage", {
+    navigate("/detail", {
       state: {
         dateStr: dateStr,
       },
