@@ -1,7 +1,7 @@
 import { type MakeupRecommendationRequest, postMakeupRecommendation } from "@apis/domain/makeup/api";
 import Button from "@components/commons/button/Button";
 import Header from "@components/commons/header/Header";
-import type { ContentsProps } from "@pages/stylePage/types";
+import type { StyleContentsProps } from "@pages/stylePage/types";
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -26,7 +26,7 @@ const ALL_KEYWORDS = [
   "물광피부",
   "진한눈썹",
   "세미스모키",
-  "자연스러운눈썹"
+  "자연스러운눈썹",
 ] as const;
 
 const MAX = 5;
@@ -35,8 +35,8 @@ const normalize = (s: string) => s.trim();
 const StyleRecommandPage: React.FC = () => {
   const navigate = useNavigate();
 
-  const [contents, setContents] = useState<ContentsProps[]>([
-    { itemId: 0 } as unknown as ContentsProps,
+  const [contents, setContents] = useState<StyleContentsProps[]>([
+    { itemId: 0 } as unknown as StyleContentsProps,
   ]);
   const [isLoading, setLoading] = useState(false);
 
@@ -47,7 +47,11 @@ const StyleRecommandPage: React.FC = () => {
   const toggleKeyword = (kw: string) => {
     const k = normalize(kw);
     setSelected((prev) =>
-      prev.includes(k) ? prev.filter((v) => v !== k) : prev.length >= MAX ? prev : [...prev, k]
+      prev.includes(k)
+        ? prev.filter((v) => v !== k)
+        : prev.length >= MAX
+        ? prev
+        : [...prev, k],
     );
   };
 
@@ -66,22 +70,25 @@ const StyleRecommandPage: React.FC = () => {
     }
   };
 
-  const hasAnyImage = useMemo(() => contents.some((c) => Boolean(c.itemImage)), [contents]);
+  const hasAnyImage = useMemo(
+    () => contents.some((c) => Boolean(c.itemImage)),
+    [contents],
+  );
 
   const canNext = useMemo(
     () => hasAnyImage || selected.length > 0 || styleValue.trim().length > 0,
-    [hasAnyImage, selected.length, styleValue]
+    [hasAnyImage, selected.length, styleValue],
   );
 
   const extractFirstFile = (): File | undefined => {
     const first = contents.find((c) => c.itemImage);
     const img: unknown = first && first.itemImage;
-    if (img instanceof File) return img;         // File이면 그대로 사용
+    if (img instanceof File) return img;
     return undefined;
   };
 
   const handleNextBtn = async () => {
-     const imageFile = extractFirstFile();
+    const imageFile = extractFirstFile();
     if (!imageFile) {
       alert("이미지를 선택해 주세요.");
       return;
@@ -100,12 +107,16 @@ const StyleRecommandPage: React.FC = () => {
         return;
       }
 
-      const resultData =
-        res.recommendations
+      // 🔥 응답에서 안전하게 추천 리스트 꺼내기
+      const resultData = Array.isArray(res.recommendations)
+        ? res.recommendations
+        : [];
+
+      console.log("🟢 Makeup recommend resultData:", resultData);
 
       navigate("/style/ai", {
         state: {
-          recommendData: resultData                
+          recommendData: resultData,
         },
       });
     } catch (e) {
@@ -116,8 +127,10 @@ const StyleRecommandPage: React.FC = () => {
     }
   };
 
-  return (
-    isLoading ? <Loading />: <S.Screen>
+  return isLoading ? (
+    <Loading />
+  ) : (
+    <S.Screen>
       <Header text="스타일 추천" right="close" />
 
       <S.Body>

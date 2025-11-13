@@ -9,10 +9,8 @@ export const putRecommendProducts = async (
 ): Promise<void | null> => {
   try {
     const response: AxiosResponse<void> = await put("/users/edit", {
-      params: {
-        username,
-        email,
-      },
+      username,
+      email,
     });
 
     return response.data;
@@ -61,10 +59,29 @@ export type UserResponse = components["schemas"]["UserResponse"];
 export const getUserInfo = async (): Promise<UserResponse | null> => {
   try {
     const response: AxiosResponse<UserResponse> = await get(`/users/me`);
+    const data = response.data;
 
-    return response.data;
+    if (data.profileImage) {
+      let imageUrl = data.profileImage;
+
+      // profile/ 경로가 없으면 추가
+      if (!imageUrl.includes("/profile/")) {
+        const parts = imageUrl.split("/");
+        const filename = parts.pop();
+        imageUrl = [...parts, "profile", filename].join("/");
+      }
+
+      // .png 확장자가 없으면 추가
+      if (!imageUrl.endsWith(".png")) {
+        imageUrl += ".png";
+      }
+
+      data.profileImage = imageUrl;
+    }
+
+    return data;
   } catch (error) {
-    console.error("error", error);
+    console.error("getUserInfo error", error);
     return null;
   }
 };

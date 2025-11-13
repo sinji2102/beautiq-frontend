@@ -96,7 +96,6 @@ const UserProfile = () => {
             localStorage.setItem("user", JSON.stringify(userInfo));
           } else {
             // 유저 정보를 받아오지 못했다면 로그인 페이지 등으로 리디렉션
-            console.log(userInfo);
             console.error("유저 정보를 가져오는데 실패했습니다.");
           }
         } catch (error) {

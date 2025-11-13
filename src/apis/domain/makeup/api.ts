@@ -17,7 +17,7 @@ export const postMakeupSimulation = async (
     } else {
       // ② 샘플 URL
       // 백엔드에서 URL을 받는 필드명과 동일해야 함
-      formData.append("styleImageUrl", image);
+      formData.append("styleImageName", image);
     }
 
     // 래핑 여부에 따라 타입 수정해야 함
@@ -70,12 +70,16 @@ export const postMakeupRecommendation = async (
  */
 export const postMakeupSave = async (
   imageName: string,
-  data: MakeupRecommendationRequest // 키워드 등 메타데이터 DTO가 이것이라면 재사용
+  data: MakeupRecommendationRequest["keywords"] // 키워드 등 메타데이터 DTO가 이것이라면 재사용
 ): Promise<void | null> => {
   try {
     const formData = new FormData();
     formData.append("imageName", imageName);
-    formData.append("data", new Blob([JSON.stringify(data)], { type: "application/json" }));
+    const payload = { data : {keywords: data} };
+    formData.append(
+    "data",
+    new Blob([JSON.stringify(payload)], { type: "application/json" })
+);
 
     const response: AxiosResponse<void> = await post("/makeup/save", formData);
     return response.data; // 아마 undefined일 것

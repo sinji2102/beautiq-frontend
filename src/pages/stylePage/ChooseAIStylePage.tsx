@@ -1,15 +1,26 @@
 import { postMakeupSimulation } from "@apis/domain/makeup/api"; // ✅ 시뮬레이션 API
 import Button from "@components/commons/button/Button";
 import Header from "@components/commons/header/Header";
-import type { ContentsProps, ItemProps } from "@pages/stylePage/types";
+import type { ContentsProps } from "@pages/stylePage/types";
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import * as S from "./ChooseAIStylePage.styled";
 
-const DEFAULT_ITEM_INFO: ItemProps = { name: "", content: "", category: "" };
+// const DEFAULT_ITEM_INFO: ItemProps = { name: "", content: "", category: "" };
 
-// 샘플 URL 목록
+// 🔹 /style/recommend → /style/ai 에서 넘겨줄 때 형태 예시:
+// navigate("/style/ai", { state: { recommendData: res.recommendations } });
+type RecommendItem = {
+  recommendImageName: string;
+  recommendImageUrl: string;
+};
+
+type NavState = {
+  recommendData?: RecommendItem[] | null;
+};
+
+// 샘플 URL 목록 (백업/초기용)
 const presetUrls = [
   {
     imageName: "sample1",
@@ -27,13 +38,15 @@ const presetUrls = [
 
 const ChooseAIStylePage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const navState = (location.state || {}) as NavState;
 
-  // itemId 1~3: URL, 4: 업로드 타일
+  // 기본은 preset 이미지로 시작
   const initial: ContentsProps[] = [
-    { itemId: 1, itemImage: presetUrls[0].url, itemInfo: DEFAULT_ITEM_INFO },
-    { itemId: 2, itemImage: presetUrls[1].url, itemInfo: DEFAULT_ITEM_INFO },
-    { itemId: 3, itemImage: presetUrls[2].url, itemInfo: DEFAULT_ITEM_INFO },
-    { itemId: 4, itemImage: undefined, itemInfo: DEFAULT_ITEM_INFO },
+    { itemId: 1, recommendImageUrl: presetUrls[0].url,  recommendImageName: ""},
+    { itemId: 2, recommendImageUrl: presetUrls[1].url,  recommendImageName: ""},
+    { itemId: 3, recommendImageUrl: presetUrls[2].url, recommendImageName: ""},
+    { itemId: 4, recommendImageUrl: undefined, recommendImageName: ""},
   ];
 
   const [contents, setContents] = useState<ContentsProps[]>(initial);
@@ -43,6 +56,7 @@ const ChooseAIStylePage: React.FC = () => {
 
   // 4번 업로드 타일 프리뷰 관리
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   // 로딩 상태 (시뮬레이션 API 호출 중)
@@ -50,9 +64,43 @@ const ChooseAIStylePage: React.FC = () => {
 
   const openFile = () => inputRef.current?.click();
 
+  // 🔥 recommendData 가 오면 1~3번 타일을 AI 이미지로 덮어쓰기
+  useEffect(() => {
+    const recs = navState?.recommendData;
+    // setRes(recs ?? undefined);
+
+    // 🔥 recommendData 가 배열이 아니면 preset 그대로 사용
+    if (!Array.isArray(recs) || recs.length === 0) {
+      console.log("🔴 recommendData 없음 → preset 유지");
+      return;
+    }
+
+    console.log("🟢 recommendData 로 contents 덮어씀:", recs);
+
+    setContents((prev) => {
+      const mapped: ContentsProps[] = recs.slice(0, 3).map((rec, idx) => {
+        const url =
+          rec.recommendImageUrl ??
+          presetUrls[idx].url; // 그래도 없으면 preset fallback
+
+        return {
+          itemId: idx + 1,
+          recommendImageName: rec.recommendImageName,
+          recommendImageUrl: url,
+        };
+      });
+
+      const item4 =
+        prev.find((c) => c.itemId === 4) ??
+        { itemId: 4, itemImage: undefined, recommendImageName: "", recommendImageUrl: undefined };
+
+      return [...mapped, item4];
+    });
+  }, [navState?.recommendData]);
+
   const handleFile = (file: File) => {
     setContents((prev) =>
-      prev.map((c) => (c.itemId === 4 ? { ...c, itemImage: file } : c))
+      prev.map((c) => (c.itemId === 4 ? { ...c, itemImage: file } : c)),
     );
     setSelectedId(4); // 업로드 타일 선택
   };
@@ -60,8 +108,8 @@ const ChooseAIStylePage: React.FC = () => {
   const removeFile = () => {
     setContents((prev) =>
       prev.map((c) =>
-        c.itemId === 4 ? { ...c, itemImage: undefined } : c
-      )
+        c.itemId === 4 ? { ...c, itemImage: undefined } : c,
+      ),
     );
     if (previewUrl?.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
     setPreviewUrl(null);
@@ -72,7 +120,7 @@ const ChooseAIStylePage: React.FC = () => {
   // 4번 타일 File/URL 변화에 따라 미리보기 URL 관리 (이전 blob URL 메모리 정리)
   useEffect(() => {
     const item4 = contents.find((c) => c.itemId === 4);
-    const img = item4?.itemImage;
+    const img = item4?.recommendImageName;
 
     // 기존 blob URL 정리
     setPreviewUrl((prev) => {
@@ -94,7 +142,7 @@ const ChooseAIStylePage: React.FC = () => {
   }, [contents]);
 
   const uploaded4 = Boolean(
-    contents.find((c) => c.itemId === 4)?.itemImage
+    contents.find((c) => c.itemId === 4)?.recommendImageName,
   );
 
   // 다음으로 버튼 활성화: 하나 선택 + (4번이면 업로드 있음)
@@ -113,7 +161,7 @@ const ChooseAIStylePage: React.FC = () => {
 
     if (selectedId === 4) {
       // 업로드된 이미지 (File)
-      const img = contents.find((c) => c.itemId === 4)?.itemImage;
+      const img = contents.find((c) => c.itemId === 4)?.recommendImageName;
       if (img instanceof File) {
         imageToSend = img;
       } else {
@@ -121,10 +169,10 @@ const ChooseAIStylePage: React.FC = () => {
         return;
       }
     } else {
-      // 1~3번 샘플: URL 그대로 사용
+      // 1~3번 타일: (AI 추천으로 덮였든 샘플이든) URL 그대로 사용
       const c = contents.find((v) => v.itemId === selectedId);
-      if (!c || typeof c.itemImage !== "string") return;
-      imageToSend = c.itemImage; // ⭐ URL 문자열 그대로
+      if (!c || typeof c.recommendImageName !== "string") return;
+      imageToSend = c.recommendImageName;
     }
 
     if (!imageToSend) return;
@@ -132,9 +180,9 @@ const ChooseAIStylePage: React.FC = () => {
     try {
       setLoading(true);
 
-      // 🔥 시뮬레이션 API 호출 (File | string 둘 다 지원)
+      // 시뮬레이션 API 호출 (File | string 둘 다 지원)
       const simRes = await postMakeupSimulation(imageToSend);
-      console.log(simRes)
+      console.log("🧪 postMakeupSimulation result:", simRes);
 
       if (!simRes) {
         alert("이미지 시뮬레이션에 실패했습니다.");
@@ -142,12 +190,10 @@ const ChooseAIStylePage: React.FC = () => {
       }
 
       // simRes: { imageName, imageUrl, ... } 형태라고 가정
-      navigate("/style/recommend", {
+      navigate("/style/result", {
         state: {
-          // 다음 페이지가 사용할 값들
           originalUrl: simRes.imageUrl, // 프리뷰용
           imageName: simRes.imageName,  // 이후 customize/save에 필요
-          // 필요하면 원본도 넘겨두기 (File만 넘김, URL은 null)
           styleImageFile: imageToSend instanceof File ? imageToSend : null,
         },
       });
@@ -174,7 +220,7 @@ const ChooseAIStylePage: React.FC = () => {
 
           <S.Grid>
             {/* 1~3 URL 타일 */}
-            {contents.slice(0, 3).map((c) => (
+            {contents?.slice(0, 3).map((c) => (
               <S.UrlTile
                 key={c.itemId}
                 role="button"
@@ -187,8 +233,8 @@ const ChooseAIStylePage: React.FC = () => {
                 }}
                 aria-label={`샘플 이미지 ${c.itemId} 선택`}
               >
-                {typeof c.itemImage === "string" && (
-                  <img src={c.itemImage} alt={`샘플 ${c.itemId}`} />
+                {typeof c.recommendImageName === "string" && (
+                  <img src={c.recommendImageUrl} alt={`샘플 ${c.itemId}`} />
                 )}
               </S.UrlTile>
             ))}

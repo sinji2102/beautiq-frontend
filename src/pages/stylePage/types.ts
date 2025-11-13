@@ -6,8 +6,18 @@ export interface ItemProps {
 
 export interface ContentsProps {
   itemId: number;
+  // itemInfo: ItemProps;
+  // itemImage: File | string | undefined;
+  
+  recommendImageName: string | File;
+  recommendImageUrl: string | undefined;
+}
+
+export interface StyleContentsProps {
+  itemId: number;
   itemInfo: ItemProps;
   itemImage: File | string | undefined;
+
 }
 
 export interface MakeupCustomizeResponse {
