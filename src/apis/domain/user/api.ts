@@ -9,10 +9,8 @@ export const putRecommendProducts = async (
 ): Promise<void | null> => {
   try {
     const response: AxiosResponse<void> = await put("/users/edit", {
-      params: {
-        username,
-        email,
-      },
+      username,
+      email,
     });
 
     return response.data;
