@@ -40,7 +40,7 @@ const router = createBrowserRouter([
       { path: "detail/recommend-product/:analysisId", element: <RecommendProductPage /> },
       { path: "skinAnalysis", element: <SkinAnalysisPage /> },
       { path: "skinAnalysis/loading", element: <SkinAnalysisLoadingPage /> },
-      { path: "styleResult", element: <StyleResultPage /> },
+      { path: "style/result", element: <StyleResultPage /> },
       { path: "style/customizing", element: <StyleCustomizingPage /> },
     ],
   },

@@ -1,15 +1,15 @@
 // src/pages/stylePage/components/UploadImage/UploadImage.tsx
 import Button from "@components/commons/button/Button";
-import type { ContentsProps } from "@pages/stylePage/types";
+import type { StyleContentsProps } from "@pages/stylePage/types";
 import React, { useEffect, useRef, useState } from "react";
 
 import * as S from "./UploadImage.styled";
 
 type UploadImageProps = {
   /** 전체 컨텐츠 리스트 */
-  contents: ContentsProps[];
+  contents: StyleContentsProps[];
   /** contents 갱신 setter */
-  setContents: React.Dispatch<React.SetStateAction<ContentsProps[]>>;
+  setContents: React.Dispatch<React.SetStateAction<StyleContentsProps[]>>;
   /** 현재 아이템 번호(또는 id에 매핑할 index) */
   itemNumber: number;
   /** 기존 사진 사용하기 동작 */
