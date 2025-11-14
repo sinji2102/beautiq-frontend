@@ -131,7 +131,8 @@ const StyleResultPage: React.FC = () => {
         </S.PreviewWrap>
 
         <S.Caption>
-          <strong>000</strong>님을 위해 맞춤 생성된
+          <strong>{JSON.parse(localStorage.getItem("user") ?? "사용자").username}</strong>님을 위해
+          맞춤 생성된
           <br />
           AI 스타일 추천 이미지가 완성되었어요.
         </S.Caption>
