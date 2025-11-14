@@ -107,7 +107,7 @@ const DetailPage = () => {
 
   return (
     <>
-      <Header left="back" text={location.state?.dateStr + " 분석결과"} />
+      <Header left="back" text={location.state?.dateStr + " 분석결과"} right="close" />
 
       <S.ScoreBoardWrapper>
         {scoreItems.map(({ label, key }) => {
