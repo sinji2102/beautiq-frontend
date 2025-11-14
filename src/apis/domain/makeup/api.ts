@@ -1,12 +1,11 @@
-import { post } from "@apis/index";
+import { get, post } from "@apis/index";
 import type { components } from "@custom-types/api/schema";
 import type { AxiosResponse } from "axios";
 
 export type MakeupSimulationResponse = components["schemas"]["ImageItem"]; // 동일
 
-
 export const postMakeupSimulation = async (
-  image: File | string   // ⭐ File 또는 URL 문자열
+  image: File | string // ⭐ File 또는 URL 문자열
 ): Promise<MakeupSimulationResponse | null> => {
   try {
     const formData = new FormData();
@@ -32,7 +31,6 @@ export const postMakeupSimulation = async (
     return null;
   }
 };
-
 
 export type MakeupRecommendationRequest = components["schemas"]["RecommendRequestDto"];
 export type MakeupRecommendationResponse = components["schemas"]["RecommendResponseDto"];
@@ -75,11 +73,8 @@ export const postMakeupSave = async (
   try {
     const formData = new FormData();
     formData.append("imageName", imageName);
-    const payload = { data : {keywords: data} };
-    formData.append(
-    "data",
-    new Blob([JSON.stringify(payload)], { type: "application/json" })
-);
+    const payload = { keywords: data };
+    formData.append("data", new Blob([JSON.stringify(payload)], { type: "application/json" }));
 
     const response: AxiosResponse<void> = await post("/makeup/save", formData);
     return response.data; // 아마 undefined일 것
@@ -114,6 +109,24 @@ export const postCustomize = async (
     return response.data;
   } catch (error) {
     console.error("postCustomize error", error);
+    return null;
+  }
+};
+
+export type MakeUpListResponse = components["schemas"]["MakeUpListResponseDto"];
+
+export const getMakeUpListSaved = async (
+  page: number = 0,
+  size: number = 10
+): Promise<MakeUpListResponse | null> => {
+  try {
+    const response: AxiosResponse<MakeUpListResponse> = await get(
+      `users/me/saved/makeups?page=${page}&size=${size}`
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("getMakeUpListSaved error:", error);
     return null;
   }
 };

@@ -1,23 +1,14 @@
+import { getMakeUpListSaved, type MakeUpListResponse } from "@apis/domain/makeup/api";
 import { getSkinAnalysisLatest, type SkinAnalysisResponse } from "@apis/domain/skin-analysis/api";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import * as S from "./RecentAnalysisCard.styled";
 
-const tempAPI = {
-  skin: {
-    date: "2025.08.12",
-    score: 80,
-  },
-  makeup: {
-    date: "2025.08.12",
-    style: ["청순", "사랑스러운"],
-  },
-};
-
 const RecentAnalysisCard = () => {
   const navigate = useNavigate();
   const [skinData, setSkinData] = useState<SkinAnalysisResponse>();
+  const [makeupData, setMakeupData] = useState<MakeUpListResponse>();
 
   useEffect(() => {
     const fetchAnalysis = async () => {
@@ -29,7 +20,17 @@ const RecentAnalysisCard = () => {
       }
     };
 
+    const getLaststSaved = async () => {
+      const data = await getMakeUpListSaved(0, 1);
+      if (data) {
+        setMakeupData(data);
+      } else {
+        console.error("최근 피부 분석 결과를 불러오지 못했습니다.");
+      }
+    };
+
     fetchAnalysis();
+    getLaststSaved();
   }, []);
 
   const getBadgeLabel = (score?: number) => {
@@ -39,8 +40,11 @@ const RecentAnalysisCard = () => {
     return "위험";
   };
 
+  if (!skinData && !makeupData?.makeUps?.length) {
+    return null;
+  }
+
   return (
-    // TODO : 둘 다 없을 때 ui 필요
     <S.CardContainer>
       <S.CardTitle>
         <S.BubblesIcon />
@@ -62,20 +66,26 @@ const RecentAnalysisCard = () => {
       ) : (
         <></>
       )}
-      {/* TODO : makeup-get 연결할 때 같이 하기 */}
-      <S.ResultBox>
-        <S.ItemInfo>
-          <S.Title>메이크업 추천</S.Title>
-          {/* TODO : API 맞춰서 날짜 형식 맞추기 */}
-          <S.DateText>{tempAPI.makeup.date}</S.DateText>
-        </S.ItemInfo>
-        <S.BadgeContainer>
-          {tempAPI.makeup.style.map((item) => {
-            return <S.Badge>{item}</S.Badge>;
-          })}
-        </S.BadgeContainer>
-      </S.ResultBox>
-      {/* TODO : 이동 url 확인해서 수정 */}
+      {makeupData?.makeUps?.length ? (
+        <S.ResultBox>
+          <S.ItemInfo>
+            <S.Title>메이크업 추천</S.Title>
+            <S.DateText>
+              {makeupData?.makeUps?.[0]?.createdAt
+                ? makeupData.makeUps[0].createdAt.split("T")[0]
+                : ""}
+            </S.DateText>
+          </S.ItemInfo>
+          <S.BadgeContainer>
+            {makeupData?.makeUps?.map((item) => {
+              return <S.Badge>{item.keywords}</S.Badge>;
+            })}
+          </S.BadgeContainer>
+        </S.ResultBox>
+      ) : (
+        <></>
+      )}
+
       <S.FullHistoryButton onClick={() => navigate("/tracking")}>
         전체 히스토리 보기
       </S.FullHistoryButton>
