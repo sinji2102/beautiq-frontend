@@ -36,12 +36,7 @@ const AccountActions = () => {
       comment: "탈퇴 시, 계정은 삭제되며 복구되지 않습니다.",
       okCallback: async () => {
         try {
-          const response = await deleteUser();
-
-          if (response === null) {
-            alert("회원 탈퇴 요청에 실패했습니다.");
-            return;
-          }
+          await deleteUser();
 
           localStorage.removeItem("user");
           window.location.href = "/login";
