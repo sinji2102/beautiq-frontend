@@ -44,7 +44,7 @@ const router = createBrowserRouter([
       { path: "style/customizing", element: <StyleCustomizingPage /> },
     ],
   },
-  // { path: "*", element: <Navigate to="/home" replace /> },
+  { path: "*", element: <Navigate to="/home" replace /> },
 ]);
 
 export default router;

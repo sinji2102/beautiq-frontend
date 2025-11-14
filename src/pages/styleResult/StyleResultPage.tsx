@@ -38,7 +38,7 @@ const StyleResultPage: React.FC = () => {
     if (navState.recommendData) setRecommendData(navState.recommendData);
 
     const keywords = localStorage.getItem("keywords");
-    setRecommendData([JSON.parse(keywords ?? "")]);
+    setRecommendData(JSON.parse(keywords ?? ""));
   }, [navState.originalUrl, navState.editedUrl, navState.imageName, navState.recommendData]);
 
   const hasImage = useMemo(() => !!(originalUrl || editedUrl), [originalUrl, editedUrl]);
