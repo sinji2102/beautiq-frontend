@@ -1,5 +1,6 @@
 import { getWishlistProducts } from "@apis/domain/product/api";
 import Header from "@components/commons/header/Header";
+import Loading from "@components/commons/loading/Loading";
 import ProductListItem from "@components/commons/productListItem/ProductListItem";
 import type { ProductContentItem } from "@custom-types/api/wishlist";
 import { useEffect, useState } from "react";
@@ -37,7 +38,7 @@ const WishListPage = () => {
       <>
         <Header left="back" text="내가 찜한 제품" />
         <S.WishListPageWrapper>
-          <p>로딩 중...</p>
+          <Loading />
         </S.WishListPageWrapper>
       </>
     );

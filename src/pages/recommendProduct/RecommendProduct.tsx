@@ -1,6 +1,7 @@
 import type { RecommendProductRequest, RecommendProductResponse } from "@apis/domain/product/api";
 import { postRecommendProducts } from "@apis/domain/product/api";
 import Header from "@components/commons/header/Header";
+import Loading from "@components/commons/loading/Loading";
 import ProductListItem from "@components/commons/productListItem/ProductListItem";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -58,7 +59,7 @@ const RecommendProductPage: React.FC = () => {
     <>
       <Header left="back" text="제품 추천" />
       <S.RecommendProductWrapper>
-        {loading && <p>🔄 추천 제품을 불러오는 중...</p>}
+        {loading && <Loading />}
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         {!loading && !error && products.length === 0 && <p>추천된 제품이 없습니다.</p>}

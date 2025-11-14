@@ -25,7 +25,9 @@ const AccountActions = () => {
           window.location.href = "/login";
         } catch (error) {
           console.error("로그아웃 처리 중 오류:", error);
-          alert("로그아웃 중 오류가 발생했습니다.");
+          localStorage.removeItem("user");
+          window.location.href = "/login";
+          // alert("로그아웃 중 오류가 발생했습니다.");
         }
       },
     });
